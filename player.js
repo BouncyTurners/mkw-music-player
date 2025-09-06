@@ -1,6 +1,5 @@
 const audioPlayer = document.getElementById('audioPlayer');
 const titleEl = document.getElementById('title');
-const trackNumberEl = document.getElementById('trackNumber');
 const composerEl = document.getElementById('composer');
 
 let tracks = [];
@@ -23,7 +22,6 @@ function playTrack(index) {
 
   // Metadata tonen
   titleEl.textContent = track.title || '-';
-  trackNumberEl.textContent = track.trackNumber || '-';
   composerEl.textContent = track.composer || '-';
 }
 

@@ -1,242 +1,274 @@
 [
     {
       "url": "audio/CD1/AcornHeights.m4a",
-      "title": "AcornHeights",
+      "title": "Acorn Heights",
       "trackNumber": 1,
-      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa"
+      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa",
+      "artwork": "assets/CD1-artwork/AcornHeights.png"
     },
     {
       "url": "audio/CD1/AirshipFortress.m4a",
-      "title": "AirshipFortress",
+      "title": "DS Airship Fortress",
       "trackNumber": 1,
-      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa"
+      "composer": "Shinobu Tanaka",
+      "artwork": "assets/CD1-artwork/DSAF.png"
+      
     },
     {
       "url": "audio/CD1/Battle64.m4a",
-      "title": "Battle64",
+      "title": "Battle Stage (Mario Kart 64)",
       "trackNumber": 1,
-      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa"
+      "composer": "Kenta Nagata"
     },
     {
       "url": "audio/CD1/BattleDS.m4a",
-      "title": "BattleDS",
+      "title": "Battle Stage (Mario Kart DS)",
       "trackNumber": 1,
-      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa"
+      "composer": "Shinobu Tanaka"
     },
     {
       "url": "audio/CD1/BattleGCN.m4a",
-      "title": "BattleGCN",
+      "title": "Battle Stage (Mario Kart: Double Dash!!)",
       "trackNumber": 1,
-      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa"
+      "composer": "Shinobu Tanaka, Kenta Nagata"
     },
     {
       "url": "audio/CD1/BattleSNES.m4a",
-      "title": "BattleSNES",
+      "title": "Battle Stage (Super Mario Kart)",
       "trackNumber": 1,
-      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa"
+      "composer": "Soyo Oka"
     },
     {
       "url": "audio/CD1/BattleStadium8.m4a",
-      "title": "BattleStadium8",
+      "title": "Battle Stadium (Mario Kart 8)",
       "trackNumber": 1,
       "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa"
     },
     {
       "url": "audio/CD1/BooCinema.m4a",
-      "title": "BooCinema",
+      "title": "Boo Cinema",
       "trackNumber": 1,
-      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa"
+      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa",
+      "artwork": "assets/CD1-artwork/BCinema.png"
     },
     {
       "url": "audio/CD1/BooCinemaJazz.m4a",
-      "title": "BooCinemaJazz",
+      "title": "Boo Cinema (Jazz version)",
       "trackNumber": 1,
-      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa"
+      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa",
+      "artwork": "assets/CD1-artwork/BC_jazz.png"
     },
     {
       "url": "audio/CD1/BowserCastle.m4a",
-      "title": "BowserCastle",
+      "title": "Bowser's Castle",
       "trackNumber": 1,
-      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa"
+      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa",
+      "artwork": "assets/CD1-artwork/BowserCastle.png"
     },
     {
       "url": "audio/CD1/ChainChompWheel.m4a",
-      "title": "ChainChompWheel",
+      "title": "Wii Chain Chomp Wheel",
       "trackNumber": 1,
-      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa"
+      "composer": "Asuka Hayazaki & Ryo Nagamatsu"
     },
     {
       "url": "audio/CD1/CheepCheepFalls.m4a",
-      "title": "CheepCheepFalls",
+      "title": "Cheep Cheep Falls",
       "trackNumber": 1,
-      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa"
+      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa",
+      "artwork": "assets/CD1-artwork/CheepCheep.png"
     },
     {
       "url": "audio/CD1/ChocoMountain.m4a",
-      "title": "ChocoMountain",
+      "title": "N64 Choco Mountain",
       "trackNumber": 1,
-      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa"
+      "composer": "Kenta Nagata",
+      "artwork": "assets/CD1-artwork/N64Choco.png"
     },
     {
       "url": "audio/CD1/CrownCity.m4a",
-      "title": "CrownCity",
+      "title": "Crown City",
       "trackNumber": 1,
-      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa"
+      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa",
+      "artwork": "assets/CD1-artwork/CrownCity.png"
     },
     {
       "url": "audio/CD1/DandelionDepths.m4a",
-      "title": "DandelionDepths",
+      "title": "Dandelion Depths",
       "trackNumber": 1,
-      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa"
+      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa",
+      "artwork": "assets/CD1-artwork/Dandelion.png"
     },
     {
       "url": "audio/CD1/DelfinoPier.m4a",
-      "title": "DelfinoPier",
+      "title": "Wii Delfino Pier",
       "trackNumber": 1,
-      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa"
+      "composer": "Asuka Hayazaki & Ryo Nagamatsu"
     },
     {
       "url": "audio/CD1/DesertHills.m4a",
-      "title": "DesertHills",
+      "title": "DS Desert Hills",
       "trackNumber": 1,
-      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa"
+      "composer": "Shinobu Tanaka",
+      "artwork": "assets/CD1-artwork/DesertHills.png"
     },
     {
       "url": "audio/CD1/DinoDinoJungle.m4a",
-      "title": "DinoDinoJungle",
+      "title": "GCN Dino Dino Jungle",
       "trackNumber": 1,
-      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa"
+      "composer": "Shinobu Tanaka, Kenta Nagata",
+      "artwork": "assets/CD1-artwork/DinoDino.png"
     },
     {
       "url": "audio/CD1/DKPass.m4a",
-      "title": "DKPass",
+      "title": "DS DK Pass",
       "trackNumber": 1,
-      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa"
+      "composer": "Shinobu Tanaka",
+      "artwork": "assets/CD1-artwork/DSDKP.png"
     },
     {
       "url": "audio/CD1/DKSpaceport.m4a",
-      "title": "DKSpaceport",
+      "title": "DK Spaceport",
       "trackNumber": 1,
-      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa"
+      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa",
+      "artwork": "assets/CD1-artwork/DKSpace.png"
     },
     {
       "url": "audio/CD1/DryBonesBurnout.m4a",
-      "title": "DryBonesBurnout",
+      "title": "Dry Bones Burnout",
       "trackNumber": 1,
-      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa"
+      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa",
+      "artwork": "assets/CD1-artwork/DryBurnout.png"
     },
     {
       "url": "audio/CD1/FarawayOasis.m4a",
-      "title": "FarawayOasis",
+      "title": "Faraway Oasis",
       "trackNumber": 1,
-      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa"
+      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa",
+      "artwork": "assets/CD1-artwork/FarOasis.png"
     },
     {
       "url": "audio/CD1/GreatBlockRuins.m4a",
-      "title": "GreatBlockRuins",
+      "title": "Great ? Block Ruins",
       "trackNumber": 1,
-      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa"
+      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa",
+      "artwork": "assets/CD1-artwork/BlockRuins.png"
     },
     {
       "url": "audio/CD1/KoopaTroopaBeach.m4a",
-      "title": "KoopaTroopaBeach",
+      "title": "Koopa Troopa Beach",
       "trackNumber": 1,
-      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa"
+      "composer": "Soyo Oka",
+      "artwork": "assets/CD1-artwork/SNESKTB.png"
     },
     {
       "url": "audio/CD1/MainTheme.m4a",
-      "title": "MainTheme",
+      "title": "Main Theme",
       "trackNumber": 1,
       "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa"
     },
     {
       "url": "audio/CD1/MarioBrosCircuit.m4a",
-      "title": "MarioBrosCircuit",
+      "title": "Mario Bros. Circuit",
       "trackNumber": 1,
-      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa"
+      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa",
+      "artwork": "assets/CD1-artwork/MBC.png"
     },
     {
       "url": "audio/CD1/MarioCircuit.m4a",
-      "title": "MarioCircuit",
+      "title": "SNES Mario Circuit",
       "trackNumber": 1,
-      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa"
+      "composer": "Soyo Oka",
+      "artwork": "assets/CD1-artwork/SNESMC.png"
     },
     {
       "url": "audio/CD1/MooMooMeadows.m4a",
-      "title": "MooMooMeadows",
+      "title": "Wii Moo Moo Meadows",
       "trackNumber": 1,
-      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa"
+      "composer": "Asuka Hayazaki & Ryo Nagamatsu",
+      "artwork": "assets/CD1-artwork/MooMooWii.png"
     },
     {
       "url": "audio/CD1/PeachBeach.m4a",
-      "title": "PeachBeach",
+      "title": "GCN Peach Beach",
       "trackNumber": 1,
-      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa"
+      "composer": "Shinobu Tanaka, Kenta Nagata",
+      "artwork": "assets/CD1-artwork/GCNBeach.png"
     },
     {
       "url": "audio/CD1/PeachStadium.m4a",
-      "title": "PeachStadium",
+      "title": "Peach Stadium",
       "trackNumber": 1,
-      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa"
+      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa",
+      "artwork": "assets/CD1-artwork/PeachStad.png"
     },
     {
       "url": "audio/CD1/RainbowRoad.m4a",
-      "title": "RainbowRoad",
+      "title": "Rainbow Road",
       "trackNumber": 1,
-      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa"
+      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa",
+      "artwork": "assets/CD1-artwork/RainbowRoad.png"
     },
     {
       "url": "audio/CD1/SaltySaltySpeedway.m4a",
-      "title": "SaltySaltySpeedway",
+      "title": "Salty Salty Speedway",
       "trackNumber": 1,
-      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa"
+      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa",
+      "artwork": "assets/CD1-artwork/SaltySalty.png"
     },
     {
       "url": "audio/CD1/ShyGuyBazaar.m4a",
-      "title": "ShyGuyBazaar",
+      "title": "3DS Shy Guy Bazaar",
       "trackNumber": 1,
-      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa"
+      "composer": "Kenta Nagata, Satomi Terui",
+      "artwork": "assets/CD1-artwork/SGB.png"
     },
     {
       "url": "audio/CD1/SkyHighSundae.m4a",
-      "title": "SkyHighSundae",
+      "title": "Sky-High Sundae",
       "trackNumber": 1,
-      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa"
+      "composer": "Shiho Fujii, Atsuko Asahi, Ryo Nagamatsu, Yasuaki Iwata, Asuka Hayazaki, Toru Minegishi & Kazumi Totaka",
+      "artwork": "assets/CD1-artwork/Sky-High.png"
     },
     {
       "url": "audio/CD1/StarviewPeak.m4a",
-      "title": "StarviewPeak",
+      "title": "Starview Peak",
       "trackNumber": 1,
-      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa"
+      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa",
+      "artwork": "assets/CD1-artwork/StarviewPeak.png"
     },
     {
       "url": "audio/CD1/ThwompDesert.m4a",
-      "title": "ThwompDesert",
+      "title": "Wii Thwomp Desert",
       "trackNumber": 1,
-      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa"
+      "composer": "Asuka Hayazaki & Ryo Nagamatsu"
     },
     {
       "url": "audio/CD1/ToadFactory.m4a",
-      "title": "ToadFactory",
+      "title": "Wii Toad's Factory",
       "trackNumber": 1,
-      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa"
+      "composer": "Asuka Hayazaki & Ryo Nagamatsu",
+      "artwork": "assets/CD1-artwork/ToadFac.png"
     },
     {
       "url": "audio/CD1/WarioShipyard.m4a",
-      "title": "WarioShipyard",
+      "title": "3DS Wario Shipyard",
       "trackNumber": 1,
-      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa"
+      "composer": "Kenta Nagata, Satomi Terui",
+      "artwork": "assets/CD1-artwork/3DSWS.png"
     },
     {
       "url": "audio/CD1/WarioStadium.m4a",
-      "title": "WarioStadium",
+      "title": "N64 Wario Stadium",
       "trackNumber": 1,
-      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa"
+      "composer": "Kenta Nagata",
+      "artwork": "assets/CD1-artwork/N64WS.png"
     },
     {
       "url": "audio/CD1/WhistlestopSummit.m4a",
-      "title": "WhistlestopSummit",
+      "title": "Whistlestop Summit",
       "trackNumber": 1,
-      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa"
+      "composer": "Atsuko Asahi, Maasa Miyoshi, Takuhiro Honda & Yutaro Takakuwa",
+      "artwork": "assets/CD1-artwork/WhistleSummit.png"
     }
   ]

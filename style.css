@@ -1,11 +1,16 @@
 body {
-    font-family: sans-serif; 
+    margin: 0;
     padding: 20px;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     background: 
-        linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
-        url(assets/BG.png);
+        url(assets/BG2.jpg) no-repeat center center;
     background-size: cover;
     text-align: center;
+    background-color: black;
 }
 
 @font-face {
@@ -26,10 +31,51 @@ h2 {
     font-weight: normal;
 }
 
-audio {
-    margin-top: 100px;
+h4 {
+    color: white;
+    opacity: 20%;
+    font-family: MKWorld;
+    font-weight: normal;
+}
+
+footer {
+    text-align: left;
+    width: 100%;
+    margin-top: auto;
+    padding: 10px;
 }
 
 #metadata {
     margin-top: 20px; 
+}
+
+img.artwork {
+    background-size: cover;
+}
+
+.musicplayer img {
+    width: 275px;
+    height: 275px;
+    object-fit: cover;
+    border-radius: 15%;
+  }
+
+article.musicplayer {
+    position: relative ;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 25em;
+    min-width: 10em;
+    border-radius: 2rem;
+    background: rgb(41, 41, 41);
+    text-align: center;
+    padding: 2rem;
+    width: auto;
+    height: auto;
+  }
+
+img {
+    border-radius: 15%;
 }

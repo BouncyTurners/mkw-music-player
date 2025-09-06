@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Audio Player met GitHub Files</title>
+<style>
+  body { font-family: sans-serif; padding: 20px; }
+  #covers img { max-width: 200px; margin: 10px; }
+</style>
+</head>
+<body>
+
+<h1>Audio Player</h1>
+<div id="output">Laden...</div>
+<div id="covers"></div>
+
+<audio id="player" controls></audio>
+
+<script type="module">
+  import { parseBuffer } from 'https://cdn.jsdelivr.net/npm/music-metadata-browser@11.8.3/dist/music-metadata-browser.esm.js';
+
+  const output = document.getElementById('output');
+  const covers = document.getElementById('covers');
+  const player = document.getElementById('player');
+
+  // Voeg hier je raw GitHub URLs toe
+  const playlist = [
+    "https://github.com/TZGaming/mkw-music-files/raw/refs/heads/main/test/1.m4a",
+    "https://github.com/TZGaming/mkw-music-files/raw/refs/heads/main/test/2.m4a",
+    "https://github.com/TZGaming/mkw-music-files/raw/refs/heads/main/test/3.m4a",
+  ];
+
+  let index = 0;
+
+  // Shuffle functie
+  function shuffle(array) {
+    return array.sort(() => Math.random() - 0.5);
+  }
+
+  async function playNext() {
+    if (playlist.length === 0) return;
+
+    const url = playlist[index];
+    player.src = url;
+
+    try {
+      const response = await fetch(url);
+      const arrayBuffer = await response.arrayBuffer();
+      const metadata = await parseBuffer(new Uint8Array(arrayBuffer));
+
+      const title = metadata.common.title || url.split('/').pop();
+      const artist = metadata.common.artist || "-";
+      const trackNumber = metadata.common.track?.no || "-";
+
+      output.innerHTML = `
+        <strong>Track Title:</strong> ${title} <br>
+        <strong>Composer:</strong> ${artist} <br>
+        <strong>Track Number:</strong> ${trackNumber}
+      `;
+
+      // Album art
+      covers.innerHTML = '';
+      if (metadata.common.picture && metadata.common.picture.length > 0) {
+        metadata.common.picture.forEach((picture, idx) => {
+          const base64String = btoa(String.fromCharCode(...new Uint8Array(picture.data)));
+          const img = document.createElement('img');
+          img.src = `data:${picture.format};base64,${base64String}`;
+          img.alt = `Picture ${idx + 1}`;
+          covers.appendChild(img);
+        });
+      }
+
+    } catch (err) {
+      output.textContent = 'Error parsing metadata of URL: ' + err.message;
+    }
+
+    player.play();
+    index = (index + 1) % playlist.length;
+  }
+
+  player.addEventListener('ended', playNext);
+
+  // Shuffle playlist en start
+  shuffle(playlist);
+  playNext();
+</script>
+
+</body>
+</html>

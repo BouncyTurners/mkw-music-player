@@ -1,0 +1,20 @@
+[
+    {
+      "url": "test/1.m4a",
+      "title": "Hisstocrat (Super Mario 3D World)",
+      "trackNumber": 102,
+      "composer": "Mahito Yokota, Toru Minegishi, Koji Kondo & Yasuaki Iwata"
+    },
+    {
+      "url": "test/2.m4a",
+      "title": "Bowser's Highway Showdown (Super Mario 3D World)",
+      "trackNumber": 103,
+      "composer": "Mahito Yokota, Toru Minegishi, Koji Kondo & Yasuaki Iwata"
+    },
+    {
+      "url": "test/3.m4a",
+      "title": "World Bowser (Super Mario 3D World)",
+      "trackNumber": 104,
+      "composer": "Mahito Yokota, Toru Minegishi, Koji Kondo & Yasuaki Iwata"
+      }
+  ]

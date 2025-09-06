@@ -2,87 +2,96 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Audio Player met GitHub Files</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mario Kart World Music Player</title>
 <style>
   body { font-family: sans-serif; padding: 20px; }
-  #covers img { max-width: 200px; margin: 10px; }
+  #playlist { list-style: none; padding: 0; }
+  #playlist li { margin: 5px 0; cursor: pointer; }
+  #playlist li.playing { font-weight: bold; }
 </style>
 </head>
 <body>
 
-<h1>Audio Player</h1>
-<div id="output">Laden...</div>
-<div id="covers"></div>
+<h1>Mario Kart World Radio</h1>
+<button id="shuffleBtn">Shuffle Playlist</button>
+<ul id="playlist"></ul>
+<div id="metadata">
+  <p><strong>Title:</strong> <span id="title">-</span></p>
+  <p><strong>Track Number:</strong> <span id="trackNumber">-</span></p>
+  <p><strong>Composer:</strong> <span id="composer">-</span></p>
+</div>
+<audio id="audioPlayer" controls></audio>
 
-<audio id="player" controls></audio>
+<script>
+const audioPlayer = document.getElementById('audioPlayer');
+const playlistEl = document.getElementById('playlist');
+const titleEl = document.getElementById('title');
+const trackNumberEl = document.getElementById('trackNumber');
+const composerEl = document.getElementById('composer');
+const shuffleBtn = document.getElementById('shuffleBtn');
 
-<script type="module">
-  import { parseBuffer } from 'https://cdn.jsdelivr.net/npm/music-metadata-browser@11.8.3/dist/music-metadata-browser.esm.js';
+let tracks = [];
+let currentTrack = 0;
 
-  const output = document.getElementById('output');
-  const covers = document.getElementById('covers');
-  const player = document.getElementById('player');
-
-  // Voeg hier je raw GitHub URLs toe
-  const playlist = [
-    "https://github.com/TZGaming/mkw-music-files/raw/refs/heads/main/test/1.m4a",
-    "https://github.com/TZGaming/mkw-music-files/raw/refs/heads/main/test/2.m4a",
-    "https://github.com/TZGaming/mkw-music-files/raw/refs/heads/main/test/3.m4a",
-  ];
-
-  let index = 0;
-
-  // Shuffle functie
-  function shuffle(array) {
-    return array.sort(() => Math.random() - 0.5);
+// Shuffle functie
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
   }
+}
 
-  async function playNext() {
-    if (playlist.length === 0) return;
+// Playlist renderen
+function renderPlaylist() {
+  playlistEl.innerHTML = '';
+  tracks.forEach((track, index) => {
+    const li = document.createElement('li');
+    li.textContent = track.title;
+    li.addEventListener('click', () => playTrack(index));
+    playlistEl.appendChild(li);
+  });
+}
 
-    const url = playlist[index];
-    player.src = url;
+// Track afspelen en metadata tonen
+function playTrack(index) {
+  currentTrack = index;
+  const track = tracks[index];
+  audioPlayer.src = track.url;
+  audioPlayer.play();
 
-    try {
-      const response = await fetch(url);
-      const arrayBuffer = await response.arrayBuffer();
-      const metadata = await parseBuffer(new Uint8Array(arrayBuffer));
+  // Highlight playing track
+  Array.from(playlistEl.children).forEach((li, i) => {
+    li.classList.toggle('playing', i === index);
+  });
 
-      const title = metadata.common.title || url.split('/').pop();
-      const artist = metadata.common.artist || "-";
-      const trackNumber = metadata.common.track?.no || "-";
+  // Metadata tonen
+  titleEl.textContent = track.title || '-';
+  trackNumberEl.textContent = track.trackNumber || '-';
+  composerEl.textContent = track.composer || '-';
+}
 
-      output.innerHTML = `
-        <strong>Track Title:</strong> ${title} <br>
-        <strong>Composer:</strong> ${artist} <br>
-        <strong>Track Number:</strong> ${trackNumber}
-      `;
+// Shuffle knop
+shuffleBtn.addEventListener('click', () => {
+  shuffleArray(tracks);
+  renderPlaylist();
+});
 
-      // Album art
-      covers.innerHTML = '';
-      if (metadata.common.picture && metadata.common.picture.length > 0) {
-        metadata.common.picture.forEach((picture, idx) => {
-          const base64String = btoa(String.fromCharCode(...new Uint8Array(picture.data)));
-          const img = document.createElement('img');
-          img.src = `data:${picture.format};base64,${base64String}`;
-          img.alt = `Picture ${idx + 1}`;
-          covers.appendChild(img);
-        });
-      }
+// Autoplay next track
+audioPlayer.addEventListener('ended', () => {
+  currentTrack = (currentTrack + 1) % tracks.length;
+  playTrack(currentTrack);
+});
 
-    } catch (err) {
-      output.textContent = 'Error parsing metadata of URL: ' + err.message;
-    }
-
-    player.play();
-    index = (index + 1) % playlist.length;
-  }
-
-  player.addEventListener('ended', playNext);
-
-  // Shuffle playlist en start
-  shuffle(playlist);
-  playNext();
+// Tracks laden vanuit JSON
+fetch('./tracks.json')
+  .then(res => res.json())
+  .then(data => {
+    tracks = data;
+    renderPlaylist();
+    if (tracks.length > 0) playTrack(0);
+  })
+  .catch(err => console.error('Error loading tracks.json:', err));
 </script>
 
 </body>

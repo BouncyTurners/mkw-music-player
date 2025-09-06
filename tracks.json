@@ -1,20 +1,242 @@
 [
     {
-      "url": "test/1.m4a",
-      "title": "Hisstocrat (Super Mario 3D World)",
-      "trackNumber": 102,
-      "composer": "Mahito Yokota, Toru Minegishi, Koji Kondo & Yasuaki Iwata"
+      "url": "audio/CD1/AcornHeights.m4a",
+      "title": "AcornHeights",
+      "trackNumber": 1,
+      "composer": "Unknown"
     },
     {
-      "url": "test/2.m4a",
-      "title": "Bowser's Highway Showdown (Super Mario 3D World)",
-      "trackNumber": 103,
-      "composer": "Mahito Yokota, Toru Minegishi, Koji Kondo & Yasuaki Iwata"
+      "url": "audio/CD1/AirshipFortress.m4a",
+      "title": "AirshipFortress",
+      "trackNumber": 1,
+      "composer": "Unknown"
     },
     {
-      "url": "test/3.m4a",
-      "title": "World Bowser (Super Mario 3D World)",
-      "trackNumber": 104,
-      "composer": "Mahito Yokota, Toru Minegishi, Koji Kondo & Yasuaki Iwata"
-      }
+      "url": "audio/CD1/Battle64.m4a",
+      "title": "Battle64",
+      "trackNumber": 1,
+      "composer": "Unknown"
+    },
+    {
+      "url": "audio/CD1/BattleDS.m4a",
+      "title": "BattleDS",
+      "trackNumber": 1,
+      "composer": "Unknown"
+    },
+    {
+      "url": "audio/CD1/BattleGCN.m4a",
+      "title": "BattleGCN",
+      "trackNumber": 1,
+      "composer": "Unknown"
+    },
+    {
+      "url": "audio/CD1/BattleSNES.m4a",
+      "title": "BattleSNES",
+      "trackNumber": 1,
+      "composer": "Unknown"
+    },
+    {
+      "url": "audio/CD1/BattleStadium8.m4a",
+      "title": "BattleStadium8",
+      "trackNumber": 1,
+      "composer": "Unknown"
+    },
+    {
+      "url": "audio/CD1/BooCinema.m4a",
+      "title": "BooCinema",
+      "trackNumber": 1,
+      "composer": "Unknown"
+    },
+    {
+      "url": "audio/CD1/BooCinemaJazz.m4a",
+      "title": "BooCinemaJazz",
+      "trackNumber": 1,
+      "composer": "Unknown"
+    },
+    {
+      "url": "audio/CD1/BowserCastle.m4a",
+      "title": "BowserCastle",
+      "trackNumber": 1,
+      "composer": "Unknown"
+    },
+    {
+      "url": "audio/CD1/ChainChompWheel.m4a",
+      "title": "ChainChompWheel",
+      "trackNumber": 1,
+      "composer": "Unknown"
+    },
+    {
+      "url": "audio/CD1/CheepCheepFalls.m4a",
+      "title": "CheepCheepFalls",
+      "trackNumber": 1,
+      "composer": "Unknown"
+    },
+    {
+      "url": "audio/CD1/ChocoMountain.m4a",
+      "title": "ChocoMountain",
+      "trackNumber": 1,
+      "composer": "Unknown"
+    },
+    {
+      "url": "audio/CD1/CrownCity.m4a",
+      "title": "CrownCity",
+      "trackNumber": 1,
+      "composer": "Unknown"
+    },
+    {
+      "url": "audio/CD1/DandelionDepths.m4a",
+      "title": "DandelionDepths",
+      "trackNumber": 1,
+      "composer": "Unknown"
+    },
+    {
+      "url": "audio/CD1/DelfinoPier.m4a",
+      "title": "DelfinoPier",
+      "trackNumber": 1,
+      "composer": "Unknown"
+    },
+    {
+      "url": "audio/CD1/DesertHills.m4a",
+      "title": "DesertHills",
+      "trackNumber": 1,
+      "composer": "Unknown"
+    },
+    {
+      "url": "audio/CD1/DinoDinoJungle.m4a",
+      "title": "DinoDinoJungle",
+      "trackNumber": 1,
+      "composer": "Unknown"
+    },
+    {
+      "url": "audio/CD1/DKPass.m4a",
+      "title": "DKPass",
+      "trackNumber": 1,
+      "composer": "Unknown"
+    },
+    {
+      "url": "audio/CD1/DKSpaceport.m4a",
+      "title": "DKSpaceport",
+      "trackNumber": 1,
+      "composer": "Unknown"
+    },
+    {
+      "url": "audio/CD1/DryBonesBurnout.m4a",
+      "title": "DryBonesBurnout",
+      "trackNumber": 1,
+      "composer": "Unknown"
+    },
+    {
+      "url": "audio/CD1/FarawayOasis.m4a",
+      "title": "FarawayOasis",
+      "trackNumber": 1,
+      "composer": "Unknown"
+    },
+    {
+      "url": "audio/CD1/GreatBlockRuins.m4a",
+      "title": "GreatBlockRuins",
+      "trackNumber": 1,
+      "composer": "Unknown"
+    },
+    {
+      "url": "audio/CD1/KoopaTroopaBeach.m4a",
+      "title": "KoopaTroopaBeach",
+      "trackNumber": 1,
+      "composer": "Unknown"
+    },
+    {
+      "url": "audio/CD1/MainTheme.m4a",
+      "title": "MainTheme",
+      "trackNumber": 1,
+      "composer": "Unknown"
+    },
+    {
+      "url": "audio/CD1/MarioBrosCircuit.m4a",
+      "title": "MarioBrosCircuit",
+      "trackNumber": 1,
+      "composer": "Unknown"
+    },
+    {
+      "url": "audio/CD1/MarioCircuit.m4a",
+      "title": "MarioCircuit",
+      "trackNumber": 1,
+      "composer": "Unknown"
+    },
+    {
+      "url": "audio/CD1/MooMooMeadows.m4a",
+      "title": "MooMooMeadows",
+      "trackNumber": 1,
+      "composer": "Unknown"
+    },
+    {
+      "url": "audio/CD1/PeachBeach.m4a",
+      "title": "PeachBeach",
+      "trackNumber": 1,
+      "composer": "Unknown"
+    },
+    {
+      "url": "audio/CD1/PeachStadium.m4a",
+      "title": "PeachStadium",
+      "trackNumber": 1,
+      "composer": "Unknown"
+    },
+    {
+      "url": "audio/CD1/RainbowRoad.m4a",
+      "title": "RainbowRoad",
+      "trackNumber": 1,
+      "composer": "Unknown"
+    },
+    {
+      "url": "audio/CD1/SaltySaltySpeedway.m4a",
+      "title": "SaltySaltySpeedway",
+      "trackNumber": 1,
+      "composer": "Unknown"
+    },
+    {
+      "url": "audio/CD1/ShyGuyBazaar.m4a",
+      "title": "ShyGuyBazaar",
+      "trackNumber": 1,
+      "composer": "Unknown"
+    },
+    {
+      "url": "audio/CD1/SkyHighSundae.m4a",
+      "title": "SkyHighSundae",
+      "trackNumber": 1,
+      "composer": "Unknown"
+    },
+    {
+      "url": "audio/CD1/StarviewPeak.m4a",
+      "title": "StarviewPeak",
+      "trackNumber": 1,
+      "composer": "Unknown"
+    },
+    {
+      "url": "audio/CD1/ThwompDesert.m4a",
+      "title": "ThwompDesert",
+      "trackNumber": 1,
+      "composer": "Unknown"
+    },
+    {
+      "url": "audio/CD1/ToadFactory.m4a",
+      "title": "ToadFactory",
+      "trackNumber": 1,
+      "composer": "Unknown"
+    },
+    {
+      "url": "audio/CD1/WarioShipyard.m4a",
+      "title": "WarioShipyard",
+      "trackNumber": 1,
+      "composer": "Unknown"
+    },
+    {
+      "url": "audio/CD1/WarioStadium.m4a",
+      "title": "WarioStadium",
+      "trackNumber": 1,
+      "composer": "Unknown"
+    },
+    {
+      "url": "audio/CD1/WhistlestopSummit.m4a",
+      "title": "WhistlestopSummit",
+      "trackNumber": 1,
+      "composer": "Unknown"
+    }
   ]

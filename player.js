@@ -6,7 +6,7 @@ const artworkEl = document.getElementById('artwork');
 let tracks = [];
 let currentTrack = 0;
 
-// Fisher–Yates shuffle (teruggezet)
+// Shuffle
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -14,7 +14,7 @@ function shuffleArray(array) {
   }
 }
 
-// Track afspelen + metadata & artwork
+// Play tracks + metadata & artwork
 function playTrack(index) {
   currentTrack = index;
   const track = tracks[index];
@@ -26,18 +26,18 @@ function playTrack(index) {
   artworkEl.src = track.artwork || 'assets/player-img/cover.png';
 }
 
-// Volgende track na einde (volgt de huidige — reeds geshuffelde — volgorde)
+// Next track after end
 audioPlayer.addEventListener('ended', () => {
   currentTrack = (currentTrack + 1) % tracks.length;
   playTrack(currentTrack);
 });
 
-// Tracks laden + SHUFFLE bij het opstarten
+// Load tracks + shuffle upon load
 fetch('./tracks.json')
   .then(res => res.json())
   .then(data => {
-    tracks = data.slice();     // kopie
-    shuffleArray(tracks);      // << shuffle is weer terug
+    tracks = data.slice();
+    shuffleArray(tracks);
     if (tracks.length > 0) playTrack(0);
   })
   .catch(err => console.error('Error loading tracks.json:', err));
@@ -45,10 +45,10 @@ fetch('./tracks.json')
 
   const volumeSlider = document.getElementById('volumeSlider');
 
-  // Beginvolume instellen op slider-waarde
+  // Volume start value
   audioPlayer.volume = volumeSlider.value / 100;
   
-  // Slider verandert volume in real-time
+  // Volume slider config
   volumeSlider.addEventListener('input', () => {
     audioPlayer.volume = volumeSlider.value / 100;
   });

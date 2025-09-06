@@ -85,12 +85,12 @@ img {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-top: 10px;
+    margin-top: 20px;
   }
   
   .volume-control-horizontal input[type="range"] {
     width: 200px;
-    height: 6px;            /* hoogte van de track */
+    height: 6px;
     background: #ccc;
     border-radius: 3px;
     cursor: pointer;
@@ -104,7 +104,7 @@ img {
     background: #555;
     border-radius: 50%;
     cursor: pointer;
-    margin-top: -0px;        /* belangrijk: center thumb over track */
+    margin-top: 0px;
   }
   
   /* Firefox */

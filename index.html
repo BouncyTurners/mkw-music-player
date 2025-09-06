@@ -6,16 +6,13 @@
 <title>Mario Kart World Music Player</title>
 <style>
   body { font-family: sans-serif; padding: 20px; }
-  #playlist { list-style: none; padding: 0; }
-  #playlist li { margin: 5px 0; cursor: pointer; }
-  #playlist li.playing { font-weight: bold; }
+  #metadata { margin-top: 20px; }
 </style>
 </head>
 <body>
 
 <h1>Mario Kart World Radio</h1>
-<button id="shuffleBtn">Shuffle Playlist</button>
-<ul id="playlist"></ul>
+
 <div id="metadata">
   <p><strong>Title:</strong> <span id="title">-</span></p>
   <p><strong>Track Number:</strong> <span id="trackNumber">-</span></p>
@@ -25,11 +22,9 @@
 
 <script>
 const audioPlayer = document.getElementById('audioPlayer');
-const playlistEl = document.getElementById('playlist');
 const titleEl = document.getElementById('title');
 const trackNumberEl = document.getElementById('trackNumber');
 const composerEl = document.getElementById('composer');
-const shuffleBtn = document.getElementById('shuffleBtn');
 
 let tracks = [];
 let currentTrack = 0;
@@ -42,17 +37,6 @@ function shuffleArray(array) {
   }
 }
 
-// Playlist renderen
-function renderPlaylist() {
-  playlistEl.innerHTML = '';
-  tracks.forEach((track, index) => {
-    const li = document.createElement('li');
-    li.textContent = track.title;
-    li.addEventListener('click', () => playTrack(index));
-    playlistEl.appendChild(li);
-  });
-}
-
 // Track afspelen en metadata tonen
 function playTrack(index) {
   currentTrack = index;
@@ -60,22 +44,11 @@ function playTrack(index) {
   audioPlayer.src = track.url;
   audioPlayer.play();
 
-  // Highlight playing track
-  Array.from(playlistEl.children).forEach((li, i) => {
-    li.classList.toggle('playing', i === index);
-  });
-
   // Metadata tonen
   titleEl.textContent = track.title || '-';
   trackNumberEl.textContent = track.trackNumber || '-';
   composerEl.textContent = track.composer || '-';
 }
-
-// Shuffle knop
-shuffleBtn.addEventListener('click', () => {
-  shuffleArray(tracks);
-  renderPlaylist();
-});
 
 // Autoplay next track
 audioPlayer.addEventListener('ended', () => {
@@ -83,12 +56,12 @@ audioPlayer.addEventListener('ended', () => {
   playTrack(currentTrack);
 });
 
-// Tracks laden vanuit JSON
+// Tracks laden vanuit JSON en meteen shufflen
 fetch('./tracks.json')
   .then(res => res.json())
   .then(data => {
     tracks = data;
-    renderPlaylist();
+    shuffleArray(tracks);  // altijd shufflen bij load
     if (tracks.length > 0) playTrack(0);
   })
   .catch(err => console.error('Error loading tracks.json:', err));

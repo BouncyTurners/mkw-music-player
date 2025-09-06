@@ -41,3 +41,14 @@ fetch('./tracks.json')
     if (tracks.length > 0) playTrack(0);
   })
   .catch(err => console.error('Error loading tracks.json:', err));
+
+
+  const volumeSlider = document.getElementById('volumeSlider');
+
+  // Beginvolume instellen op slider-waarde
+  audioPlayer.volume = volumeSlider.value / 100;
+  
+  // Slider verandert volume in real-time
+  volumeSlider.addEventListener('input', () => {
+    audioPlayer.volume = volumeSlider.value / 100;
+  });

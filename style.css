@@ -1,5 +1,31 @@
 body {
-    font-family: sans-serif; padding: 20px; 
+    font-family: sans-serif; 
+    padding: 20px;
+    background: 
+        linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+        url(assets/BG.png);
+    background-size: cover;
+    text-align: center;
+}
+
+@font-face {
+    font-family: MKWorld;
+    src: url(assets/font/RacersDelight.otf);
+}
+
+h1 {
+    color: white;
+    font-family: MKWorld;
+    font-size: 50px;
+}
+
+h2 {
+    color: white;
+    font-family: MKWorld;
+}
+
+audio {
+    margin-top: 100px;
 }
 
 #metadata {

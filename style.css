@@ -39,11 +39,14 @@ h4 {
 }
 
 footer {
-    text-align: left;
+    position: fixed;
+    bottom: 0;
+    left: 0;
     width: 100%;
-    margin-top: auto;
+    text-align: left;
     padding: 10px;
-}
+    margin-bottom: -20px;
+  }  
 
 #metadata {
     margin-top: 20px; 
@@ -72,8 +75,6 @@ article.musicplayer {
     background: rgb(41, 41, 41);
     text-align: center;
     padding: 2rem;
-    width: auto;
-    height: auto;
   }
 
 img {

@@ -445,13 +445,6 @@ article.musicplayer {
         align-items: center;
     }
 
-    .controls button {
-        font-size: 18px;
-        padding: 14px 28px;
-        min-width: 120px; /* iets breder voor touch */
-        min-height: 40px;
-      }
-
     .audio-player .progress-container {
         width: 100%; /* altijd 100% van de parent */
         max-width: 350px; /* optioneel: max breedte van de muziekplayer box */
@@ -496,6 +489,7 @@ article.musicplayer {
         border-radius: 8px;
         cursor: pointer;
         min-width: 100px;
+        min-height: 45px;
       }
 
     .dropdown-toggle {

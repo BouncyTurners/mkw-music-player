@@ -9,6 +9,7 @@ const nextBtn = document.getElementById('nextBtn');
 const progressBar = document.getElementById('progressBar');
 const timeDisplay = document.getElementById('timeDisplay');
 const volumeSlider = document.getElementById('volumeSlider');
+const progressContainer = document.querySelector('.progress-container');
 
 let cd1Tracks = [];
 let cd2Tracks = [];
@@ -98,6 +99,27 @@ audioPlayer.addEventListener('timeupdate', () => {
   const total = isNaN(audioPlayer.duration) ? 0 : audioPlayer.duration;
   timeDisplay.textContent = `${formatTime(current)} / ${formatTime(total)}`;
 });
+
+// ---------- CLICKABLE PROGRESS BAR TO SEEK ---------- //
+if (progressContainer) {
+  progressContainer.addEventListener('click', (e) => {
+    const rect = progressContainer.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const width = rect.width;
+
+    const percent = clickX / width;
+    const newTime = percent * audioPlayer.duration;
+
+    if (!isNaN(newTime)) {
+      // Helemaal rechts klikken → volgende track
+      if (percent >= 0.99) {
+        playNextTrack();
+      } else {
+        audioPlayer.currentTime = newTime;
+      }
+    }
+  });
+}
 
 // Helper: seconden naar m:ss
 function formatTime(seconds) {

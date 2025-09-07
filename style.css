@@ -384,6 +384,14 @@ article.musicplayer {
     min-width: 0;          /* zeer belangrijk: voorkomt dat flex-item de inhoud volgt */
 }
 
+.controls button {
+    font-size: 16px;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    min-width: 100px;
+  }
+
 @media screen and (max-width: 700px) {
     /* Verberg desktop knop op mobiel */
     #skipBtn {
@@ -436,6 +444,11 @@ article.musicplayer {
         align-items: center;
     }
 
+    .controls button {
+        font-size: 18px;
+        padding: 14px 28px;
+      }
+
     .audio-player .progress-container {
         width: 100%; /* altijd 100% van de parent */
         max-width: 350px; /* optioneel: max breedte van de muziekplayer box */
@@ -473,6 +486,14 @@ article.musicplayer {
         text-align: center;
         margin: 5px 0;
     }
+
+    .controls button {
+        font-size: 16px;
+        padding: 12px 24px;
+        border-radius: 8px;
+        cursor: pointer;
+        min-width: 100px;
+      }
 
     .dropdown-toggle {
         position: absolute;

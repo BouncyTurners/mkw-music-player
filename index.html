@@ -17,18 +17,32 @@
 <br><br>
 <article class="musicplayer">
 
-  <!-- Album Art -->
-  <img id="artwork" src="assets/player-img/cover.png" width="250" height="250">
+  <div class="artwork-wrapper">
+    <img id="artwork" src="assets/player-img/cover.png" width="250" height="250">
+  </div>
 
   <!-- Metadata in blauwe box -->
   <div class="metadata-box">
       <div id="metadata">
           <h1><span id="title">-</span></h1>
           <h3 id="game" class="hidden">-</h3>
-          <br>
-          <h5>Composers:<br><span id="composer">-</span></h5>
-          <br>
-          <audio id="audioPlayer" controls></audio>
+          <div class="audio-player">
+            <audio id="audioPlayer"></audio>
+            <span id="timeDisplay">0:00 / 0:00</span>
+        
+            <!-- Progress bar wrapper met vaste breedte -->
+            <div class="progress-wrapper">
+                <div class="progress-container">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+            </div>
+        
+            <div class="controls">
+                <button id="playBtn">Pause/play</button>
+                <button id="nextBtn">Next song</button>
+            </div>
+        </div>
+        <br>
           <div class="volume-control-horizontal">
               <label for="volumeSlider">Volume</label>
               <input type="range" id="volumeSlider" min="0" max="100" value="100">
@@ -38,9 +52,6 @@
 
   <!-- Dropdown knop -->
   <button class="dropdown-toggle" onclick="toggleDropdown()">&#9654;</button>
-
-  <!-- Skip knop desktop -->
-  <button id="skipBtn" class="floating-btn">Next song</button>
 
   <div class="dropdown">
     <div class="dropdown-content" id="dropdownContent">
@@ -68,11 +79,6 @@
   </div>  
 
 </article>
-
-<!-- Skip knop mobiel -->
-<div class="mobile-skip-container">
-    <button id="skipBtnMobile" class="floating-btn">Next Song</button>
-</div>
 
 <footer>
   <h4>Music by ©Nintendo</h4>

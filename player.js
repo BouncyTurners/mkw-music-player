@@ -1,17 +1,21 @@
-// player.js (met artwork transformaties per game)
+// ---------- ELEMENTEN ---------- //
 const audioPlayer = document.getElementById('audioPlayer');
 const titleEl = document.getElementById('title');
-const composerEl = document.getElementById('composer');
 const gameEl = document.getElementById('game');
 const artworkEl = document.getElementById('artwork');
 
-const skipBtn = document.getElementById('skipBtn');
-const skipBtnMobile = document.getElementById('skipBtnMobile');
+const playBtn = document.getElementById('playBtn');
+const nextBtn = document.getElementById('nextBtn');
+const progressBar = document.getElementById('progressBar');
+const timeDisplay = document.getElementById('timeDisplay');
+const volumeSlider = document.getElementById('volumeSlider');
 
+let cd1Tracks = [];
+let cd2Tracks = [];
 let tracks = [];
 let currentTrack = 0;
 
-// ---------- Shuffle ----------
+// ---------- SHUFFLE FUNCTION ---------- //
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -19,29 +23,25 @@ function shuffleArray(array) {
   }
 }
 
-// ---------- Play track + metadata & artwork ----------
+// ---------- PLAY TRACK ---------- //
 function playTrack(index) {
-  if (!tracks || tracks.length === 0) return;
+  if (!tracks.length) return;
 
   currentTrack = index;
   const track = tracks[index];
 
-  console.log('Playing track', index, track && (track.title || track.game || track.url));
-
   // Audio
   audioPlayer.src = encodeURI(track.url);
-  audioPlayer.play().catch(e => {
-    console.debug('audio.play() error (likely autoplay):', e);
-  });
+  audioPlayer.play().catch(e => console.debug('audio.play() error:', e));
 
   // Metadata
   titleEl.textContent = track.title || '-';
-  composerEl.textContent = track.composer || '-';
-  artworkEl.src = track.artwork || 'assets/player-img/cover.png';
 
-  // Reset transform en filter
-  artworkEl.style.transform = "";
-  artworkEl.style.filter = "";
+  // Artwork resetten
+  artworkEl.src = track.artwork || 'assets/player-img/cover.png';
+  artworkEl.style.transform = '';
+  artworkEl.style.filter = '';
+  artworkEl.style.objectPosition = 'center center';
 
   // Game info
   if (track.game) {
@@ -49,77 +49,64 @@ function playTrack(index) {
     gameEl.classList.remove('hidden');
     gameEl.style.visibility = 'visible';
 
-    // 🎨 Artwork-transformaties per game
-    let transformArr = [];
-    let filterArr = [];
-
     switch(track.game) {
       case "Mario Kart 64":
-        artworkEl.style.objectPosition = "left center"; // verschuift afbeelding naar links
+        artworkEl.style.objectPosition = "left center";
         break;
       default:
-        artworkEl.style.objectPosition = "center center"; // reset
+        artworkEl.style.objectPosition = "center center";
         break;
     }
-
-    // Combineer alles in één string
-    artworkEl.style.transform = transformArr.join(" ");
-    artworkEl.style.filter = filterArr.join(" ");
-
   } else {
     gameEl.textContent = '';
     gameEl.style.visibility = 'hidden';
     gameEl.classList.add('hidden');
   }
+
+  // Reset progress bar
+  progressBar.style.width = '0%';
 }
 
-
-// ---------- Play next track ----------
+// ---------- PLAY NEXT TRACK ---------- //
 function playNextTrack() {
-  if (!tracks || tracks.length === 0) return;
+  if (!tracks.length) return;
   currentTrack = (currentTrack + 1) % tracks.length;
   playTrack(currentTrack);
 }
 
-// ---------- Auto next track after end ----------
-audioPlayer.addEventListener('ended', playNextTrack);
-
-// ---------- Skip knop ----------
+// ---------- SKIP FUNCTION ---------- //
 function skipTrack() {
   playNextTrack();
 }
-skipBtn.addEventListener('click', skipTrack);
-skipBtnMobile.addEventListener('click', skipTrack);
 
-// ---------- Load tracks from both CDs + shuffle ----------
-Promise.all([
-  fetch('./tracksCD1.json').then(res => res.json()),
-  fetch('./tracksCD2.json').then(res => res.json())
-])
-.then(([cd1Data, cd2Data]) => {
-  const cd1Tracks = Array.isArray(cd1Data) ? cd1Data.slice() : [];
+// ---------- EVENT LISTENERS ---------- //
+audioPlayer.addEventListener('ended', playNextTrack);
+nextBtn.addEventListener('click', skipTrack);
 
-  const cd2Tracks = cd2Data.flatMap(game => 
-    game.tracks.map(track => ({
-      ...track,
-      game: game.game,
-      artwork: game.artwork
-    }))
-  );
-
-  tracks = [...cd1Tracks, ...cd2Tracks];
-  console.log('Loaded CD1:', cd1Tracks.length, 'CD2:', cd2Tracks.length, 'TOTAL:', tracks.length);
-
-  shuffleArray(tracks);
-
-  if (tracks.length > 0) playTrack(0);
-})
-.catch(err => {
-  console.error('Error loading tracks:', err);
+// ---------- PLAY/PAUSE ---------- //
+playBtn.addEventListener('click', () => {
+  if(audioPlayer.paused) audioPlayer.play();
+  else audioPlayer.pause();
 });
 
-// ---------- Volume ----------
-const volumeSlider = document.getElementById('volumeSlider');
+// ---------- PROGRESS BAR & TIME ---------- //
+audioPlayer.addEventListener('timeupdate', () => {
+  const percent = (audioPlayer.currentTime / audioPlayer.duration) * 100 || 0;
+  progressBar.style.width = percent + '%';
+
+  const current = isNaN(audioPlayer.currentTime) ? 0 : audioPlayer.currentTime;
+  const total = isNaN(audioPlayer.duration) ? 0 : audioPlayer.duration;
+  timeDisplay.textContent = `${formatTime(current)} / ${formatTime(total)}`;
+});
+
+// Helper: seconden naar m:ss
+function formatTime(seconds) {
+  const m = Math.floor(seconds / 60);
+  const s = Math.floor(seconds % 60);
+  return `${m}:${s < 10 ? '0' : ''}${s}`;
+}
+
+// ---------- VOLUME ---------- //
 if (volumeSlider) {
   audioPlayer.volume = volumeSlider.value / 100;
   volumeSlider.addEventListener('input', () => {
@@ -127,12 +114,12 @@ if (volumeSlider) {
   });
 }
 
-// ---------- Dropdown ----------
+// ---------- DROPDOWN ---------- //
 const dropdown = document.querySelector(".dropdown");
 const toggle = document.querySelector(".dropdown-toggle");
 
 function toggleDropdown(event) {
-  if (event && event.stopPropagation) event.stopPropagation();
+  if (event) event.stopPropagation();
   if (!dropdown) return;
 
   if (dropdown.style.display === "flex") {
@@ -148,9 +135,8 @@ function toggleDropdown(event) {
     const viewportWidth = window.innerWidth;
 
     let leftPos = rect.right + 10;
-    if (leftPos + dropdownWidth > viewportWidth) {
-      leftPos = viewportWidth - dropdownWidth - 10;
-    }
+    if (leftPos + dropdownWidth > viewportWidth) leftPos = viewportWidth - dropdownWidth - 10;
+
     dropdown.style.left = leftPos + "px";
     dropdown.style.top = rect.top + rect.height / 2 + "px";
     dropdown.style.transform = "translateY(-50%)";
@@ -158,13 +144,50 @@ function toggleDropdown(event) {
 }
 window.toggleDropdown = toggleDropdown;
 
-document.addEventListener("click", function(event) {
+document.addEventListener("click", (event) => {
   if (!dropdown || !toggle) return;
-  const isClickInsideDropdown = dropdown.contains(event.target);
-  const isClickOnToggle = toggle.contains(event.target);
-
-  if (!isClickInsideDropdown && !isClickOnToggle) {
+  if (!dropdown.contains(event.target) && !toggle.contains(event.target)) {
     dropdown.style.display = "none";
     toggle.classList.remove("open");
   }
 });
+
+// ---------- FILTER TRACKS OP BASIS VAN CHECKBOXES ----------
+function updateTrackList() {
+  const excludeCD1 = document.getElementById('excludeCD1').checked;
+  const excludeCD2 = document.getElementById('excludeCD2').checked;
+
+  tracks = [
+    ...(!excludeCD1 ? cd1Tracks : []),
+    ...(!excludeCD2 ? cd2Tracks : [])
+  ];
+
+  shuffleArray(tracks);
+
+  if(tracks.length) playTrack(0);
+}
+
+// ---------- EVENT LISTENERS VOOR CHECKBOXES ----------
+document.getElementById('excludeCD1').addEventListener('change', updateTrackList);
+document.getElementById('excludeCD2').addEventListener('change', updateTrackList);
+
+// ---------- LOAD TRACKS + SHUFFLE ---------- //
+Promise.all([
+  fetch('./tracksCD1.json').then(res => res.json()),
+  fetch('./tracksCD2.json').then(res => res.json())
+])
+.then(([cd1Data, cd2Data]) => {
+  cd1Tracks = Array.isArray(cd1Data) ? cd1Data.slice() : [];
+  cd2Tracks = cd2Data.flatMap(game =>
+    game.tracks.map(track => ({
+      ...track,
+      game: game.game,
+      artwork: game.artwork
+    }))
+  );
+
+  console.log('Loaded CD1:', cd1Tracks.length, 'CD2:', cd2Tracks.length);
+
+  updateTrackList();
+})
+.catch(err => console.error('Error loading tracks:', err));

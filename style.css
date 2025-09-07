@@ -27,7 +27,7 @@ h1 {
     font-weight: normal;
 }
 
-h2, h3, label {
+h2, h3, label, button {
     color: white;
     font-family: MKWorld;
     font-weight: normal;
@@ -53,6 +53,7 @@ footer {
     opacity: 20%;
     font-family: MKWorld;
     font-weight: normal;
+    pointer-events: none;
 }
 
 /* ---------- MUSIC PLAYER ---------- */
@@ -226,6 +227,45 @@ article.musicplayer {
     transform: translateX(22px);
 }
 
+/* ---------- FLOATING BUTTON STYLE ---------- */
+.floating-btn {
+    background-color: rgb(41, 41, 41);
+    color: white;
+    border: none;
+    border-radius: 12px; /* afgeronde hoeken, geen cirkel */
+    padding: 10px 20px;  /* verticale en horizontale ruimte */
+    font-size: 18px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    transition: all 0.2s ease;
+}
+
+.floating-btn:hover {
+    background-color: #777;
+    transform: scale(1.1);
+}
+
+/* ---------- Desktop position ---------- */
+#skipBtn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 50;
+}
+
+/* ---------- Mobile adjustments ---------- */
+.mobile-skip-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px; /* ruimte laten voor de footer */
+    z-index: 50; /* boven de footer */
+    position: relative;
+}
+
+
 /* ---------- RESPONSIVE ---------- */
 @media screen and (max-width: 700px) {
     article.musicplayer {
@@ -259,5 +299,19 @@ article.musicplayer {
         right: -0px;
         transform: translateY(-50%);
         background-color: #3e3e3e;
+    }
+
+    #skipBtn {
+        display: none; /* verberg desktop knop op mobiel */
+    }
+
+    .mobile-skip-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 15px;
+    }
+
+    #skipBtnMobile {
+        position: static;
     }
 }

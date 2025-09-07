@@ -9,7 +9,6 @@
 <meta content="https://tzgaming.github.io/mkw-music-player/" property="og:url" />
 <meta content="#45000a" data-react-helmet="true" name="theme-color" />
 <link rel="stylesheet" href="style.css">
-
 </head>
 <body>
 
@@ -36,6 +35,9 @@
 
   <!-- Dropdown knop -->
   <button class="dropdown-toggle" onclick="toggleDropdown()">&#9654;</button>
+
+  <!-- Skip knop desktop -->
+  <button id="skipBtn" class="floating-btn">Next song</button>
 
   <div class="dropdown">
     <div class="dropdown-content" id="dropdownContent">
@@ -64,12 +66,17 @@
 
 </article>
 
+<!-- Skip knop mobiel -->
+<div class="mobile-skip-container">
+    <button id="skipBtnMobile" class="floating-btn">Next Song</button>
+</div>
 
 <footer>
   <h4>Music by ©Nintendo</h4>
 </footer>
 
 <script src="player.js"></script>
+<script src="skip.js"></script>
 
 </body>
 </html>

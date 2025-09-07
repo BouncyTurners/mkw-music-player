@@ -38,31 +38,13 @@ function playTrack(index) {
   // Metadata
   titleEl.textContent = track.title || '-';
 
-  // Artwork resetten
+  // Artwork & Game info
   artworkEl.src = track.artwork || 'assets/player-img/cover.png';
-  artworkEl.style.transform = '';
-  artworkEl.style.filter = '';
   artworkEl.style.objectPosition = 'center center';
 
-  // Game info
-  if (track.game) {
-    gameEl.textContent = track.game;
-    gameEl.classList.remove('hidden');
-    gameEl.style.visibility = 'visible';
-
-    switch(track.game) {
-      case "Mario Kart 64":
-        artworkEl.style.objectPosition = "left center";
-        break;
-      default:
-        artworkEl.style.objectPosition = "center center";
-        break;
-    }
-  } else {
-    gameEl.textContent = '';
-    gameEl.style.visibility = 'hidden';
-    gameEl.classList.add('hidden');
-  }
+  gameEl.textContent = track.game || '';
+  gameEl.style.visibility = track.game ? 'visible' : 'hidden';
+  gameEl.classList.toggle('hidden', !track.game);
 
   // Reset progress bar
   progressBar.style.width = '0%';
@@ -121,7 +103,7 @@ if (progressContainer) {
   });
 }
 
-// Helper: seconden naar m:ss
+// ---------- HELPER: seconden naar m:ss ---------- //
 function formatTime(seconds) {
   const m = Math.floor(seconds / 60);
   const s = Math.floor(seconds % 60);
@@ -174,7 +156,7 @@ document.addEventListener("click", (event) => {
   }
 });
 
-// ---------- FILTER TRACKS OP BASIS VAN CHECKBOXES ----------
+// ---------- FILTER TRACKS OP BASIS VAN CHECKBOXES ---------- //
 function updateTrackList() {
   const excludeCD1 = document.getElementById('excludeCD1').checked;
   const excludeCD2 = document.getElementById('excludeCD2').checked;
@@ -189,7 +171,7 @@ function updateTrackList() {
   if(tracks.length) playTrack(0);
 }
 
-// ---------- EVENT LISTENERS VOOR CHECKBOXES ----------
+// ---------- EVENT LISTENERS VOOR CHECKBOXES ---------- //
 document.getElementById('excludeCD1').addEventListener('change', updateTrackList);
 document.getElementById('excludeCD2').addEventListener('change', updateTrackList);
 

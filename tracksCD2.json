@@ -1,6 +1,7 @@
 [
     {
       "game": "Super Mario Kart",
+      "artwork": "assets/CD2-artwork/SMK.png",
       "tracks": [
         {"trackNumber": 1, "title": "Title Screen", "url": "audio/CD2/01 - Title Screen (Super Mario Kart) - Soyo Oka.m4a", "composer": "Soyo Oka"},
         {"trackNumber": 2, "title": "Title Screen (Samba Version)", "url": "audio/CD2/02 - Title Screen (Samba Version) [Super Mario Kart] - Soyo Oka.m4a", "composer": "Soyo Oka"},
@@ -17,6 +18,8 @@
     },
     {
       "game": "Mario Kart 64",
+      "artwork": "assets/CD2-artwork/MK64.png",
+      "artworkClass": "MK64-img",
       "tracks": [
         {"trackNumber": 12, "title": "Mario Kart 64 Theme", "url": "audio/CD2/12 - Mario Kart 64 Theme (Mario Kart 64) - Kenta Nagata.m4a", "composer": "Kenta Nagata"},
         {"trackNumber": 13, "title": "Setup and Kart Select", "url": "audio/CD2/13 - Setup and Kart Select (Mario Kart 64) - Kenta Nagata.m4a", "composer": "Kenta Nagata"},
@@ -33,7 +36,8 @@
       ]
     },
     {
-      "game": "Mario Kart Super Circuit",
+      "game": "Mario Kart: Super Circuit",
+      "artwork": "assets/CD2-artwork/MKSC.png",
       "tracks": [
         {"trackNumber": 24, "title": "Peach, Mario, Luigi Circuit", "url": "audio/CD2/24 - Peach,Mario,Luigi Circuit (Mario Kart- Super Circuit) - Kenichi Nishimaki, Masanobu Matsunaga & Minako Hamano.m4a", "composer": "Kenichi Nishimaki, Masanobu Matsunaga & Minako Hamano"},
         {"trackNumber": 25, "title": "Shy Guy Beach", "url": "audio/CD2/25 - Shy Guy Beach (Mario Kart- Super Circuit) - Kenichi Nishimaki, Masanobu Matsunaga & Minako Hamano.m4a", "composer": "Kenichi Nishimaki, Masanobu Matsunaga & Minako Hamano"},
@@ -46,7 +50,8 @@
       ]
     },
     {
-      "game": "Mario Kart Double Dash!!",
+      "game": "Mario Kart: Double Dash!!",
+      "artwork": "assets/CD2-artwork/MKDD.jpg",
       "tracks": [
         {"trackNumber": 32, "title": "Luigi, Mario, Yoshi Circuit", "url": "audio/CD2/32 - Luigi,Mario,Yoshi Circuit (Mario Kart- Double Dash!!) - Kenta Nagata & Shinobu Nagata.m4a", "composer": "Kenta Nagata & Shinobu Nagata"},
         {"trackNumber": 33, "title": "Baby Park", "url": "audio/CD2/33 - Baby Park (Mario Kart- Double Dash!!) - Kenta Nagata & Shinobu Nagata.m4a", "composer": "Kenta Nagata & Shinobu Nagata"},
@@ -60,6 +65,7 @@
     },
     {
       "game": "Mario Kart DS",
+      "artwork": "assets/CD2-artwork/MKDS.png",
       "tracks": [
         {"trackNumber": 40, "title": "Figure-8 Circuit & Mario Circuit", "url": "audio/CD2/40 - Figure-8 Circuit & Mario Circuit (Mario Kart DS) - Shinobu Nagata.m4a", "composer": "Shinobu Nagata"},
         {"trackNumber": 41, "title": "Yoshi Falls", "url": "audio/CD2/41 - Yoshi Falls (Mario Kart DS) - Shinobu Nagata.m4a", "composer": "Shinobu Nagata"},
@@ -77,6 +83,7 @@
     },
     {
         "game": "Mario Kart Wii",
+        "artwork": "assets/CD2-artwork/MKW.jpg",
         "tracks": [
           {"trackNumber": 52, "title": "Luigi Circuit & Mario Circuit", "url": "audio/CD2/52 - Luigi Circuit & Mario Circuit (Mario Kart Wii) - Asuka Hayazaki & Ryo Nagamatsu.m4a", "composer": "Asuka Hayazaki & Ryo Nagamatsu"},
           {"trackNumber": 53, "title": "Mushroom Gorge", "url": "audio/CD2/53 - Mushroom Gorge (Mario Kart Wii) - Asuka Hayazaki & Ryo Nagamatsu.m4a", "composer": "Asuka Hayazaki & Ryo Nagamatsu"},
@@ -95,6 +102,7 @@
       },
       {
         "game": "Mario Kart 7",
+        "artwork": "assets/CD2-artwork/MK7.png",
         "tracks": [
           {"trackNumber": 65, "title": "Toad Circuit", "url": "audio/CD2/65 - Toad Circuit (Mario Kart 7) - Kenta Nagata.m4a", "composer": "Kenta Nagata"},
           {"trackNumber": 66, "title": "Daisy Hills", "url": "audio/CD2/66 - Daisy Hills (Mario Kart 7) - Satomi Terui.m4a", "composer": "Satomi Terui"},
@@ -109,6 +117,7 @@
       },
       {
         "game": "Mario Kart 8",
+        "artwork": "assets/CD2-artwork/MK8.jpg",
         "tracks": [
           {"trackNumber": 74, "title": "Mario Kart 8 Title Screen (Day)", "url": "audio/CD2/74 - Mario Kart 8 Title Screen (Day) [Mario Kart 8] - Atsuko Asahi.m4a", "composer": "Atsuko Asahi"},
           {"trackNumber": 75, "title": "Mario Kart 8 Title Screen (Night)", "url": "audio/CD2/75 - Mario Kart 8 Title Screen (Night) [Mario Kart 8] - Atsuko Asahi.m4a", "composer": "Atsuko Asahi"},
@@ -139,6 +148,7 @@
       },
       {
         "game": "Mario Kart Tour",
+        "artwork": "assets/CD2-artwork/MKT.jpg",
         "tracks": [
           {"trackNumber": 99, "title": "Tokyo Blur", "url": "audio/CD2/99 - Tokyo Blur (Mario Kart Tour) - Shiho Fujii, Atsuko Asahi, Ryo Nagamatsu, Yasuaki Iwata, Asuka Hayazaki, Toru Minegishi & Kazumi Totaka.m4a", "composer": "Shiho Fujii, Atsuko Asahi, Ryo Nagamatsu, Yasuaki Iwata, Asuka Hayazaki, Toru Minegishi & Kazumi Totaka"},
           {"trackNumber": 100, "title": "Vancouver Velocity", "url": "audio/CD2/100 - Vancouver Velocity (Mario Kart Tour) - Shiho Fujii, Atsuko Asahi, Ryo Nagamatsu, Yasuaki Iwata, Asuka Hayazaki, Toru Minegishi & Kazumi Totaka.m4a", "composer": "Shiho Fujii, Atsuko Asahi, Ryo Nagamatsu, Yasuaki Iwata, Asuka Hayazaki, Toru Minegishi & Kazumi Totaka"},
@@ -153,6 +163,7 @@
       },
       {
         "game": "Mario Kart Live – Home Circuit",
+        "artwork": "assets/CD2-artwork/MKHC.jpg",
         "tracks": [
           {"trackNumber": 108, "title": "Main Theme", "url": "audio/CD2/108 - Main Theme (Mario Kart Live- Home Circuit) - Ryo Nagamatsu.m4a", "composer": "Ryo Nagamatsu"}
         ]

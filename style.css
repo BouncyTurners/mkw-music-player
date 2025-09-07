@@ -40,6 +40,11 @@ h4, h5 {
     margin-top: -1px;
 }
 
+#game {
+    min-height: 1.2em; /* reserveer vaste hoogte voor tekstregel */
+    visibility: hidden; /* standaard onzichtbaar */
+}
+
 .hidden {
     display: none !important;
     margin: 0 !important;
@@ -76,6 +81,7 @@ article.musicplayer {
     border-radius: 2rem;
     background: rgb(41, 41, 41);
     padding: 1.5rem;
+    height: 275px;
     /* height verwijderd om flex hoogte automatisch te laten bepalen */
 }
 
@@ -85,6 +91,10 @@ article.musicplayer {
     height: 275px;
     object-fit: cover;
     border-radius: 15%;
+}
+
+.MK64-img {
+    transform: translateX(-50px);
 }
 
 /* ---------- BLUE BOX METADATA ---------- */
@@ -97,6 +107,16 @@ article.musicplayer {
     min-width: 250px;
     max-width: 350px;
     flex-grow: 1;
+    height: 275px; /* vaste hoogte */
+    justify-content: center; /* centreer inhoud verticaal */
+}
+
+/* headings binnen de metadata strakker maken */
+#metadata h1,
+#metadata h3,
+#metadata h5 {
+    margin: 0;   /* geen standaard marges */
+    padding: 0;
 }
 
 /* ---------- METADATA ---------- */
@@ -105,7 +125,7 @@ article.musicplayer {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    gap: 10px;
+    gap: 4px; /* minder ruimte */
     word-wrap: break-word;
 }
 

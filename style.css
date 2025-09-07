@@ -53,7 +53,8 @@ footer {
     opacity: 20%;
     font-family: MKWorld;
     font-weight: normal;
-    pointer-events: none;
+    pointer-events: auto;
+    background: rgba(0,0,0,0.2);
 }
 
 /* ---------- MUSIC PLAYER ---------- */
@@ -69,7 +70,7 @@ article.musicplayer {
     border-radius: 2rem;
     background: rgb(41, 41, 41);
     padding: 1.5rem;
-    height: 275px;
+    /* height verwijderd om flex hoogte automatisch te laten bepalen */
 }
 
 /* ---------- ALBUM ART ---------- */
@@ -86,7 +87,7 @@ article.musicplayer {
     padding: 20px;
     display: flex;
     flex-direction: column;
-    align-items: center; /* centreren van tekst horizontaal */
+    align-items: center;
     min-width: 250px;
     max-width: 350px;
     flex-grow: 1;
@@ -96,7 +97,7 @@ article.musicplayer {
 #metadata {
     display: flex;
     flex-direction: column;
-    align-items: center; /* tekst gecentreerd */
+    align-items: center;
     text-align: center;
     gap: 10px;
     word-wrap: break-word;
@@ -227,13 +228,13 @@ article.musicplayer {
     transform: translateX(22px);
 }
 
-/* ---------- FLOATING BUTTON STYLE ---------- */
+/* ---------- SKIP KNOP RECHTHOEK ---------- */
 .floating-btn {
-    background-color: rgb(41, 41, 41);
+    background: rgb(41, 41, 41);
     color: white;
     border: none;
-    border-radius: 12px; /* afgeronde hoeken, geen cirkel */
-    padding: 10px 20px;  /* verticale en horizontale ruimte */
+    border-radius: 12px;
+    padding: 10px 20px;
     font-size: 18px;
     cursor: pointer;
     display: inline-flex;
@@ -244,8 +245,8 @@ article.musicplayer {
 }
 
 .floating-btn:hover {
-    background-color: #777;
-    transform: scale(1.1);
+    background-color: #505050;
+    transform: scale(1.05);
 }
 
 /* ---------- Desktop position ---------- */
@@ -254,24 +255,37 @@ article.musicplayer {
     bottom: 20px;
     right: 20px;
     z-index: 50;
+    display: flex;
 }
 
-/* ---------- Mobile adjustments ---------- */
+/* ---------- Mobiele positie ---------- */
 .mobile-skip-container {
-    display: flex;
+    display: none;
     justify-content: center;
-    margin-bottom: 20px; /* ruimte laten voor de footer */
-    z-index: 50; /* boven de footer */
+    margin-top: 15px;
+    z-index: 50;
     position: relative;
 }
 
-
-/* ---------- RESPONSIVE ---------- */
 @media screen and (max-width: 700px) {
+    /* Verberg desktop knop op mobiel */
+    #skipBtn {
+        display: none;
+    }
+
+    /* Toon mobiele knop */
+    .mobile-skip-container {
+        display: flex;
+    }
+
+    #skipBtnMobile {
+        position: relative;
+    }
+
     article.musicplayer {
         flex-direction: column;
         align-items: center;
-        gap: 10px; /* iets minder ruimte tussen artwork en tekst */
+        gap: 10px;
         width: 90%;
         max-width: 300px;
         height: auto;
@@ -285,7 +299,7 @@ article.musicplayer {
     .metadata-box {
         width: 100%;
         max-width: 100%;
-        margin-top: -15px; /* schuift de tekst iets naar boven */
+        margin-top: -15px;
     }
 
     #metadata {
@@ -296,22 +310,8 @@ article.musicplayer {
     .dropdown-toggle {
         position: absolute;
         top: 50%;
-        right: -0px;
+        right: 0px;
         transform: translateY(-50%);
         background-color: #3e3e3e;
-    }
-
-    #skipBtn {
-        display: none; /* verberg desktop knop op mobiel */
-    }
-
-    .mobile-skip-container {
-        display: flex;
-        justify-content: center;
-        margin-top: 15px;
-    }
-
-    #skipBtnMobile {
-        position: static;
     }
 }

@@ -396,18 +396,20 @@ article.musicplayer {
   }
 
 @media screen and (max-width: 700px) {
-    /* Verberg desktop knop op mobiel */
-    #skipBtn {
-        display: none;
-    }
-
-    /* Toon mobiele knop */
-    .mobile-skip-container {
-        display: flex;
-    }
-
     #skipBtnMobile {
         position: relative;
+    }
+
+    .dropdown {
+        width: 385px;
+    }
+
+    .dropdown-content {
+        gap: 6px;
+    }
+
+    .switch {
+        font-size: 14px;     /* kleinere tekst op mobiel */
     }
 
     article.musicplayer {

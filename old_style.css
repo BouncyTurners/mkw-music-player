@@ -1,4 +1,3 @@
-/* ---------- BODY ---------- */
 body {
     margin: 0;
     padding: 20px;
@@ -8,18 +7,16 @@ body {
     align-items: center;
     background: url(assets/BG2.jpg) no-repeat center center;
     background-size: cover;
+    text-align: center;
     background-color: black;
     box-sizing: border-box;
-    text-align: center;
 }
 
-/* ---------- FONT ---------- */
 @font-face {
     font-family: MKWorld;
     src: url(assets/font/RacersDelight.otf);
 }
 
-/* ---------- HEADINGS ---------- */
 h1 {
     color: white;
     font-family: MKWorld;
@@ -40,7 +37,6 @@ h4 {
     margin-top: -1px;
 }
 
-/* ---------- FOOTER ---------- */
 footer {
     position: fixed;
     bottom: 0;
@@ -53,93 +49,84 @@ footer {
     opacity: 20%;
     font-family: MKWorld;
     font-weight: normal;
+  }  
+
+#metadata {
+    margin-top: 20px; 
 }
 
-/* ---------- MUSIC PLAYER ---------- */
-article.musicplayer {
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 20px;
-    max-width: 750px;
-    width: 700px;
-    border-radius: 2rem;
-    background: rgb(41, 41, 41);
-    padding: 1.5rem;
+img.artwork {
+    background-size: cover;
 }
 
-/* ---------- ALBUM ART ---------- */
-.musicplayer img#artwork {
+.musicplayer img {
     width: 275px;
-    height: 275px;
+    height: 250px;
     object-fit: cover;
     border-radius: 15%;
-}
+  }
 
-/* ---------- BLUE BOX METADATA ---------- */
-.metadata-box {
-    border-radius: 15px;
-    padding: 20px;
+  article.musicplayer {
+    position: relative; /* al aanwezig */
     display: flex;
     flex-direction: column;
-    align-items: center; /* centreren van tekst horizontaal */
-    min-width: 250px;
-    max-width: 350px;
-    flex-grow: 1;
-}
-
-/* ---------- METADATA ---------- */
-#metadata {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* tekst gecentreerd */
+    align-items: center;
+    justify-content: center;
+    max-width: 25em;
+    min-width: 10em;
+    border-radius: 2rem;
+    background: rgb(41, 41, 41);
     text-align: center;
-    gap: 10px;
-    word-wrap: break-word;
+    padding: 2rem;
+    width: 300px;
 }
 
-/* ---------- VOLUME ---------- */
+img {
+    border-radius: 15%;
+}
+  
 .volume-control-horizontal {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-top: 10px;
-}
-
-.volume-control-horizontal input[type="range"] {
+    margin-top: 20px;
+  }
+  
+  .volume-control-horizontal input[type="range"] {
     width: 200px;
     height: 6px;
     background: #ccc;
     border-radius: 3px;
     cursor: pointer;
-}
-
-.volume-control-horizontal input[type="range"]::-webkit-slider-thumb {
+  }
+  
+  /* Webkit/Chrome */
+  .volume-control-horizontal input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     width: 16px;
     height: 16px;
     background: #555;
     border-radius: 50%;
     cursor: pointer;
-}
-
-.volume-control-horizontal input[type="range"]::-moz-range-thumb {
+    margin-top: 0px;
+  }
+  
+  /* Firefox */
+  .volume-control-horizontal input[type="range"]::-moz-range-thumb {
     width: 16px;
     height: 16px;
     background: #555;
     border-radius: 50%;
     cursor: pointer;
     border: none;
-}
+  }
 
-/* ---------- DROPDOWN KNOP ---------- */
+/* Pijltje standaard */
 .dropdown-toggle {
     position: absolute;
     top: 50%;
-    right: -35px;
-    transform: translateY(-50%);
+    right: -25px;
+    transform: translateY(-50%) rotate(0deg); /* beginstand */
     background-color: #555;
     color: white;
     border: none;
@@ -151,18 +138,19 @@ article.musicplayer {
     line-height: 28px;
     text-align: center;
     z-index: 20;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease; /* animatie bij draaien */
 }
 
+/* Pijltje wanneer menu open is */
 .dropdown-toggle.open {
-    transform: translateY(-50%) rotate(180deg);
+    transform: translateY(-50%) rotate(180deg); /* pijltje naar rechts -> omlaag */
 }
 
-/* ---------- DROPDOWN MENU ---------- */
+
 .dropdown {
     position: fixed;
     top: 50%;
-    left: 50%;
+    left: 50%; /* begin in het midden */
     transform: translateY(-50%);
     display: none;
     flex-direction: column;
@@ -178,7 +166,18 @@ article.musicplayer {
     z-index: 999;
 }
 
-/* ---------- SWITCH ---------- */
+/* Pas horizontale positie met media queries op mobiel */
+@media screen and (max-width: 500px) {
+    .dropdown {
+        left: auto;       /* niet meer fixed links van center */
+        right: 10px;      /* altijd 10px van rechterkant viewport */
+        transform: translateY(-50%);
+        width: 90%;       /* smaller zodat hij binnen scherm past */
+    }
+}
+
+
+/* Switch styling */
 .switch {
     display: flex;
     align-items: center;
@@ -223,38 +222,4 @@ article.musicplayer {
 
 .switch input:checked + .slider::before {
     transform: translateX(22px);
-}
-
-/* ---------- RESPONSIVE ---------- */
-@media screen and (max-width: 700px) {
-    article.musicplayer {
-        flex-direction: column;
-        align-items: center;
-        gap: 10px; /* iets minder ruimte tussen artwork en tekst */
-        width: 90%;
-        max-width: 300px;
-    }
-
-    .musicplayer img#artwork {
-        width: 250px;
-        height: 250px;
-    }
-
-    .metadata-box {
-        width: 100%;
-        max-width: 100%;
-        margin-top: -15px; /* schuift de tekst iets naar boven */
-    }
-
-    #metadata {
-        align-items: center;
-        text-align: center;
-    }
-
-    .dropdown-toggle {
-        position: absolute;
-        top: 50%;
-        right: -40px;
-        transform: translateY(-50%);
-    }
 }

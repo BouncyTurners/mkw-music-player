@@ -32,9 +32,9 @@ h2, h3, label {
 
 h4 {
     color: white;
-    opacity: 20%;
     font-family: MKWorld;
     font-weight: normal;
+    margin-top: -2px;
 }
 
 footer {
@@ -45,6 +45,10 @@ footer {
     text-align: left;
     padding: 10px;
     margin-bottom: -20px;
+    color: white;
+    opacity: 20%;
+    font-family: MKWorld;
+    font-weight: normal;
   }  
 
 #metadata {
@@ -57,7 +61,7 @@ img.artwork {
 
 .musicplayer img {
     width: 275px;
-    height: 275px;
+    height: 250px;
     object-fit: cover;
     border-radius: 15%;
   }
@@ -74,7 +78,6 @@ article.musicplayer {
     background: rgb(41, 41, 41);
     text-align: center;
     padding: 2rem;
-    height: 550px;
     width: 300px;
   }
 

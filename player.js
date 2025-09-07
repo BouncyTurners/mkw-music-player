@@ -12,11 +12,11 @@ const volumeSlider = document.getElementById('volumeSlider');
 const progressContainer = document.querySelector('.progress-container');
 
 let cd1Tracks = [], cd2Tracks = [], cd3Tracks = [], cd4Tracks = [];
-let tracks = [];             // alle tracks van de geselecteerde CD's
-let shuffledTracks = [];     // voor shuffle zonder herhaling
+let tracks = [];           // geselecteerde tracks
+let shuffledTracks = [];   // voor shuffle zonder herhaling
 let currentTrack = 0;
 let playInOrder = false;
-let pendingUpdate = false;   // dropdown wijziging pas bij volgende track
+let pendingUpdate = false; // checkbox/dropdown wijzigingen wachten tot volgende track
 
 // ---------- SHUFFLE FUNCTION ---------- //
 function shuffleArray(array) {
@@ -29,7 +29,6 @@ function shuffleArray(array) {
 // ---------- PLAY TRACK ---------- //
 function playTrack(index) {
   if (!tracks.length) return;
-
   currentTrack = index;
   const track = tracks[index];
 
@@ -45,17 +44,17 @@ function playTrack(index) {
   gameEl.classList.toggle('hidden', !track.game);
 
   progressBar.style.width = '0%';
-
-  // Als er een update wacht (checkbox/dropdown gewijzigd), voer het nu uit
-  if (pendingUpdate) {
-    updateTrackList(true); // true = bewaar huidige track
-    pendingUpdate = false;
-  }
 }
 
 // ---------- NEXT TRACK ---------- //
 function playNextTrack() {
   if (!tracks.length) return;
+
+  // Voer pending update uit voordat we de volgende track kiezen
+  if (pendingUpdate) {
+    updateTrackList(true); // true = behoud huidige track in shuffle
+    pendingUpdate = false;
+  }
 
   if (playInOrder) {
     currentTrack = (currentTrack + 1) % tracks.length;
@@ -155,15 +154,13 @@ document.addEventListener("click", (event) => {
   }
 });
 
-// ---------- FILTER TRACKS + VOLGORDE ---------- //
+// ---------- UPDATE TRACK LIST ---------- //
 function updateTrackList(keepCurrent = false) {
   const excludeCD1 = document.getElementById('excludeCD1').checked;
   const excludeCD2 = document.getElementById('excludeCD2').checked;
   const excludeCD3 = document.getElementById('excludeCD3').checked;
   const excludeCD4 = document.getElementById('excludeCD4').checked;
   playInOrder = document.getElementById('playInOrder').checked;
-
-  let oldTrack = keepCurrent ? tracks[currentTrack] : null;
 
   tracks = [];
   if (!excludeCD1) tracks.push(...(playInOrder ? cd1Tracks.sort((a,b)=> (a.trackNumber||0)-(b.trackNumber||0)) : [...cd1Tracks]));
@@ -175,29 +172,27 @@ function updateTrackList(keepCurrent = false) {
     shuffledTracks = [...tracks.keys()];
     shuffleArray(shuffledTracks);
 
-    // Als we keepCurrent hebben, verwijder huidige track uit shuffle zodat hij niet dubbel speelt
-    if (keepCurrent && oldTrack) {
-      const oldIndex = tracks.indexOf(oldTrack);
-      shuffledTracks = shuffledTracks.filter(i => i !== oldIndex);
+    if (keepCurrent && currentTrack < tracks.length) {
+      shuffledTracks = shuffledTracks.filter(i => i !== currentTrack);
+      shuffledTracks.unshift(currentTrack);
     }
   }
 
-  // Start eerste track alleen als keepCurrent=false
-  if (!keepCurrent && tracks.length) {
-    if (playInOrder) {
-      playTrack(0);
-    } else {
-      const firstIndex = shuffledTracks.splice(Math.floor(Math.random() * shuffledTracks.length), 1)[0];
-      playTrack(firstIndex);
+  if (playInOrder) {
+    if (!keepCurrent && tracks.length) playTrack(0);
+  } else {
+    if (!keepCurrent && !audioPlayer.src && shuffledTracks.length) {
+      const nextIndex = shuffledTracks.shift();
+      playTrack(nextIndex);
     }
   }
 }
 
-// Checkbox/dropdown listener
-['excludeCD1','excludeCD2','excludeCD3','excludeCD4','playInOrder'].forEach(id=>{
+// ---------- CHECKBOX / DROPDOWN EVENTS ---------- //
+['excludeCD1','excludeCD2','excludeCD3','excludeCD4','playInOrder'].forEach(id => {
   const el = document.getElementById(id);
   if(el) el.addEventListener('change', () => {
-    pendingUpdate = true; // pas bij volgende track
+    pendingUpdate = true; // pas toe bij volgende track
   });
 });
 
@@ -210,19 +205,12 @@ Promise.all([
 ])
 .then(([cd1Data, cd2Data, cd3Data, cd4Data]) => {
   cd1Tracks = Array.isArray(cd1Data) ? cd1Data.slice() : [];
-
-  cd2Tracks = cd2Data.flatMap(game =>
-    game.tracks.map(track => ({...track, game: game.game, artwork: game.artwork}))
-  );
-
-  cd3Tracks = cd3Data.games.flatMap(game =>
-    game.tracks.map(track => ({...track, game: game.game, artwork: game.artwork}))
-  );
-
+  cd2Tracks = cd2Data.flatMap(game => game.tracks.map(track => ({...track, game: game.game, artwork: game.artwork})));
+  cd3Tracks = cd3Data.games.flatMap(game => game.tracks.map(track => ({...track, game: game.game, artwork: game.artwork})));
   cd4Tracks = Array.isArray(cd4Data) ? cd4Data.slice() : [];
 
   console.log('Loaded CD1:', cd1Tracks.length, 'CD2:', cd2Tracks.length, 'CD3:', cd3Tracks.length, 'CD4:', cd4Tracks.length);
 
-  updateTrackList(); // start eerste track
+  updateTrackList();
 })
 .catch(err => console.error('Error loading tracks:', err));

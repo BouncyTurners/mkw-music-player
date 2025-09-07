@@ -40,6 +40,12 @@ h4, h5 {
     margin-top: -1px;
 }
 
+.hidden {
+    display: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
 /* ---------- FOOTER ---------- */
 footer {
     position: fixed;

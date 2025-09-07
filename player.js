@@ -33,14 +33,14 @@ audioPlayer.addEventListener('ended', () => {
 });
 
 // Load tracks + shuffle upon load
-fetch('./tracks.json')
+fetch('./tracksCD1.json')
   .then(res => res.json())
   .then(data => {
     tracks = data.slice();
     shuffleArray(tracks);
     if (tracks.length > 0) playTrack(0);
   })
-  .catch(err => console.error('Error loading tracks.json:', err));
+  .catch(err => console.error('Error loading tracksCD1.json:', err));
 
 
   const volumeSlider = document.getElementById('volumeSlider');

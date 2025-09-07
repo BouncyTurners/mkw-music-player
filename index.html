@@ -8,31 +8,35 @@
 <meta content="Online radio that plays Mario Kart World music in a shuffled order" property="og:description" />
 <meta content="https://tzgaming.github.io/mkw-music-player/" property="og:url" />
 <meta content="#45000a" data-react-helmet="true" name="theme-color" />
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style2.css">
 
 </head>
 <body>
 
-<h1>Mario Kart World Radio</h1>
+<img src="assets/MKWR.png" width="350px">
 
+<br><br>
 <article class="musicplayer">
-  <img id="artwork" src="assets/player-img/cover.png" width="275" height="200">
-  <div id="metadata">
-    <h2><span id="title">-</span></h2>
-    <hr>
-    <h4>Composers:<br><span id="composer">-</span></h4>
+
+  <!-- Album Art -->
+  <img id="artwork" src="assets/player-img/cover.png" width="250" height="250">
+
+  <!-- Metadata in blauwe box -->
+  <div class="metadata-box">
+      <div id="metadata">
+          <h2><span id="title">-</span></h2>
+          <h4>Composers:<br><span id="composer">-</span></h4>
+          <audio id="audioPlayer" controls></audio>
+          <div class="volume-control-horizontal">
+              <label for="volumeSlider">Volume</label>
+              <input type="range" id="volumeSlider" min="0" max="100" value="100">
+          </div>
+      </div>
   </div>
-  <audio id="audioPlayer" controls></audio>
 
-  <div class="volume-control-horizontal">
-    <label for="volumeSlider">Volume</label>
-    <input type="range" id="volumeSlider" min="0" max="100" value="100">
-  </div>
+  <!-- Dropdown knop -->
+  <button class="dropdown-toggle" onclick="toggleDropdown()">&#9654;</button>
 
- <!-- Toggle knop rechts van de muziekplayer -->
-<button class="dropdown-toggle" onclick="toggleDropdown()">&#9654;</button>
-
-  <!-- Dropdown menu -->
   <div class="dropdown">
     <div class="dropdown-content" id="dropdownContent">
       <label class="switch">

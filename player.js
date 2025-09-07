@@ -52,3 +52,22 @@ fetch('./tracks.json')
   volumeSlider.addEventListener('input', () => {
     audioPlayer.volume = volumeSlider.value / 100;
   });
+
+  function toggleDropdown() {
+    const dropdown = document.getElementById("dropdownContent").parentElement;
+    if (dropdown.style.display === "flex") {
+        dropdown.style.display = "none";
+    } else {
+        dropdown.style.display = "flex";
+    }
+}
+
+// Sluit dropdown als je buiten klikt
+window.onclick = function(event) {
+    const dropdown = document.getElementById("dropdownContent").parentElement;
+    const toggle = document.querySelector('.dropdown-toggle');
+    if (!dropdown.contains(event.target) && !toggle.contains(event.target)) {
+        dropdown.style.display = "none";
+    }
+}
+

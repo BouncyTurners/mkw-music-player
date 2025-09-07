@@ -24,6 +24,36 @@
     <label for="volumeSlider">Volume</label>
     <input type="range" id="volumeSlider" min="0" max="100" value="100">
   </div>
+
+  <!-- Dropdown toggle knop -->
+  <button class="dropdown-toggle" onclick="toggleDropdown()">&#9654;</button>
+
+  <!-- Dropdown menu -->
+  <div class="dropdown">
+    <div class="dropdown-content" id="dropdownContent">
+      <label class="switch">
+        <input type="checkbox" id="excludeCD1">
+        <span class="slider"></span>
+        Exclude CD1
+      </label>
+      <label class="switch">
+        <input type="checkbox" id="excludeCD2">
+        <span class="slider"></span>
+        Exclude CD2
+      </label>
+      <label class="switch">
+        <input type="checkbox" id="excludeCD3">
+        <span class="slider"></span>
+        Exclude CD3
+      </label>
+      <label class="switch">
+        <input type="checkbox" id="excludeCD4">
+        <span class="slider"></span>
+        Play tracks in order
+      </label>
+    </div>
+  </div>  
+
 </article>
 
 

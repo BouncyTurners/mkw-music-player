@@ -34,7 +34,7 @@ h4 {
     color: white;
     font-family: MKWorld;
     font-weight: normal;
-    margin-top: -2px;
+    margin-top: -1px;
 }
 
 footer {
@@ -121,13 +121,38 @@ img {
     border: none;
   }
 
-/* Dropdown container */
-.dropdown {
+/* Pijltje standaard */
+.dropdown-toggle {
     position: absolute;
     top: 50%;
-    left: 105%;
+    right: -25px;
+    transform: translateY(-50%) rotate(0deg); /* beginstand */
+    background-color: #555;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 28px;
+    text-align: center;
+    z-index: 20;
+    transition: transform 0.3s ease; /* animatie bij draaien */
+}
+
+/* Pijltje wanneer menu open is */
+.dropdown-toggle.open {
+    transform: translateY(-50%) rotate(180deg); /* pijltje naar rechts -> omlaag */
+}
+
+
+.dropdown {
+    position: fixed;
+    top: 50%;
+    left: 50%; /* begin in het midden */
     transform: translateY(-50%);
-    display: none; /* standaard verborgen */
+    display: none;
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
@@ -136,29 +161,28 @@ img {
     border-radius: 10px;
     box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
     width: 250px;
-    z-index: 10;
+    max-height: 80vh;
+    overflow-y: auto;
+    z-index: 999;
 }
 
-/* Verberg standaard */
-.dropdown .dropdown-content {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 100%;
-    padding: 0; /* geen extra padding */
+/* Pas horizontale positie met media queries op mobiel */
+@media screen and (max-width: 500px) {
+    .dropdown {
+        left: auto;       /* niet meer fixed links van center */
+        right: 10px;      /* altijd 10px van rechterkant viewport */
+        transform: translateY(-50%);
+        width: 90%;       /* smaller zodat hij binnen scherm past */
+    }
 }
 
-/* Dropdown button (optioneel zichtbaar) */
-.dropbtn {
-    display: none; /* als je alleen de opties wilt zien naast de speler */
-}
 
-/* Switch styling blijft hetzelfde */
+/* Switch styling */
 .switch {
     display: flex;
     align-items: center;
-    justify-content: flex-start; /* links uitlijnen */
-    gap: 10px; /* ruimte tussen label en slider */
+    justify-content: flex-start;
+    gap: 10px;
     font-family: MKWorld;
     color: white;
     cursor: pointer;
@@ -198,22 +222,4 @@ img {
 
 .switch input:checked + .slider::before {
     transform: translateX(22px);
-}
-
-.dropdown-toggle {
-    position: absolute;
-    top: 50%;
-    right: -25px; /* staat net buiten de speler */
-    transform: translateY(-50%);
-    background-color: #555;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    cursor: pointer;
-    font-size: 18px;
-    line-height: 28px;
-    text-align: center;
-    z-index: 20;
 }

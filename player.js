@@ -53,21 +53,41 @@ fetch('./tracks.json')
     audioPlayer.volume = volumeSlider.value / 100;
   });
 
+  const dropdown = document.querySelector(".dropdown");
+  const toggle = document.querySelector(".dropdown-toggle");
+  
   function toggleDropdown() {
-    const dropdown = document.getElementById("dropdownContent").parentElement;
-    if (dropdown.style.display === "flex") {
-        dropdown.style.display = "none";
-    } else {
-        dropdown.style.display = "flex";
-    }
-}
-
-// Sluit dropdown als je buiten klikt
-window.onclick = function(event) {
-    const dropdown = document.getElementById("dropdownContent").parentElement;
-    const toggle = document.querySelector('.dropdown-toggle');
-    if (!dropdown.contains(event.target) && !toggle.contains(event.target)) {
-        dropdown.style.display = "none";
-    }
-}
-
+      if (dropdown.style.display === "flex") {
+          dropdown.style.display = "none";
+          toggle.classList.remove("open");
+      } else {
+          dropdown.style.display = "flex";
+          toggle.classList.add("open");
+  
+          // Dynamische positie rechts van player (optioneel)
+          const player = document.querySelector(".musicplayer");
+          const rect = player.getBoundingClientRect();
+          const dropdownWidth = dropdown.offsetWidth;
+          const viewportWidth = window.innerWidth;
+  
+          let leftPos = rect.right + 10; // 10px marge
+          if (leftPos + dropdownWidth > viewportWidth) {
+              leftPos = viewportWidth - dropdownWidth - 10; // past binnen scherm
+          }
+          dropdown.style.left = leftPos + "px";
+          dropdown.style.top = rect.top + rect.height / 2 + "px";
+          dropdown.style.transform = "translateY(-50%)";
+      }
+  }
+  
+  // Globale klik-handler om dropdown te sluiten als je buiten klikt
+  document.addEventListener("click", function(event) {
+      const isClickInsideDropdown = dropdown.contains(event.target);
+      const isClickOnToggle = toggle.contains(event.target);
+  
+      if (!isClickInsideDropdown && !isClickOnToggle) {
+          dropdown.style.display = "none";
+          toggle.classList.remove("open");
+      }
+  });
+  

@@ -12,10 +12,11 @@ const volumeSlider = document.getElementById('volumeSlider');
 const progressContainer = document.querySelector('.progress-container');
 
 let cd1Tracks = [], cd2Tracks = [], cd3Tracks = [], cd4Tracks = [];
-let tracks = [];           // alle tracks van geselecteerde CD's
-let shuffledTracks = [];   // voor shuffle zonder herhaling
+let tracks = [];             // alle tracks van de geselecteerde CD's
+let shuffledTracks = [];     // voor shuffle zonder herhaling
 let currentTrack = 0;
 let playInOrder = false;
+let pendingUpdate = false;   // dropdown wijziging pas bij volgende track
 
 // ---------- SHUFFLE FUNCTION ---------- //
 function shuffleArray(array) {
@@ -44,6 +45,12 @@ function playTrack(index) {
   gameEl.classList.toggle('hidden', !track.game);
 
   progressBar.style.width = '0%';
+
+  // Als er een update wacht (checkbox/dropdown gewijzigd), voer het nu uit
+  if (pendingUpdate) {
+    updateTrackList(true); // true = bewaar huidige track
+    pendingUpdate = false;
+  }
 }
 
 // ---------- NEXT TRACK ---------- //
@@ -55,11 +62,10 @@ function playNextTrack() {
     playTrack(currentTrack);
   } else {
     if (!shuffledTracks.length) {
-      // Alle nummers gespeeld → nieuwe shuffle
+      // alle nummers gespeeld → nieuwe shuffle
       shuffledTracks = [...tracks.keys()];
       shuffleArray(shuffledTracks);
     }
-
     const nextIndex = shuffledTracks.shift();
     playTrack(nextIndex);
   }
@@ -150,15 +156,16 @@ document.addEventListener("click", (event) => {
 });
 
 // ---------- FILTER TRACKS + VOLGORDE ---------- //
-function updateTrackList() {
+function updateTrackList(keepCurrent = false) {
   const excludeCD1 = document.getElementById('excludeCD1').checked;
   const excludeCD2 = document.getElementById('excludeCD2').checked;
   const excludeCD3 = document.getElementById('excludeCD3').checked;
   const excludeCD4 = document.getElementById('excludeCD4').checked;
   playInOrder = document.getElementById('playInOrder').checked;
 
-  tracks = [];
+  let oldTrack = keepCurrent ? tracks[currentTrack] : null;
 
+  tracks = [];
   if (!excludeCD1) tracks.push(...(playInOrder ? cd1Tracks.sort((a,b)=> (a.trackNumber||0)-(b.trackNumber||0)) : [...cd1Tracks]));
   if (!excludeCD2) tracks.push(...(playInOrder ? cd2Tracks.sort((a,b)=> (a.trackNumber||0)-(b.trackNumber||0)) : [...cd2Tracks]));
   if (!excludeCD3) tracks.push(...(playInOrder ? cd3Tracks.sort((a,b)=> (a.trackNumber||0)-(b.trackNumber||0)) : [...cd3Tracks]));
@@ -168,18 +175,30 @@ function updateTrackList() {
     shuffledTracks = [...tracks.keys()];
     shuffleArray(shuffledTracks);
 
-    // speel meteen een willekeurige track
-    const firstIndex = shuffledTracks.shift();
-    if (firstIndex !== undefined) playTrack(firstIndex);
-  } else {
-    if (tracks.length) playTrack(0);
+    // Als we keepCurrent hebben, verwijder huidige track uit shuffle zodat hij niet dubbel speelt
+    if (keepCurrent && oldTrack) {
+      const oldIndex = tracks.indexOf(oldTrack);
+      shuffledTracks = shuffledTracks.filter(i => i !== oldIndex);
+    }
+  }
+
+  // Start eerste track alleen als keepCurrent=false
+  if (!keepCurrent && tracks.length) {
+    if (playInOrder) {
+      playTrack(0);
+    } else {
+      const firstIndex = shuffledTracks.splice(Math.floor(Math.random() * shuffledTracks.length), 1)[0];
+      playTrack(firstIndex);
+    }
   }
 }
 
-// ---------- CHECKBOX EVENT LISTENERS ---------- //
+// Checkbox/dropdown listener
 ['excludeCD1','excludeCD2','excludeCD3','excludeCD4','playInOrder'].forEach(id=>{
   const el = document.getElementById(id);
-  if(el) el.addEventListener('change', updateTrackList);
+  if(el) el.addEventListener('change', () => {
+    pendingUpdate = true; // pas bij volgende track
+  });
 });
 
 // ---------- LOAD TRACKS ---------- //
@@ -204,6 +223,6 @@ Promise.all([
 
   console.log('Loaded CD1:', cd1Tracks.length, 'CD2:', cd2Tracks.length, 'CD3:', cd3Tracks.length, 'CD4:', cd4Tracks.length);
 
-  updateTrackList();
+  updateTrackList(); // start eerste track
 })
 .catch(err => console.error('Error loading tracks:', err));

@@ -12,8 +12,8 @@ const volumeSlider = document.getElementById('volumeSlider');
 const progressContainer = document.querySelector('.progress-container');
 
 let cd1Tracks = [], cd2Tracks = [], cd3Tracks = [], cd4Tracks = [];
-let tracks = []; // alle tracks van de geselecteerde CD's
-let shuffledTracks = []; // voor shuffle zonder herhaling
+let tracks = [];           // alle tracks van geselecteerde CD's
+let shuffledTracks = [];   // voor shuffle zonder herhaling
 let currentTrack = 0;
 let playInOrder = false;
 
@@ -55,7 +55,7 @@ function playNextTrack() {
     playTrack(currentTrack);
   } else {
     if (!shuffledTracks.length) {
-      // alle nummers gespeeld → nieuwe shuffle
+      // Alle nummers gespeeld → nieuwe shuffle
       shuffledTracks = [...tracks.keys()];
       shuffleArray(shuffledTracks);
     }
@@ -164,15 +164,19 @@ function updateTrackList() {
   if (!excludeCD3) tracks.push(...(playInOrder ? cd3Tracks.sort((a,b)=> (a.trackNumber||0)-(b.trackNumber||0)) : [...cd3Tracks]));
   if (!excludeCD4) tracks.push(...(playInOrder ? cd4Tracks.sort((a,b)=> (a.trackNumber||0)-(b.trackNumber||0)) : [...cd4Tracks]));
 
-  // Reset shuffledTracks voor nieuwe shuffle
   if (!playInOrder) {
     shuffledTracks = [...tracks.keys()];
     shuffleArray(shuffledTracks);
-  }
 
-  if (tracks.length) playTrack(0);
+    // speel meteen een willekeurige track
+    const firstIndex = shuffledTracks.shift();
+    if (firstIndex !== undefined) playTrack(firstIndex);
+  } else {
+    if (tracks.length) playTrack(0);
+  }
 }
 
+// ---------- CHECKBOX EVENT LISTENERS ---------- //
 ['excludeCD1','excludeCD2','excludeCD3','excludeCD4','playInOrder'].forEach(id=>{
   const el = document.getElementById(id);
   if(el) el.addEventListener('change', updateTrackList);

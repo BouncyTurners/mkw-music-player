@@ -389,7 +389,9 @@ article.musicplayer {
     padding: 12px 24px;
     border-radius: 8px;
     cursor: pointer;
-    min-width: 100px;
+    min-width: 100px; /* voorkom dat hij te smal wordt */
+    box-sizing: border-box;
+    min-height: 40px;
   }
 
 @media screen and (max-width: 700px) {
@@ -447,6 +449,8 @@ article.musicplayer {
     .controls button {
         font-size: 18px;
         padding: 14px 28px;
+        min-width: 120px; /* iets breder voor touch */
+        min-height: 40px;
       }
 
     .audio-player .progress-container {

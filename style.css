@@ -256,7 +256,8 @@ article.musicplayer {
     .dropdown-toggle {
         position: absolute;
         top: 50%;
-        right: -40px;
+        right: -0px;
         transform: translateY(-50%);
+        background-color: #3e3e3e;
     }
 }

@@ -18,7 +18,7 @@
     },
     {
       "game": "Mario Kart 64",
-      "artwork": "assets/CD2-artwork/MK64.png",
+      "artwork": "assets/CD2-artwork/MK64.jpg",
       "artworkClass": "MK64-img",
       "tracks": [
         {"trackNumber": 12, "title": "Mario Kart 64 Theme", "url": "audio/CD2/12 - Mario Kart 64 Theme (Mario Kart 64) - Kenta Nagata.m4a", "composer": "Kenta Nagata"},

@@ -381,6 +381,8 @@ article.musicplayer {
     max-width: 350px;      /* voorkom dat het groter wordt */
     box-sizing: border-box;
     min-width: 0;          /* zeer belangrijk: voorkomt dat flex-item de inhoud volgt */
+    height: 8px;
+    border-radius: 10px;
 }
 
 .controls button {

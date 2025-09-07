@@ -1,0 +1,271 @@
+{
+    "games": [
+      {
+        "game": "Super Mario Bros.",
+        "artwork": "assets/CD3-artwork/SMB.jpg",
+        "tracks": [
+          {"trackNumber": 1, "title": "Ground BGM", "url": "audio/CD3/01 - Ground BGM (Super Mario Bros.) - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 2, "title": "Ground BGM (Night)", "url": "audio/CD3/02 - Ground BGM (Night) [Super Mario Bros.] - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 3, "title": "Underground BGM", "url": "audio/CD3/03 - Underground BGM (Super Mario Bros.) - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 4, "title": "Underground BGM (Latin Guitar Version)", "url": "audio/CD3/04 - Underground BGM (Latin Guitar Version) [Super Mario Bros.] - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 5, "title": "Underwater BGM", "url": "audio/CD3/05 - Underwater BGM (Super Mario Bros.) - Koji Kondo.m4a", "composer": "Koji Kondo"}
+        ]
+      },
+      {
+        "game": "Super Mario Bros. 2",
+        "artwork": "assets/CD3-artwork/SMB2.png",
+        "tracks": [
+          {"trackNumber": 6, "title": "Please Select Player", "url": "audio/CD3/06 - Please Select Player (Super Mario Bros. 2) - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 7, "title": "Ground BGM", "url": "audio/CD3/07 - Ground BGM (Super Mario Bros. 2) - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 8, "title": "Underground BGM", "url": "audio/CD3/08 - Underground BGM (Super Mario Bros. 2) - Koji Kondo.m4a", "composer": "Koji Kondo"}
+        ]
+      },
+      {
+        "game": "Super Mario Bros. 3",
+        "artwork": "assets/CD3-artwork/SMB3.jpg",
+        "tracks": [
+          {"trackNumber": 9, "title": "Map Screen Medley", "url": "audio/CD3/09 - Map Screen Medley (Super Mario Bros. 3) - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 10, "title": "Ground BGM", "url": "audio/CD3/10 - Ground BGM (Super Mario Bros. 3) - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 11, "title": "Athletic BGM", "url": "audio/CD3/11 - Athletic BGM (Super Mario Bros. 3) - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 12, "title": "Underwater BGM", "url": "audio/CD3/12 - Underwater BGM (Super Mario Bros. 3) - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 13, "title": "Fortress Boss", "url": "audio/CD3/13 - Fortress Boss (Super Mario Bros. 3) - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 14, "title": "Airship", "url": "audio/CD3/14 - Airship (Super Mario Bros. 3) - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 15, "title": "Ending", "url": "audio/CD3/15 - Ending (Super Mario Bros. 3) - Koji Kondo.m4a", "composer": "Koji Kondo"}
+        ]
+      },
+      {
+        "game": "Super Mario Land",
+        "artwork": "assets/CD3-artwork/SML.png",
+        "tracks": [
+          {"trackNumber": 16, "title": "Birabuto Kingdom", "url": "audio/CD3/16 - Birabuto Kingdom (Super Mario Land) - Hirokazu Tanaka.m4a", "composer": "Hirokazu Tanaka"},
+          {"trackNumber": 17, "title": "Underground Theme", "url": "audio/CD3/17 - Underground Theme (Super Mario Land) - Hirokazu Tanaka.m4a", "composer": "Hirokazu Tanaka"}
+        ]
+      },
+      {
+        "game": "Super Mario World",
+        "artwork": "assets/CD3-artwork/SMW.png",
+        "tracks": [
+          {"trackNumber": 18, "title": "Title Screen", "url": "audio/CD3/18 - Title Screen (Super Mario World) - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 19, "title": "Map Screen Medley", "url": "audio/CD3/19 - Map Screen Medley (Super Mario World) - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 20, "title": "Ground BGM (Rock Version)", "url": "audio/CD3/20 - Ground BGM (Rock Version) [Super Mario World] - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 21, "title": "Ground BGM (Big Band Version)", "url": "audio/CD3/21 - Ground BGM (Big Band Version) [Super Mario World] - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 22, "title": "Ground BGM (Country Version)", "url": "audio/CD3/22 - Ground BGM (Country Version) [Super Mario World] - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 23, "title": "Underground BGM", "url": "audio/CD3/23 - Underground BGM (Super Mario World) - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 24, "title": "Underwater BGM", "url": "audio/CD3/24 - Underwater BGM (Super Mario World) - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 25, "title": "Bonus Game BGM", "url": "audio/CD3/25 - Bonus Game BGM (Super Mario World) - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 26, "title": "Castle BGM", "url": "audio/CD3/26 - Castle BGM (Super Mario World) - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 27, "title": "Koopalings BGM", "url": "audio/CD3/27 - Koopalings BGM (Super Mario World) - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 28, "title": "Ending", "url": "audio/CD3/28 - Ending (Super Mario World) - Koji Kondo.m4a", "composer": "Koji Kondo"}
+        ]
+      },
+      {
+        "game": "Mario Paint",
+        "artwork": "assets/CD3-artwork/MarioPaint.png",
+        "tracks": [
+          {"trackNumber": 29, "title": "Creative Exercise", "url": "audio/CD3/29 - Creative Exercise (Mario Paint) - Hirokazu Tanaka, Ryoji Yoshitomi & Kazumi Totaka.m4a", "composer": "Hirokazu Tanaka, Ryoji Yoshitomi & Kazumi Totaka"},
+          {"trackNumber": 30, "title": "Mario Paint Flyswatter (Level 1)", "url": "audio/CD3/30 - Mario Paint Flyswatter (Level 1) [Mario Paint] - Hirokazu Tanaka, Ryoji Yoshitomi & Kazumi Totaka.m4a", "composer": "Hirokazu Tanaka, Ryoji Yoshitomi & Kazumi Totaka"}
+        ]
+      },
+      {
+        "game": "Super Mario Land 2: 6 Golden Coins",
+        "artwork": "assets/CD3-artwork/SML2.png",
+        "tracks": [
+          {"trackNumber": 31, "title": "Athletic", "url": "audio/CD3/31 - Athletic (Super Mario Land 2- 6 Golden Coins) - Kazumi Totaka.m4a", "composer": "Kazumi Totaka"}
+        ]
+      },
+      {
+        "game": "Wario Land: Super Mario Land 3",
+        "artwork": "assets/CD3-artwork/SML3.png",
+        "tracks": [
+          {"trackNumber": 32, "title": "Rice Beach", "url": "audio/CD3/32 - Rice Beach (Wario Land- Super Mario Land 3) - Ryoji Yoshitomi & Kozue Ishikawa.m4a", "composer": "Ryoji Yoshitomi & Kozue Ishikawa"}
+        ]
+      },
+      {
+        "game": "Donkey Kong Country",
+        "artwork": "assets/CD3-artwork/DKC.png",
+        "tracks": [
+          {"trackNumber": 33, "title": "DK Island Swing", "url": "audio/CD3/33 - DK Island Swing (Donkey Kong Country) - David Wise.m4a", "composer": "David Wise"}
+        ]
+      },
+      {
+        "game": "Super Mario World 2: Yoshi's Island",
+        "artwork": "assets/CD3-artwork/YoshisIsland.png",
+        "tracks": [
+          {"trackNumber": 34, "title": "Opening Melody", "url": "audio/CD3/34 - Opening Melody (Super Mario World 2- Yoshi's Island) - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 35, "title": "Flower Field BGM (Day)", "url": "audio/CD3/35 - Flower Field BGM (Day) [Super Mario World 2- Yoshi's Island] - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 36, "title": "Flower Field BGM (Night)", "url": "audio/CD3/36 - Flower Field BGM (Night) [Super Mario World 2- Yoshi's Island] - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 37, "title": "Athletic BGM", "url": "audio/CD3/37 - Athletic BGM (Super Mario World 2- Yoshi's Island) - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 38, "title": "Stage Boss (Day)", "url": "audio/CD3/38 - Stage Boss (Day) [Super Mario World 2- Yoshi's Island] - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 39, "title": "Stage Boss (Night)", "url": "audio/CD3/39 - Stage Boss (Night) [Super Mario World 2- Yoshi's Island] - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 40, "title": "Bowser", "url": "audio/CD3/40 - Bowser (Super Mario World 2- Yoshi's Island) - Koji Kondo.m4a", "composer": "Koji Kondo"}
+        ]
+      },
+      {
+        "game": "Super Mario 64",
+        "artwork": "assets/CD3-artwork/SM64.jpg",
+        "tracks": [
+          {"trackNumber": 41, "title": "File Select", "url": "audio/CD3/41 - File Select (Super Mario 64) - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 42, "title": "Bob-Omb Battlefield (Big Band Version)", "url": "audio/CD3/42 - Bob-Omb Battlefield (Big Band Version) [Super Mario 64] - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 43, "title": "Bob-Omb Battlefield (Latin Guitar Version)", "url": "audio/CD3/43 - Bob-Omb Battlefield (Latin Guitar Version) [Super Mario 64] - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 44, "title": "Peach's Castle", "url": "audio/CD3/44 - Peach's Castle (Super Mario 64) - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 45, "title": "Piranha Plant's Lullaby", "url": "audio/CD3/45 - Piranha Plant's Lullaby (Super Mario 64) - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 46, "title": "Dire, Dire Docks", "url": "audio/CD3/46 - Dire, Dire Docks (Super Mario 64) - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 47, "title": "Cool, Cool Mountain", "url": "audio/CD3/47 - Cool, Cool Mountain (Super Mario 64) - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 48, "title": "Slider", "url": "audio/CD3/48 - Slider (Super Mario 64) - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 49, "title": "Bowser's Road", "url": "audio/CD3/49 - Bowser's Road (Super Mario 64) - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 50, "title": "Bowser's Theme", "url": "audio/CD3/50 - Bowser's Theme (Super Mario 64) - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 51, "title": "Staff Roll", "url": "audio/CD3/51 - Staff Roll (Super Mario 64) - Koji Kondo.m4a", "composer": "Koji Kondo"}
+        ]
+      },
+      {
+        "game": "Yoshi's Story",
+        "artwork": "assets/CD3-artwork/YoshisStory.png",
+        "tracks": [
+          {"trackNumber": 52, "title": "Yoshi's Song", "url": "audio/CD3/52 - Yoshi's Song (Yoshi's Story) - Kazumi Totaka.m4a", "composer": "Kazumi Totaka"},
+          {"trackNumber": 53, "title": "Yoshi's On the Beach", "url": "audio/CD3/53 - Yoshi's On the Beach (Yoshi's Story) - Kazumi Totaka.m4a", "composer": "Kazumi Totaka"},
+          {"trackNumber": 54, "title": "Yoshi's Tale", "url": "audio/CD3/54 - Yoshi's Tale (Yoshi's Story) - Kazumi Totaka.m4a", "composer": "Kazumi Totaka"}
+        ]
+      },
+      {
+        "game": "Luigi's Mansion",
+        "artwork": "assets/CD3-artwork/LuigisMansion.jpg",
+        "tracks": [
+          {"trackNumber": 55, "title": "Main Theme", "url": "audio/CD3/55 - Title Theme (Luigi's Mansion) - Kazumi Totaka.m4a", "composer": "Kazumi Totaka"}
+        ]
+      },
+      {
+        "game": "Super Mario Sunshine",
+        "artwork": "assets/CD3-artwork/SMS.png",
+        "tracks": [
+          {"trackNumber": 56, "title": "Isle Delfino", "url": "audio/CD3/56 - Isle Delfino (Super Mario Sunshine) - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 57, "title": "Bianco Hills", "url": "audio/CD3/57 - Bianco Hills (Super Mario Sunshine) - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 58, "title": "Ricco Harbor", "url": "audio/CD3/58 - Ricco Harbor (Super Mario Sunshine) - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 59, "title": "Secret Course - Sky and Sea", "url": "audio/CD3/59 - Secret Course - Sky and Sea (Super Mario Sunshine) - Koji Kondo & Shinobu Tanaka.m4a", "composer": "Koji Kondo & Shinobu Tanaka"}
+        ]
+      },
+      {
+        "game": "WarioWare, Inc.: Mega Microgame$!",
+        "artwork": "assets/CD3-artwork/WarioWare.png",
+        "tracks": [
+          {"trackNumber": 60, "title": "Drifting Away", "url": "audio/CD3/60 - Drifting Away (WarioWare, Inc.- Mega Microgame$!) - Ryoji Yoshitomi & Kyoko Miyamoto.m4a", "composer": "Ryoji Yoshitomi & Kyoko Miyamoto"}
+        ]
+      },
+      {
+        "game": "New Super Mario Bros.",
+        "artwork": "assets/CD3-artwork/NSMB.jpg",
+        "tracks": [
+          {"trackNumber": 61, "title": "Overworld Theme", "url": "audio/CD3/61 - Overworld Theme (New Super Mario Bros.) - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 62, "title": "Castle Theme", "url": "audio/CD3/62 - Castle Theme (New Super Mario Bros.) - Koji Kondo.m4a", "composer": "Koji Kondo"}
+        ]
+      },
+      {
+        "game": "Super Mario Galaxy",
+        "artwork": "assets/CD3-artwork/SMG.png",
+        "tracks": [
+          {"trackNumber": 63, "title": "Egg Planet", "url": "audio/CD3/63 - Egg Planet (Super Mario Galaxy) - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 64, "title": "Rosalina In the Observatory", "url": "audio/CD3/64 - Rosalina In the Observatory (Super Mario Galaxy) - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 65, "title": "Space Junk Road", "url": "audio/CD3/65 - Space Junk Road (Super Mario Galaxy) - Mahito Yokota.m4a", "composer": "Mahito Yokota"},
+          {"trackNumber": 66, "title": "Enter Bowser Jr.!", "url": "audio/CD3/66 - Enter Bowser Jr.! (Super Mario Galaxy) - Mahito Yokota.m4a", "composer": "Mahito Yokota"},
+          {"trackNumber": 67, "title": "Buoy Base Galaxy", "url": "audio/CD3/67 - Buoy Base Galaxy (Super Mario Galaxy) - Mahito Yokota.m4a", "composer": "Mahito Yokota"},
+          {"trackNumber": 68, "title": "Gusty Garden Galaxy", "url": "audio/CD3/68 - Gusty Garden Galaxy (Super Mario Galaxy) - Mahito Yokota.m4a", "composer": "Mahito Yokota"},
+          {"trackNumber": 69, "title": "Final Battle with Bowser", "url": "audio/CD3/69 - Final Battle with Bowser (Super Mario Galaxy) - Mahito Yokota.m4a", "composer": "Mahito Yokota"},
+          {"trackNumber": 70, "title": "Purple Comet", "url": "audio/CD3/70 - Purple Comet (Super Mario Galaxy) - Mahito Yokota.m4a", "composer": "Mahito Yokota"}
+        ]
+      },
+      {
+        "game": "New Super Mario Bros. Wii",
+        "artwork": "assets/CD3-artwork/NSMBW.png",
+        "tracks": [
+          {"trackNumber": 71, "title": "Underwater Theme", "url": "audio/CD3/71 - Underwater Theme (New Super Mario Bros. Wii) - Shiho Fujii.m4a", "composer": "Shiho Fujii"},
+          {"trackNumber": 72, "title": "Desert Theme", "url": "audio/CD3/72 - Desert Theme (New Super Mario Bros. Wii) - Shiho Fujii.m4a", "composer": "Shiho Fujii"},
+          {"trackNumber": 73, "title": "Beach Theme", "url": "audio/CD3/73 - Beach Theme (New Super Mario Bros. Wii) - Shiho Fujii.m4a", "composer": "Shiho Fujii"},
+          {"trackNumber": 74, "title": "Volcano Theme", "url": "audio/CD3/74 - Volcano Theme (New Super Mario Bros. Wii) - Shiho Fujii.m4a", "composer": "Shiho Fujii"},
+          {"trackNumber": 75, "title": "Castle Theme", "url": "audio/CD3/75 - Castle Theme (New Super Mario Bros. Wii) - Shiho Fujii.m4a", "composer": "Shiho Fujii"},
+          {"trackNumber": 76, "title": "Castle Boss Battle", "url": "audio/CD3/76 - Castle Boss Battle (New Super Mario Bros. Wii) - Shiho Fujii.m4a", "composer": "Shiho Fujii"},
+          {"trackNumber": 77, "title": "Staff Roll", "url": "audio/CD3/77 - Staff Roll (New Super Mario Bros. Wii) - Shiho Fujii & Ryo Nagamatsu.m4a", "composer": "Shiho Fujii & Ryo Nagamatsu"}
+        ]
+      },
+      {
+        "game": "Super Mario Galaxy 2",
+        "artwork": "assets/CD3-artwork/SMG2.png",
+        "tracks": [
+          {"trackNumber": 78, "title": "Sky Station Galaxy", "url": "audio/CD3/78 - Sky Station Galaxy (Super Mario Galaxy 2) - Mahito Yokota.m4a", "composer": "Mahito Yokota"},
+          {"trackNumber": 79, "title": "Starship Mario", "url": "audio/CD3/79 - Starship Mario (Super Mario Galaxy 2) - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 80, "title": "The Starship Travels", "url": "audio/CD3/80 - The Starship Travels (Super Mario Galaxy 2) - Mahito Yokota.m4a", "composer": "Mahito Yokota"},
+          {"trackNumber": 81, "title": "Yoshi Star Galaxy", "url": "audio/CD3/81 - Yoshi Star Galaxy (Super Mario Galaxy 2) - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 82, "title": "Digga-Leg", "url": "audio/CD3/82 - Digga-Leg (Super Mario Galaxy 2) - Ryo Nagamatsu.m4a", "composer": "Ryo Nagamatsu"},
+          {"trackNumber": 83, "title": "Puzzle Plank Galaxy", "url": "audio/CD3/83 - Puzzle Plank Galaxy (Super Mario Galaxy 2) - Ryo Nagamatsu.m4a", "composer": "Ryo Nagamatsu"},
+          {"trackNumber": 84, "title": "Wild Glide Galaxy", "url": "audio/CD3/84 - Wild Glide Galaxy (Super Mario Galaxy 2) - Mahito Yokota.m4a", "composer": "Mahito Yokota"},
+          {"trackNumber": 85, "title": "Cloudy Court Galaxy", "url": "audio/CD3/85 - Cloudy Court Galaxy (Super Mario Galaxy 2) - Mahito Yokota.m4a", "composer": "Mahito Yokota"},
+          {"trackNumber": 86, "title": "Melty Monster Galaxy", "url": "audio/CD3/86 - Melty Monster Galaxy (Super Mario Galaxy 2) - Ryo Nagamatsu.m4a", "composer": "Ryo Nagamatsu"},
+          {"trackNumber": 87, "title": "Bowser's Galaxy Generator", "url": "audio/CD3/87 - Bowser's Galaxy Generator (Super Mario Galaxy 2) - Mahito Yokota.m4a", "composer": "Mahito Yokota"}
+        ]
+      },
+      {
+        "game": "Super Mario 3D Land",
+        "artwork": "assets/CD3-artwork/SM3DL.jpg",
+        "tracks": [
+          {"trackNumber": 88, "title": "Ground Theme", "url": "audio/CD3/88 - Ground Theme (Super Mario 3D Land) - Takeshi Hama.m4a", "composer": "Takeshi Hama"},
+          {"trackNumber": 89, "title": "Beach Theme (Day)", "url": "audio/CD3/89 - Beach Theme (Day) (Super Mario 3D Land) - Mahito Yokota.m4a", "composer": "Mahito Yokota"},
+          {"trackNumber": 90, "title": "Beach Theme (Night)", "url": "audio/CD3/90 - Beach Theme (Night) [Super Mario 3D Land] - Mahito Yokota.m4a", "composer": "Mahito Yokota"}
+        ]
+      },
+      {
+        "game": "Super Mario 3D World",
+        "artwork": "assets/CD3-artwork/SM3DW.jpg",
+        "tracks": [
+          {"trackNumber": 91, "title": "Snowball Park", "url": "audio/CD3/91 - Snowball Park (Super Mario 3D World) - Mahito Yokota, Toru Minegishi, Koji Kondo & Yasuaki Iwata.m4a", "composer": "Mahito Yokota, Toru Minegishi, Koji Kondo & Yasuaki Iwata"},
+          {"trackNumber": 93, "title": "Super Bell Hill", "url": "audio/CD3/93 - Super Bell Hill (Super Mario 3D World) - Mahito Yokota, Toru Minegishi, Koji Kondo & Yasuaki Iwata.m4a", "composer": "Mahito Yokota, Toru Minegishi, Koji Kondo & Yasuaki Iwata"},
+          {"trackNumber": 94, "title": "Captain Toad Goes Forth", "url": "audio/CD3/94 - Captain Toad Goes Forth (Super Mario 3D World) - Mahito Yokota, Toru Minegishi, Koji Kondo & Yasuaki Iwata.m4a", "composer": "Mahito Yokota, Toru Minegishi, Koji Kondo & Yasuaki Iwata"},
+          {"trackNumber": 95, "title": "Double Cherry Pass", "url": "audio/CD3/95 - Double Cherry Pass (Super Mario 3D World) - Mahito Yokota, Toru Minegishi, Koji Kondo & Yasuaki Iwata.m4a", "composer": "Mahito Yokota, Toru Minegishi, Koji Kondo & Yasuaki Iwata"},
+          {"trackNumber": 96, "title": "Shifty Boo Mansion", "url": "audio/CD3/96 - Shifty Boo Mansion (Super Mario 3D World) - Toru Minegishi.m4a", "composer": "Toru Minegishi"},
+          {"trackNumber": 97, "title": "Chain-Link Charge (Day)", "url": "audio/CD3/97 - Chain-Link Charge (Day) [Super Mario 3D World] - Mahito Yokota, Toru Minegishi, Koji Kondo & Yasuaki Iwata.m4a", "composer": "Mahito Yokota, Toru Minegishi, Koji Kondo & Yasuaki Iwata"},
+          {"trackNumber": 98, "title": "Chain-Link Charge (Night)", "url": "audio/CD3/98 - Chain-Link Charge (Night) [Super Mario 3D World] - Mahito Yokota, Toru Minegishi, Koji Kondo & Yasuaki Iwata.m4a", "composer": "Mahito Yokota, Toru Minegishi, Koji Kondo & Yasuaki Iwata"},
+          {"trackNumber": 99, "title": "Piranha Creeper Creek", "url": "audio/CD3/99 - Piranha Creeper Creek (Super Mario 3D World) - Mahito Yokota, Toru Minegishi, Koji Kondo & Yasuaki Iwata.m4a", "composer": "Mahito Yokota, Toru Minegishi, Koji Kondo & Yasuaki Iwata"},
+          {"trackNumber": 100, "title": "Sprawling Savannah", "url": "audio/CD3/100 - Sprawling Savannah (Super Mario 3D World) - Mahito Yokota, Toru Minegishi, Koji Kondo & Yasuaki Iwata.m4a", "composer": "Mahito Yokota, Toru Minegishi, Koji Kondo & Yasuaki Iwata"},
+          {"trackNumber": 101, "title": "Hands-On Hall", "url": "audio/CD3/101 - Hands-On Hall (Super Mario 3D World) - Mahito Yokota, Toru Minegishi, Koji Kondo & Yasuaki Iwata.m4a", "composer": "Mahito Yokota, Toru Minegishi, Koji Kondo & Yasuaki Iwata"},
+          {"trackNumber": 102, "title": "Hisstocrat", "url": "audio/CD3/102 - Hisstocrat (Super Mario 3D World) - Mahito Yokota, Toru Minegishi, Koji Kondo & Yasuaki Iwata.m4a", "composer": "Mahito Yokota, Toru Minegishi, Koji Kondo & Yasuaki Iwata"},
+          {"trackNumber": 103, "title": "Bowser's Highway Showdown", "url": "audio/CD3/103 - Bowser's Highway Showdown (Super Mario 3D World) - Mahito Yokota, Toru Minegishi, Koji Kondo & Yasuaki Iwata.m4a", "composer": "Mahito Yokota, Toru Minegishi, Koji Kondo & Yasuaki Iwata"},
+          {"trackNumber": 104, "title": "World Bowser", "url": "audio/CD3/104 - World Bowser (Super Mario 3D World) - Mahito Yokota, Toru Minegishi, Koji Kondo & Yasuaki Iwata.m4a", "composer": "Mahito Yokota, Toru Minegishi, Koji Kondo & Yasuaki Iwata"}
+        ]
+      },
+      {
+        "game": "Super Mario Maker",
+        "artwork": "assets/CD3-artwork/SMM.png",
+        "tracks": [
+          {"trackNumber": 105, "title": "Title Theme", "url": "audio/CD3/105 - Title (Super Mario Maker) - Koji Kondo.m4a", "composer": "Koji Kondo"}
+        ]
+      },
+      {
+        "game": "Super Mario Odyssey",
+        "artwork": "assets/CD3-artwork/SMO.png",
+        "tracks": [
+          {"trackNumber": 106, "title": "Fossil Falls", "url": "audio/CD3/106 - Fossil Falls (Super Mario Odyssey) - Naoto Kubo.m4a", "composer": "Naoto Kubo"},
+          {"trackNumber": 107, "title": "Tostarena Ruins", "url": "audio/CD3/107 - Tostarena Ruins (Super Mario Odyssey) - Naoto Kubo.m4a", "composer": "Naoto Kubo"},
+          {"trackNumber": 108, "title": "Steam Gardens (Day)", "url": "audio/CD3/108 - Steam Gardens (Day) [Super Mario Odyssey] - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 109, "title": "Steam Gardens (Night)", "url": "audio/CD3/109 - Steam Gardens (Night) [Super Mario Odyssey] - Koji Kondo.m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 110, "title": "Lake Lamode", "url": "audio/CD3/110 - Lake Lamode (Super Mario Odyssey) - Shiho Fujii.m4a", "composer": "Shiho Fujii"},
+          {"trackNumber": 111, "title": "Peronza Plaza", "url": "audio/CD3/111 - Peronza Plaza (Super Mario Odyssey) - Shiho Fujii.m4a", "composer": "Shiho Fujii"},
+          {"trackNumber": 112, "title": "Shiveria Town", "url": "audio/CD3/112 - Shiveria Town (Super Mario Odyssey) - Shiho Fujii.m4a", "composer": "Shiho Fujii"},
+          {"trackNumber": 113, "title": "Bowser's Castle: Main Courtyard", "url": "audio/CD3/113 - Bowser's Castle Main Courtyard (Super Mario Odyssey) - Koji Kondo .m4a", "composer": "Koji Kondo"},
+          {"trackNumber": 114, "title": "Jump Up, Super Star!", "url": "audio/CD3/114 - Jump Up, Super Star! (Super Mario Odyssey) - Naoto Kubo.m4a", "composer": "Naoto Kubo"},
+          {"trackNumber": 115, "title": "Break Free (Lead the Way)", "url": "audio/CD3/115 - Break Free (Lead the Way) [Super Mario Odyssey] - Naoto Kubo.m4a", "composer": "Naoto Kubo"}
+        ]
+      },
+      {
+        "game": "Bowser's Fury",
+        "artwork": "assets/CD3-artwork/BowsersFury.jpg",
+        "tracks": [
+          {"trackNumber": 116, "title": "Lake Lapcat", "url": "audio/CD3/116 - Lake Lapcat (Bowser's Fury) - Daisuke Matsuoka.m4a", "composer": "Daisuke Matsuoka"},
+          {"trackNumber": 117, "title": "Attack! Fury Bowser", "url": "audio/CD3/117 - Attack! Fury Bowser (Bowser's Fury) - Daisuke Matsuoka.m4a", "composer": "Daisuke Matsuoka"}
+        ]
+      },
+      {
+        "game": "Flipnote Studio",
+        "artwork": "assets/CD3-artwork/Flipnote.png",
+        "tracks": [
+          {"trackNumber": 118, "title": "The Mario Drawing Song", "url": "audio/CD3/118 - The Mario Drawing Song (Flipnote Studio) - Nintendo.m4a", "composer": "Nintendo"}
+        ]
+      }
+    ]
+  }  

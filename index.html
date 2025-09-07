@@ -21,7 +21,6 @@
     <img id="artwork" src="assets/player-img/cover.png" width="250" height="250">
   </div>
 
-  <!-- Metadata in blauwe box -->
   <div class="metadata-box">
       <div id="metadata">
           <h1><span id="title">-</span></h1>
@@ -30,7 +29,6 @@
             <audio id="audioPlayer"></audio>
             <span id="timeDisplay">0:00 / 0:00</span>
         
-            <!-- Progress bar wrapper met vaste breedte -->
             <div class="progress-wrapper">
                 <div class="progress-container">
                     <div class="progress-bar" id="progressBar"></div>
@@ -50,7 +48,7 @@
       </div>
   </div>
 
-  <!-- Dropdown knop -->
+  <!-- Settings dropdown -->
   <button class="dropdown-toggle" onclick="toggleDropdown()">&#9654;</button>
 
   <div class="dropdown">
@@ -60,28 +58,32 @@
         <span class="slider"></span>
         Exclude CD1 - Grand Prix Tracks
       </label>
+  
       <label class="switch">
         <input type="checkbox" id="excludeCD2">
         <span class="slider"></span>
         Exclude CD2 - Mario Kart Series Free Roam
       </label>
+  
       <label class="switch">
         <input type="checkbox" id="excludeCD3">
         <span class="slider"></span>
         Exclude CD3 - Super Mario Series Free Roam
       </label>
+  
       <label class="switch">
-        <input type="checkbox" id="excludeCD3">
+        <input type="checkbox" id="excludeCD4">
         <span class="slider"></span>
         Exclude CD4 - Miscellaneous Songs
       </label>
+  
       <label class="switch">
-        <input type="checkbox" id="excludeCD4">
+        <input type="checkbox" id="playInOrder">
         <span class="slider"></span>
         Play tracks in order
       </label>
     </div>
-  </div>  
+  </div>
 
 </article>
 

@@ -17,6 +17,7 @@ let shuffledTracks = [];   // shuffle pool
 let currentTrack = 0;
 let playInOrder = false;
 let pendingUpdate = false; // track list update waits until next track
+let isDragging = false;    // drag state for progress bar
 
 // ---------- SHUFFLE FUNCTION ---------- //
 function shuffleArray(array) {
@@ -33,12 +34,12 @@ function playTrack(index) {
   const track = tracks[index];
 
   audioPlayer.src = encodeURI(track.url);
-  audioPlayer.currentTime = 0; // always reset time
-  audioPlayer.load(); // ensure metadata is loaded
+  audioPlayer.currentTime = 0;
+  audioPlayer.load();
 
   audioPlayer.play().catch(e => console.debug('audio.play() error:', e));
 
-  // Update UI elements
+  // Update UI
   titleEl.textContent = track.title || '-';
   artworkEl.src = track.artwork || 'assets/player-img/cover.png';
   artworkEl.style.objectPosition = 'center center';
@@ -49,14 +50,14 @@ function playTrack(index) {
 
   progressBar.style.width = '0%';
 
-  // Set time display after metadata loads
+  // Update duration after metadata loads
   audioPlayer.addEventListener("loadedmetadata", () => {
     if (!isNaN(audioPlayer.duration)) {
       timeDisplay.textContent = `0:00 / ${formatTime(audioPlayer.duration)}`;
     }
   }, { once: true });
 
-  // Set Media Session metadata (Android/iOS lockscreen, Bluetooth controls)
+  // Media Session API (Android/iOS lockscreen + BT controls)
   if ('mediaSession' in navigator) {
     navigator.mediaSession.metadata = new MediaMetadata({
       title: track.title || 'Unknown Track',
@@ -83,7 +84,6 @@ function playTrack(index) {
 function playNextTrack() {
   if (!tracks.length) return;
 
-  // Apply pending update before selecting next track
   if (pendingUpdate) {
     updateTrackList(true);
     pendingUpdate = false;
@@ -115,35 +115,64 @@ playBtn.addEventListener('click', () => {
   else audioPlayer.pause();
 });
 
+// Update progress bar & time
 audioPlayer.addEventListener('timeupdate', () => {
-  const percent = (audioPlayer.currentTime / audioPlayer.duration) * 100 || 0;
-  progressBar.style.width = percent + '%';
+  if (!isDragging && !isNaN(audioPlayer.duration) && audioPlayer.duration > 0) {
+    const percent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+    progressBar.style.width = percent + '%';
+  }
 
   const current = isNaN(audioPlayer.currentTime) ? 0 : audioPlayer.currentTime;
   const total = isNaN(audioPlayer.duration) ? 0 : audioPlayer.duration;
   timeDisplay.textContent = `${formatTime(current)} / ${formatTime(total)}`;
 });
 
-if (progressContainer) {
-  progressContainer.addEventListener('click', (e) => {
-    const rect = progressContainer.getBoundingClientRect();
-    const clickX = e.clientX - rect.left;
-    const percent = clickX / rect.width;
-    const newTime = percent * audioPlayer.duration;
+// ---------- PROGRESS BAR: CLICK + DRAG ---------- //
+function seek(e) {
+  if (isNaN(audioPlayer.duration)) return;
+  const rect = progressContainer.getBoundingClientRect();
+  const clickX = e.clientX - rect.left;
+  const percent = Math.min(Math.max(clickX / rect.width, 0), 1);
+  const newTime = percent * audioPlayer.duration;
+  progressBar.style.width = (percent * 100) + '%';
+  return newTime;
+}
 
-    if (!isNaN(newTime)) {
-      if (percent >= 0.99) playNextTrack();
-      else audioPlayer.currentTime = newTime;
+if (progressContainer) {
+  // Click to seek
+  progressContainer.addEventListener('click', (e) => {
+    const newTime = seek(e);
+    if (newTime !== undefined) audioPlayer.currentTime = newTime;
+  });
+
+  // Drag to seek
+  progressContainer.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    const newTime = seek(e);
+    if (newTime !== undefined) audioPlayer.currentTime = newTime;
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    if (isDragging) seek(e);
+  });
+
+  window.addEventListener('mouseup', (e) => {
+    if (isDragging) {
+      const newTime = seek(e);
+      if (newTime !== undefined) audioPlayer.currentTime = newTime;
+      isDragging = false;
     }
   });
 }
 
+// ---------- FORMAT TIME ---------- //
 function formatTime(seconds) {
   const m = Math.floor(seconds / 60);
   const s = Math.floor(seconds % 60);
   return `${m}:${s < 10 ? '0' : ''}${s}`;
 }
 
+// ---------- VOLUME CONTROL ---------- //
 if (volumeSlider) {
   audioPlayer.volume = volumeSlider.value / 100;
   volumeSlider.addEventListener('input', () => {
@@ -169,7 +198,9 @@ function toggleDropdown(event) {
     const player = document.querySelector(".musicplayer");
     const rect = player.getBoundingClientRect();
     let leftPos = rect.right + 10;
-    if (leftPos + dropdown.offsetWidth > window.innerWidth) leftPos = window.innerWidth - dropdown.offsetWidth - 10;
+    if (leftPos + dropdown.offsetWidth > window.innerWidth) {
+      leftPos = window.innerWidth - dropdown.offsetWidth - 10;
+    }
 
     dropdown.style.left = leftPos + "px";
     dropdown.style.top = rect.top + rect.height / 2 + "px";
@@ -224,7 +255,7 @@ function updateTrackList(keepCurrent = false) {
 ['excludeCD1','excludeCD2','excludeCD3','excludeCD4','playInOrder'].forEach(id => {
   const el = document.getElementById(id);
   if(el) el.addEventListener('change', () => {
-    pendingUpdate = true; // apply at next track
+    pendingUpdate = true;
   });
 });
 

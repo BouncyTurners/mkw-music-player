@@ -12,14 +12,20 @@ const volumeSlider = document.getElementById('volumeSlider');
 const progressContainer = document.querySelector('.progress-container');
 
 let cd1Tracks = [], cd2Tracks = [], cd3Tracks = [], cd4Tracks = [];
-let tracks = [];           // selected tracks
-let shuffledTracks = [];   // shuffle pool
+let tracks = [];           
+let shuffledTracks = [];   
 let currentTrack = 0;
 let playInOrder = false;
-let pendingUpdate = false; // track list update waits until next track
-let isDragging = false;    // drag state for progress bar
+let pendingUpdate = false; 
+let isDragging = false;    
 
-// ---------- SHUFFLE FUNCTION ---------- //
+// ---------- UTILS ---------- //
+function formatTime(seconds) {
+  const m = Math.floor(seconds / 60);
+  const s = Math.floor(seconds % 60);
+  return `${m}:${s < 10 ? '0' : ''}${s}`;
+}
+
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -33,13 +39,11 @@ function playTrack(index) {
   currentTrack = index;
   const track = tracks[index];
 
+  // Set source & reset UI
   audioPlayer.src = encodeURI(track.url);
-  audioPlayer.currentTime = 0;
-  audioPlayer.load();
+  progressBar.style.width = '0%';
+  timeDisplay.textContent = `0:00 / 0:00`;
 
-  audioPlayer.play().catch(e => console.debug('audio.play() error:', e));
-
-  // Update UI
   titleEl.textContent = track.title || '-';
   artworkEl.src = track.artwork || 'assets/player-img/cover.png';
   artworkEl.style.objectPosition = 'center center';
@@ -48,16 +52,16 @@ function playTrack(index) {
   gameEl.style.visibility = track.game ? 'visible' : 'hidden';
   gameEl.classList.toggle('hidden', !track.game);
 
-  progressBar.style.width = '0%';
-
-  // Update duration after metadata loads
-  audioPlayer.addEventListener("loadedmetadata", () => {
+  // Metadata loaded
+  audioPlayer.addEventListener('loadedmetadata', () => {
     if (!isNaN(audioPlayer.duration)) {
       timeDisplay.textContent = `0:00 / ${formatTime(audioPlayer.duration)}`;
     }
+    audioPlayer.currentTime = 0;
+    audioPlayer.play().catch(e => console.debug('audio.play() error:', e));
   }, { once: true });
 
-  // Media Session API (Android/iOS lockscreen + BT controls)
+  // Media Session API
   if ('mediaSession' in navigator) {
     navigator.mediaSession.metadata = new MediaMetadata({
       title: track.title || 'Unknown Track',
@@ -67,20 +71,14 @@ function playTrack(index) {
         { src: track.artwork || 'assets/player-img/cover.png', sizes: '512x512', type: 'image/png' }
       ]
     });
-
     navigator.mediaSession.setActionHandler('play', () => audioPlayer.play());
     navigator.mediaSession.setActionHandler('pause', () => audioPlayer.pause());
-    navigator.mediaSession.setActionHandler('previoustrack', () => {
-      currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
-      playTrack(currentTrack);
-    });
-    navigator.mediaSession.setActionHandler('nexttrack', () => {
-      playNextTrack();
-    });
+    navigator.mediaSession.setActionHandler('previoustrack', () => playPrevTrack());
+    navigator.mediaSession.setActionHandler('nexttrack', () => playNextTrack());
   }
 }
 
-// ---------- NEXT TRACK ---------- //
+// ---------- NEXT / PREV TRACK ---------- //
 function playNextTrack() {
   if (!tracks.length) return;
 
@@ -102,74 +100,71 @@ function playNextTrack() {
   }
 }
 
+function playPrevTrack() {
+  if (!tracks.length) return;
+  if (playInOrder) {
+    currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
+    playTrack(currentTrack);
+  } else {
+    // Optional: play previous in shuffled history
+    playNextTrack(); 
+  }
+}
+
 function skipTrack() {
   playNextTrack();
 }
 
 // ---------- EVENT LISTENERS ---------- //
 audioPlayer.addEventListener('ended', playNextTrack);
-nextBtn.addEventListener('click', skipTrack);
 
 playBtn.addEventListener('click', () => {
   if (audioPlayer.paused) audioPlayer.play();
   else audioPlayer.pause();
 });
 
-// Update progress bar & time
-audioPlayer.addEventListener('timeupdate', () => {
-  if (!isDragging && !isNaN(audioPlayer.duration) && audioPlayer.duration > 0) {
-    const percent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
-    progressBar.style.width = percent + '%';
-  }
+nextBtn.addEventListener('click', skipTrack);
 
-  const current = isNaN(audioPlayer.currentTime) ? 0 : audioPlayer.currentTime;
-  const total = isNaN(audioPlayer.duration) ? 0 : audioPlayer.duration;
-  timeDisplay.textContent = `${formatTime(current)} / ${formatTime(total)}`;
+audioPlayer.addEventListener('timeupdate', () => {
+  if (isDragging || isNaN(audioPlayer.duration)) return;
+
+  const percent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+  progressBar.style.width = percent + '%';
+  timeDisplay.textContent = `${formatTime(audioPlayer.currentTime)} / ${formatTime(audioPlayer.duration)}`;
 });
 
-// ---------- PROGRESS BAR: CLICK + DRAG ---------- //
+// ---------- PROGRESS BAR SEEK ---------- //
 function seek(e) {
   if (isNaN(audioPlayer.duration)) return;
   const rect = progressContainer.getBoundingClientRect();
   const clickX = e.clientX - rect.left;
   const percent = Math.min(Math.max(clickX / rect.width, 0), 1);
-  const newTime = percent * audioPlayer.duration;
   progressBar.style.width = (percent * 100) + '%';
-  return newTime;
+  return percent * audioPlayer.duration;
 }
 
 if (progressContainer) {
-  // Click to seek
   progressContainer.addEventListener('click', (e) => {
-    const newTime = seek(e);
-    if (newTime !== undefined) audioPlayer.currentTime = newTime;
+    audioPlayer.currentTime = seek(e);
   });
 
-  // Drag to seek
-  progressContainer.addEventListener('mousedown', (e) => {
-    isDragging = true;
-    const newTime = seek(e);
-    if (newTime !== undefined) audioPlayer.currentTime = newTime;
-  });
+  progressContainer.addEventListener('mousedown', () => { isDragging = true; });
 
   window.addEventListener('mousemove', (e) => {
-    if (isDragging) seek(e);
+    if (isDragging) {
+      const rect = progressContainer.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const percent = Math.min(Math.max(clickX / rect.width, 0), 1);
+      progressBar.style.width = (percent * 100) + '%';
+    }
   });
 
   window.addEventListener('mouseup', (e) => {
     if (isDragging) {
-      const newTime = seek(e);
-      if (newTime !== undefined) audioPlayer.currentTime = newTime;
+      audioPlayer.currentTime = seek(e);
       isDragging = false;
     }
   });
-}
-
-// ---------- FORMAT TIME ---------- //
-function formatTime(seconds) {
-  const m = Math.floor(seconds / 60);
-  const s = Math.floor(seconds % 60);
-  return `${m}:${s < 10 ? '0' : ''}${s}`;
 }
 
 // ---------- VOLUME CONTROL ---------- //
@@ -194,22 +189,19 @@ function toggleDropdown(event) {
   } else {
     dropdown.style.display = "flex";
     toggle.classList.add("open");
-
     const player = document.querySelector(".musicplayer");
     const rect = player.getBoundingClientRect();
     let leftPos = rect.right + 10;
     if (leftPos + dropdown.offsetWidth > window.innerWidth) {
       leftPos = window.innerWidth - dropdown.offsetWidth - 10;
     }
-
     dropdown.style.left = leftPos + "px";
     dropdown.style.top = rect.top + rect.height / 2 + "px";
     dropdown.style.transform = "translateY(-50%)";
   }
 }
 window.toggleDropdown = toggleDropdown;
-
-document.addEventListener("click", (event) => {
+document.addEventListener("click", () => {
   if (!dropdown || !toggle) return;
   if (!dropdown.contains(event.target) && !toggle.contains(event.target)) {
     dropdown.style.display = "none";
@@ -217,7 +209,7 @@ document.addEventListener("click", (event) => {
   }
 });
 
-// ---------- UPDATE TRACK LIST ---------- //
+// ---------- TRACK LIST ---------- //
 function updateTrackList(keepCurrent = false) {
   const excludeCD1 = document.getElementById('excludeCD1').checked;
   const excludeCD2 = document.getElementById('excludeCD2').checked;
@@ -241,22 +233,15 @@ function updateTrackList(keepCurrent = false) {
     }
   }
 
-  if (playInOrder) {
-    if (!keepCurrent && tracks.length) playTrack(0);
-  } else {
-    if (!keepCurrent && !audioPlayer.src && shuffledTracks.length) {
-      const nextIndex = shuffledTracks.shift();
-      playTrack(nextIndex);
-    }
+  if (!keepCurrent && tracks.length) {
+    playTrack(playInOrder ? 0 : shuffledTracks.shift());
   }
 }
 
-// ---------- CHECKBOX / DROPDOWN EVENTS ---------- //
+// ---------- CHECKBOX EVENTS ---------- //
 ['excludeCD1','excludeCD2','excludeCD3','excludeCD4','playInOrder'].forEach(id => {
   const el = document.getElementById(id);
-  if(el) el.addEventListener('change', () => {
-    pendingUpdate = true;
-  });
+  if(el) el.addEventListener('change', () => { pendingUpdate = true; });
 });
 
 // ---------- LOAD TRACKS ---------- //

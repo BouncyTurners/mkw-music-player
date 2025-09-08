@@ -145,7 +145,7 @@
       },
       {
         "game": "WarioWare, Inc.: Mega Microgame$!",
-        "artwork": "assets/CD3-artwork/WarioWare.png",
+        "artwork": "assets/CD3-artwork/WarioWare.jpg",
         "tracks": [
           {"trackNumber": 60, "title": "Drifting Away", "url": "audio/CD3/60 - Drifting Away (WarioWare, Inc.- Mega Microgame$!) - Ryoji Yoshitomi & Kyoko Miyamoto.m4a", "composer": "Ryoji Yoshitomi & Kyoko Miyamoto"}
         ]

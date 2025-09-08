@@ -14,10 +14,11 @@ const progressContainer = document.querySelector('.progress-container');
 let cd1Tracks = [], cd2Tracks = [], cd3Tracks = [], cd4Tracks = [];
 let tracks = [];           
 let shuffledTracks = [];   
-let currentTrack = 0;
+let currentTrack = -1;
 let playInOrder = false;
 let pendingUpdate = false; 
 let isDragging = false;    
+let isNewTrack = false;    
 
 // ---------- UTILS ---------- //
 function formatTime(seconds) {
@@ -36,10 +37,17 @@ function shuffleArray(array) {
 // ---------- PLAY TRACK ---------- //
 function playTrack(index) {
   if (!tracks.length) return;
+
+  if (currentTrack === index && audioPlayer.src) {
+    // Zelfde track opnieuw afspelen, gewoon play()
+    audioPlayer.play().catch(e => console.debug('audio.play() error:', e));
+    return;
+  }
+
   currentTrack = index;
   const track = tracks[index];
+  isNewTrack = true;
 
-  // Set source & reset UI
   audioPlayer.src = encodeURI(track.url);
   progressBar.style.width = '0%';
   timeDisplay.textContent = `0:00 / 0:00`;
@@ -52,16 +60,23 @@ function playTrack(index) {
   gameEl.style.visibility = track.game ? 'visible' : 'hidden';
   gameEl.classList.toggle('hidden', !track.game);
 
-  // Metadata loaded
+  // Metadata geladen
   audioPlayer.addEventListener('loadedmetadata', () => {
     if (!isNaN(audioPlayer.duration)) {
       timeDisplay.textContent = `0:00 / ${formatTime(audioPlayer.duration)}`;
     }
-    audioPlayer.currentTime = 0;
-    audioPlayer.play().catch(e => console.debug('audio.play() error:', e));
+    if (isNewTrack) {
+      audioPlayer.currentTime = 0;
+      audioPlayer.play().catch(e => console.debug('audio.play() error:', e));
+      isNewTrack = false;
+    }
   }, { once: true });
 
-  // Media Session API
+  setupMediaSession(track);
+}
+
+// ---------- MEDIA SESSION API ---------- //
+function setupMediaSession(track) {
   if ('mediaSession' in navigator) {
     navigator.mediaSession.metadata = new MediaMetadata({
       title: track.title || 'Unknown Track',
@@ -71,6 +86,7 @@ function playTrack(index) {
         { src: track.artwork || 'assets/player-img/cover.png', sizes: '512x512', type: 'image/png' }
       ]
     });
+
     navigator.mediaSession.setActionHandler('play', () => audioPlayer.play());
     navigator.mediaSession.setActionHandler('pause', () => audioPlayer.pause());
     navigator.mediaSession.setActionHandler('previoustrack', () => playPrevTrack());
@@ -106,7 +122,7 @@ function playPrevTrack() {
     currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
     playTrack(currentTrack);
   } else {
-    // Optional: play previous in shuffled history
+    // Optional: speel vorige track in shuffled history
     playNextTrack(); 
   }
 }
@@ -201,7 +217,7 @@ function toggleDropdown(event) {
   }
 }
 window.toggleDropdown = toggleDropdown;
-document.addEventListener("click", () => {
+document.addEventListener("click", (event) => {
   if (!dropdown || !toggle) return;
   if (!dropdown.contains(event.target) && !toggle.contains(event.target)) {
     dropdown.style.display = "none";

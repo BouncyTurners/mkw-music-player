@@ -1,4 +1,4 @@
-// ---------- ELEMENTEN ---------- //
+// ---------- ELEMENTS ---------- //
 const audioPlayer = document.getElementById('audioPlayer');
 const titleEl = document.getElementById('title');
 const gameEl = document.getElementById('game');
@@ -12,11 +12,11 @@ const volumeSlider = document.getElementById('volumeSlider');
 const progressContainer = document.querySelector('.progress-container');
 
 let cd1Tracks = [], cd2Tracks = [], cd3Tracks = [], cd4Tracks = [];
-let tracks = [];           // geselecteerde tracks
-let shuffledTracks = [];   // voor shuffle zonder herhaling
+let tracks = [];           // selected tracks
+let shuffledTracks = [];   // shuffle pool
 let currentTrack = 0;
 let playInOrder = false;
-let pendingUpdate = false; // checkbox/dropdown wijzigingen wachten tot volgende track
+let pendingUpdate = false; // track list update waits until next track
 
 // ---------- SHUFFLE FUNCTION ---------- //
 function shuffleArray(array) {
@@ -33,8 +33,12 @@ function playTrack(index) {
   const track = tracks[index];
 
   audioPlayer.src = encodeURI(track.url);
+  audioPlayer.currentTime = 0; // always reset time
+  audioPlayer.load(); // ensure metadata is loaded
+
   audioPlayer.play().catch(e => console.debug('audio.play() error:', e));
 
+  // Update UI elements
   titleEl.textContent = track.title || '-';
   artworkEl.src = track.artwork || 'assets/player-img/cover.png';
   artworkEl.style.objectPosition = 'center center';
@@ -44,15 +48,44 @@ function playTrack(index) {
   gameEl.classList.toggle('hidden', !track.game);
 
   progressBar.style.width = '0%';
+
+  // Set time display after metadata loads
+  audioPlayer.addEventListener("loadedmetadata", () => {
+    if (!isNaN(audioPlayer.duration)) {
+      timeDisplay.textContent = `0:00 / ${formatTime(audioPlayer.duration)}`;
+    }
+  }, { once: true });
+
+  // Set Media Session metadata (Android/iOS lockscreen, Bluetooth controls)
+  if ('mediaSession' in navigator) {
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: track.title || 'Unknown Track',
+      artist: track.game || 'Mario Kart World',
+      album: "Mario Kart World Radio",
+      artwork: [
+        { src: track.artwork || 'assets/player-img/cover.png', sizes: '512x512', type: 'image/png' }
+      ]
+    });
+
+    navigator.mediaSession.setActionHandler('play', () => audioPlayer.play());
+    navigator.mediaSession.setActionHandler('pause', () => audioPlayer.pause());
+    navigator.mediaSession.setActionHandler('previoustrack', () => {
+      currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
+      playTrack(currentTrack);
+    });
+    navigator.mediaSession.setActionHandler('nexttrack', () => {
+      playNextTrack();
+    });
+  }
 }
 
 // ---------- NEXT TRACK ---------- //
 function playNextTrack() {
   if (!tracks.length) return;
 
-  // Voer pending update uit voordat we de volgende track kiezen
+  // Apply pending update before selecting next track
   if (pendingUpdate) {
-    updateTrackList(true); // true = behoud huidige track in shuffle
+    updateTrackList(true);
     pendingUpdate = false;
   }
 
@@ -61,7 +94,6 @@ function playNextTrack() {
     playTrack(currentTrack);
   } else {
     if (!shuffledTracks.length) {
-      // alle nummers gespeeld → nieuwe shuffle
       shuffledTracks = [...tracks.keys()];
       shuffleArray(shuffledTracks);
     }
@@ -192,7 +224,7 @@ function updateTrackList(keepCurrent = false) {
 ['excludeCD1','excludeCD2','excludeCD3','excludeCD4','playInOrder'].forEach(id => {
   const el = document.getElementById(id);
   if(el) el.addEventListener('change', () => {
-    pendingUpdate = true; // pas toe bij volgende track
+    pendingUpdate = true; // apply at next track
   });
 });
 

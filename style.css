@@ -46,7 +46,7 @@ audio {
 
 .audio-player {
     display: flex;
-    flex-direction: column; /* progress bar boven, knoppen onder */
+    flex-direction: column;
     align-items: center;
     gap: 10px;
     width: 100%;
@@ -57,7 +57,7 @@ audio {
 }
 
 .audio-player .progress-container {
-    width: 100%; /* progress bar neemt volledige breedte */
+    width: 100%;
 }
 
 .audio-player button {
@@ -100,13 +100,13 @@ audio {
 
 .button-row {
     display: flex;
-    flex-direction: row; /* knoppen naast elkaar */
-    gap: 10px; /* ruimte tussen knoppen */
+    flex-direction: row;
+    gap: 10px;
 }
 
 #game {
-    min-height: 1.2em; /* reserveer vaste hoogte voor tekstregel */
-    visibility: hidden; /* standaard onzichtbaar */
+    min-height: 1.2em;
+    visibility: hidden;
 }
 
 .hidden {
@@ -145,7 +145,6 @@ article.musicplayer {
     background: rgb(41, 41, 41);
     padding: 1.5rem;
     height: 275px;
-    /* height verwijderd om flex hoogte automatisch te laten bepalen */
 }
 
 /* ---------- ALBUM ART ---------- */
@@ -154,24 +153,24 @@ article.musicplayer {
     height: 100%;
     object-fit: cover;
     border-radius: 15%;
-    transition: transform 0.3s ease; /* smooth schuif-effect */
-  }
+    transition: transform 0.3s ease;
+}
 
 .artwork-wrapper {
-    width: 275px;          /* vaste breedte */
-    height: 275px;         /* vaste hoogte */
-    overflow: hidden;      /* voorkomt dat afbeelding buiten container komt */
-    flex-shrink: 0;        /* voorkomt verkleinen in flexbox */
+    width: 275px;
+    height: 275px;
+    overflow: hidden;
+    flex-shrink: 0;
     display: flex;
     justify-content: center; 
     align-items: center;
-  }
+}
 
 .MK64-img {
     transform: translateX(-50px);
 }
 
-/* ---------- BLUE BOX METADATA ---------- */
+/* ---------- METADATA BOX ---------- */
 .metadata-box {
     border-radius: 15px;
     display: flex;
@@ -179,9 +178,9 @@ article.musicplayer {
     align-items: center;
     justify-content: center;
     width: 100%;
-    max-width: 350px;   /* fixed box width */
+    max-width: 350px;
     height: 275px;
-    padding: 20px;      /* minder padding om flex overflow te vermijden */
+    padding: 20px;
     box-sizing: border-box;
 }
 
@@ -189,8 +188,8 @@ article.musicplayer {
 .metadata-box h3,
 .metadata-box h5 {
     text-align: center;
-    word-wrap: break-word; /* lange titels netjes op meerdere regels */
-    margin: 5px 0; /* kleine marge boven en onder */
+    word-wrap: break-word;
+    margin: 5px 0;
 }
 
 /* ---------- METADATA ---------- */
@@ -201,7 +200,7 @@ article.musicplayer {
     text-align: center;
     gap: 4px;
     width: 100%;
-    min-width: 0;       /* essentieel om content niet te laten uitrekken */
+    min-width: 0;
 }
 
 /* ---------- VOLUME ---------- */
@@ -238,7 +237,7 @@ article.musicplayer {
     border: none;
 }
 
-/* ---------- DROPDOWN KNOP ---------- */
+/* ---------- DROPDOWN BUTTON ---------- */
 .dropdown-toggle {
     position: absolute;
     top: 50%;
@@ -329,7 +328,7 @@ article.musicplayer {
     transform: translateX(22px);
 }
 
-/* ---------- SKIP KNOP RECHTHOEK ---------- */
+/* ---------- SKIP BUTTON RECTANGLE ---------- */
 .floating-btn {
     background: rgb(41, 41, 41);
     color: white;
@@ -355,12 +354,11 @@ article.musicplayer {
     flex-direction: column;
     align-items: center;
     gap: 10px;
-    width: 100%;        /* 100% van metadata-box */
+    width: 100%;
     max-width: 100%;
-    min-width: 0;       /* voorkomt dat lange titels breder maken */
+    min-width: 0;
     box-sizing: border-box;
 }
-
 
 .progress-wrapper {
     width: 100%;
@@ -377,24 +375,31 @@ article.musicplayer {
 }
 
 .audio-player .progress-container {
-    width: 100%;           /* neem altijd volledige breedte van de wrapper */
-    max-width: 350px;      /* voorkom dat het groter wordt */
+    width: 100%;
+    max-width: 350px;
     box-sizing: border-box;
-    min-width: 0;          /* zeer belangrijk: voorkomt dat flex-item de inhoud volgt */
+    min-width: 0;
     height: 8px;
     border-radius: 10px;
 }
 
+.controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 .controls button {
     font-size: 16px;
-    padding: 12px 24px;
+    padding: 0px 24px;
     border-radius: 8px;
     cursor: pointer;
-    min-width: 100px; /* voorkom dat hij te smal wordt */
+    min-width: 5px;
     box-sizing: border-box;
-    min-height: 40px;
-  }
+    min-height: 45px;
+}
 
+/* ---------- MEDIA QUERIES ---------- */
 @media screen and (max-width: 700px) {
     #skipBtnMobile {
         position: relative;
@@ -409,7 +414,7 @@ article.musicplayer {
     }
 
     .switch {
-        font-size: 14px;     /* kleinere tekst op mobiel */
+        font-size: 14px;
     }
 
     article.musicplayer {
@@ -417,12 +422,12 @@ article.musicplayer {
         align-items: center;
         gap: 10px;
         width: 90%;
-        max-width: 300px; /* vaste max breedte */
+        max-width: 300px;
         height: auto;
     }
 
     .artwork-wrapper {
-        width: 250px;   /* vaste breedte, gelijk aan afbeelding */
+        width: 250px;
         height: 250px;
         overflow: hidden;
         display: flex;
@@ -436,36 +441,34 @@ article.musicplayer {
         object-fit: cover;
     }
 
-    /* Zet de volume slider lager */
     .volume-control-horizontal {
-        margin-top: 25px; /* verhoog deze waarde om slider verder naar beneden te zetten */
+        margin-top: 25px;
     }
 
     .audio-player {
         width: 100%;
         max-width: 100%;
-        min-width: 0;           /* voorkomt uitrekken */
+        min-width: 0;
         box-sizing: border-box;
         align-items: center;
     }
 
     .audio-player .progress-container {
-        width: 100%; /* altijd 100% van de parent */
-        max-width: 350px; /* optioneel: max breedte van de muziekplayer box */
+        width: 100%;
+        max-width: 350px;
         box-sizing: border-box;
     }
-    
 
     .musicplayer img#artwork {
         width: 250px;
         height: 250px;
-        flex-shrink: 0; /* voorkomt verkleinen in flexbox */
+        flex-shrink: 0;
     }
 
     .metadata-box {
-        width: 100%;     /* volledige breedte van artikel */
-        max-width: 300px; /* zelfde max als artikel */
-        padding: 10px;   /* kleinere padding om tekst niet te pushen */
+        width: 100%;
+        max-width: 300px;
+        padding: 10px;
         box-sizing: border-box;
     }
 
@@ -480,21 +483,21 @@ article.musicplayer {
     }
 
     #metadata h3 {
-        font-size: 1rem;          /* kleiner lettertype op mobiel */
+        font-size: 1rem;
         line-height: 1.2rem;
-        word-break: break-word;    /* forceert wrap */
+        word-break: break-word;
         text-align: center;
         margin: 5px 0;
     }
 
     .controls button {
         font-size: 16px;
-        padding: 12px 24px;
+        padding: 10px 20px;
         border-radius: 8px;
         cursor: pointer;
-        min-width: 100px;
+        min-width: 10px;
         min-height: 45px;
-      }
+    }
 
     .dropdown-toggle {
         position: absolute;

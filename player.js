@@ -1,10 +1,11 @@
-// ---------- ELEMENTS ---------- //
+// ---------- ELEMENTS ----------
 const audioPlayer = document.getElementById('audioPlayer');
 const titleEl = document.getElementById('title');
 const gameEl = document.getElementById('game');
 const artworkEl = document.getElementById('artwork');
 
 const playBtn = document.getElementById('playBtn');
+const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
 const progressBar = document.getElementById('progressBar');
 const timeDisplay = document.getElementById('timeDisplay');
@@ -12,13 +13,16 @@ const volumeSlider = document.getElementById('volumeSlider');
 const progressContainer = document.querySelector('.progress-container');
 
 let cd1Tracks = [], cd2Tracks = [], cd3Tracks = [], cd4Tracks = [];
-let tracks = [];           // selected tracks
-let shuffledTracks = [];   // shuffle pool
+let tracks = [];
+let shuffledTracks = [];
 let currentTrack = 0;
 let playInOrder = false;
-let pendingUpdate = false; // track list update waits until next track
+let pendingUpdate = false;
 
-// ---------- SHUFFLE FUNCTION ---------- //
+// History voor vorige track
+let history = [];
+
+// ---------- SHUFFLE FUNCTION ----------
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -26,37 +30,42 @@ function shuffleArray(array) {
   }
 }
 
-// ---------- PLAY TRACK ---------- //
-function playTrack(index) {
+// ---------- PLAY TRACK ----------
+function playTrack(index, fromHistory = false) {
   if (!tracks.length) return;
+
   currentTrack = index;
   const track = tracks[index];
 
   audioPlayer.src = encodeURI(track.url);
-  audioPlayer.currentTime = 0; // always reset time
-  audioPlayer.load(); // ensure metadata is loaded
-
+  audioPlayer.currentTime = 0;
+  audioPlayer.load();
   audioPlayer.play().catch(e => console.debug('audio.play() error:', e));
 
-  // Update UI elements
+  // Alleen toevoegen aan history als dit GEEN vorige-track actie is
+  if (!fromHistory) {
+    history.push(index);
+    if (!playInOrder) {
+      shuffledTracks = shuffledTracks.filter(i => i !== index);
+    }
+  }
+
+  // Update UI
   titleEl.textContent = track.title || '-';
   artworkEl.src = track.artwork || 'assets/player-img/cover.png';
   artworkEl.style.objectPosition = 'center center';
-
   gameEl.textContent = track.game || '';
   gameEl.style.visibility = track.game ? 'visible' : 'hidden';
   gameEl.classList.toggle('hidden', !track.game);
-
   progressBar.style.width = '0%';
 
-  // Set time display after metadata loads
   audioPlayer.addEventListener("loadedmetadata", () => {
     if (!isNaN(audioPlayer.duration)) {
       timeDisplay.textContent = `0:00 / ${formatTime(audioPlayer.duration)}`;
     }
   }, { once: true });
 
-  // Set Media Session metadata (Android/iOS lockscreen, Bluetooth controls)
+  // Media Session API
   if ('mediaSession' in navigator) {
     navigator.mediaSession.metadata = new MediaMetadata({
       title: track.title || 'Unknown Track',
@@ -69,21 +78,15 @@ function playTrack(index) {
 
     navigator.mediaSession.setActionHandler('play', () => audioPlayer.play());
     navigator.mediaSession.setActionHandler('pause', () => audioPlayer.pause());
-    navigator.mediaSession.setActionHandler('previoustrack', () => {
-      currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
-      playTrack(currentTrack);
-    });
-    navigator.mediaSession.setActionHandler('nexttrack', () => {
-      playNextTrack();
-    });
+    navigator.mediaSession.setActionHandler('previoustrack', playPreviousTrack);
+    navigator.mediaSession.setActionHandler('nexttrack', playNextTrack);
   }
 }
 
-// ---------- NEXT TRACK ---------- //
+// ---------- NEXT TRACK ----------
 function playNextTrack() {
   if (!tracks.length) return;
 
-  // Apply pending update before selecting next track
   if (pendingUpdate) {
     updateTrackList(true);
     pendingUpdate = false;
@@ -94,7 +97,7 @@ function playNextTrack() {
     playTrack(currentTrack);
   } else {
     if (!shuffledTracks.length) {
-      shuffledTracks = [...tracks.keys()];
+      shuffledTracks = [...tracks.keys()].filter(i => i !== currentTrack);
       shuffleArray(shuffledTracks);
     }
     const nextIndex = shuffledTracks.shift();
@@ -106,10 +109,30 @@ function skipTrack() {
   playNextTrack();
 }
 
-// ---------- EVENT LISTENERS ---------- //
+// ---------- PREVIOUS TRACK ----------
+function playPreviousTrack() {
+  if (!tracks.length) return;
+
+  if (audioPlayer.currentTime > 3) {
+    audioPlayer.currentTime = 0;
+    audioPlayer.play();
+    return;
+  }
+
+  if (history.length > 1) {
+    history.pop();
+    const prevIndex = history[history.length - 1];
+    playTrack(prevIndex, true);
+  } else {
+    audioPlayer.currentTime = 0;
+    audioPlayer.play();
+  }
+}
+
+// ---------- EVENT LISTENERS ----------
 audioPlayer.addEventListener('ended', playNextTrack);
 nextBtn.addEventListener('click', skipTrack);
-
+prevBtn.addEventListener('click', playPreviousTrack);
 playBtn.addEventListener('click', () => {
   if (audioPlayer.paused) audioPlayer.play();
   else audioPlayer.pause();
@@ -118,7 +141,6 @@ playBtn.addEventListener('click', () => {
 audioPlayer.addEventListener('timeupdate', () => {
   const percent = (audioPlayer.currentTime / audioPlayer.duration) * 100 || 0;
   progressBar.style.width = percent + '%';
-
   const current = isNaN(audioPlayer.currentTime) ? 0 : audioPlayer.currentTime;
   const total = isNaN(audioPlayer.duration) ? 0 : audioPlayer.duration;
   timeDisplay.textContent = `${formatTime(current)} / ${formatTime(total)}`;
@@ -130,7 +152,6 @@ if (progressContainer) {
     const clickX = e.clientX - rect.left;
     const percent = clickX / rect.width;
     const newTime = percent * audioPlayer.duration;
-
     if (!isNaN(newTime)) {
       if (percent >= 0.99) playNextTrack();
       else audioPlayer.currentTime = newTime;
@@ -151,7 +172,7 @@ if (volumeSlider) {
   });
 }
 
-// ---------- DROPDOWN ---------- //
+// ---------- DROPDOWN ----------
 const dropdown = document.querySelector(".dropdown");
 const toggle = document.querySelector(".dropdown-toggle");
 
@@ -165,12 +186,12 @@ function toggleDropdown(event) {
   } else {
     dropdown.style.display = "flex";
     toggle.classList.add("open");
-
     const player = document.querySelector(".musicplayer");
     const rect = player.getBoundingClientRect();
     let leftPos = rect.right + 10;
-    if (leftPos + dropdown.offsetWidth > window.innerWidth) leftPos = window.innerWidth - dropdown.offsetWidth - 10;
-
+    if (leftPos + dropdown.offsetWidth > window.innerWidth) {
+      leftPos = window.innerWidth - dropdown.offsetWidth - 10;
+    }
     dropdown.style.left = leftPos + "px";
     dropdown.style.top = rect.top + rect.height / 2 + "px";
     dropdown.style.transform = "translateY(-50%)";
@@ -186,7 +207,7 @@ document.addEventListener("click", (event) => {
   }
 });
 
-// ---------- UPDATE TRACK LIST ---------- //
+// ---------- UPDATE TRACK LIST ----------
 function updateTrackList(keepCurrent = false) {
   const excludeCD1 = document.getElementById('excludeCD1').checked;
   const excludeCD2 = document.getElementById('excludeCD2').checked;
@@ -201,7 +222,7 @@ function updateTrackList(keepCurrent = false) {
   if (!excludeCD4) tracks.push(...(playInOrder ? cd4Tracks.sort((a,b)=> (a.trackNumber||0)-(b.trackNumber||0)) : [...cd4Tracks]));
 
   if (!playInOrder) {
-    shuffledTracks = [...tracks.keys()];
+    shuffledTracks = [...tracks.keys()].filter(i => i !== currentTrack);
     shuffleArray(shuffledTracks);
 
     if (keepCurrent && currentTrack < tracks.length) {
@@ -210,25 +231,26 @@ function updateTrackList(keepCurrent = false) {
     }
   }
 
-  if (playInOrder) {
-    if (!keepCurrent && tracks.length) playTrack(0);
-  } else {
-    if (!keepCurrent && !audioPlayer.src && shuffledTracks.length) {
-      const nextIndex = shuffledTracks.shift();
-      playTrack(nextIndex);
+  // Start track als nog niet geladen
+  if (!audioPlayer.src && tracks.length) {
+    if (playInOrder) {
+      currentTrack = 0;
+    } else {
+      currentTrack = Math.floor(Math.random() * tracks.length);
     }
+    playTrack(currentTrack);
   }
 }
 
-// ---------- CHECKBOX / DROPDOWN EVENTS ---------- //
+// ---------- CHECKBOX EVENTS ----------
 ['excludeCD1','excludeCD2','excludeCD3','excludeCD4','playInOrder'].forEach(id => {
   const el = document.getElementById(id);
   if(el) el.addEventListener('change', () => {
-    pendingUpdate = true; // apply at next track
+    pendingUpdate = true;
   });
 });
 
-// ---------- LOAD TRACKS ---------- //
+// ---------- LOAD TRACKS ----------
 Promise.all([
   fetch('./tracksCD1.json').then(res => res.json()),
   fetch('./tracksCD2.json').then(res => res.json()),

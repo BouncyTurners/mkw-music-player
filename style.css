@@ -240,13 +240,13 @@ article.musicplayer {
 /* ---------- DROPDOWN BUTTON ---------- */
 .dropdown-toggle {
     position: absolute; /* of relative t.o.v. parent */
-    top: 50%;           /* pas aan afhankelijk van waar je hem wilt */
+    top: 84%;           /* pas aan afhankelijk van waar je hem wilt */
     right: 5%;           /* of left: 0; afhankelijk van positie */
     transform: translateY(-50%); /* center horizontaal en verticaal */
     width: 40px;        /* cirkelbreedte */
     height: 40px;       /* cirkelhoogte */
     border-radius: 50%; /* maakt het een cirkel */
-    background-color: #3e3e3e;
+    background-color: #3e3e3e00;
     border: none;
     cursor: pointer;
     display: flex;
@@ -600,7 +600,6 @@ i {
         top: 63%;
         right: 5px;
         transform: translateY(-50%);
-        background-color: #3e3e3e00;
     }
 
     .progress-wrapper,
@@ -649,6 +648,11 @@ i {
         width: 100%;
         max-width: 300px;
         order: 0;
+    }
+
+    .dropdown-toggle {
+        top: 65%;
+        right: 5px;
     }
 }
 
@@ -751,10 +755,9 @@ i {
 
     .dropdown-toggle {
         position: absolute;
-        top: 50%;
+        top: 63%;
         right: 0px;
         transform: translateY(-50%);
-        background-color: #3e3e3e;
     }
 
     .progress-wrapper,

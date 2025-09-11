@@ -103,18 +103,20 @@ function playNextTrack() {
   if (historyPointer < history.length - 1) {
     historyPointer++;
     playTrack(history[historyPointer], true);
+    return;
+  }
+
+  // Speel volgende track in order of shuffle
+  if (playInOrder) {
+    const nextIndex = (currentTrack + 1) % tracks.length;
+    playTrack(nextIndex);
   } else {
-    if (playInOrder) {
-      currentTrack = (currentTrack + 1) % tracks.length;
-      playTrack(currentTrack);
-    } else {
-      if (!shuffledTracks.length) {
-        shuffledTracks = [...tracks.keys()].filter(i => i !== currentTrack);
-        shuffleArray(shuffledTracks);
-      }
-      const nextIndex = shuffledTracks.shift();
-      playTrack(nextIndex);
+    if (!shuffledTracks.length) {
+      shuffledTracks = [...tracks.keys()].filter(i => i !== currentTrack);
+      shuffleArray(shuffledTracks);
     }
+    const nextIndex = shuffledTracks.shift();
+    playTrack(nextIndex);
   }
 }
 

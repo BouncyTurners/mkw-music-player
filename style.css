@@ -128,7 +128,7 @@ footer {
     opacity: 20%;
     font-family: MKWorld;
     font-weight: normal;
-    pointer-events: auto;
+    pointer-events: none;
 }
 
 /* ---------- MUSIC PLAYER ---------- */

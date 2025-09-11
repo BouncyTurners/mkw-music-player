@@ -12,6 +12,7 @@ const timeDisplay = document.getElementById('timeDisplay');
 const volumeSlider = document.getElementById('volumeSlider');
 const progressContainer = document.querySelector('.progress-container');
 
+// ---------- TRACK DATA ----------
 let cd1Tracks = [], cd2Tracks = [], cd3Tracks = [], cd4Tracks = [];
 let tracks = [];
 let shuffledTracks = [];
@@ -19,8 +20,9 @@ let currentTrack = 0;
 let playInOrder = false;
 let pendingUpdate = false;
 
-// History voor vorige track
+// ---------- HISTORY SYSTEM ----------
 let history = [];
+let historyPointer = -1; // positie in de geschiedenis bij prev/next
 
 // ---------- SHUFFLE FUNCTION ----------
 function shuffleArray(array) {
@@ -42,15 +44,20 @@ function playTrack(index, fromHistory = false) {
   audioPlayer.load();
   audioPlayer.play().catch(e => console.debug('audio.play() error:', e));
 
-  // Alleen toevoegen aan history als dit GEEN vorige-track actie is
   if (!fromHistory) {
+    // Als we terug zijn gegaan in history en een nieuwe track spelen, trim alles ná pointer
+    if (historyPointer < history.length - 1) {
+      history = history.slice(0, historyPointer + 1);
+    }
     history.push(index);
+    historyPointer = history.length - 1;
+
     if (!playInOrder) {
       shuffledTracks = shuffledTracks.filter(i => i !== index);
     }
   }
 
-  // Update UI
+  // ---------- UPDATE UI ----------
   titleEl.textContent = track.title || '-';
   artworkEl.src = track.artwork || 'assets/player-img/cover.png';
   artworkEl.style.objectPosition = 'center center';
@@ -65,7 +72,7 @@ function playTrack(index, fromHistory = false) {
     }
   }, { once: true });
 
-  // Media Session API
+  // ---------- MEDIA SESSION ----------
   if ('mediaSession' in navigator) {
     navigator.mediaSession.metadata = new MediaMetadata({
       title: track.title || 'Unknown Track',
@@ -92,16 +99,22 @@ function playNextTrack() {
     pendingUpdate = false;
   }
 
-  if (playInOrder) {
-    currentTrack = (currentTrack + 1) % tracks.length;
-    playTrack(currentTrack);
+  // Eerst check historyPointer: als we eerder teruggingen
+  if (historyPointer < history.length - 1) {
+    historyPointer++;
+    playTrack(history[historyPointer], true);
   } else {
-    if (!shuffledTracks.length) {
-      shuffledTracks = [...tracks.keys()].filter(i => i !== currentTrack);
-      shuffleArray(shuffledTracks);
+    if (playInOrder) {
+      currentTrack = (currentTrack + 1) % tracks.length;
+      playTrack(currentTrack);
+    } else {
+      if (!shuffledTracks.length) {
+        shuffledTracks = [...tracks.keys()].filter(i => i !== currentTrack);
+        shuffleArray(shuffledTracks);
+      }
+      const nextIndex = shuffledTracks.shift();
+      playTrack(nextIndex);
     }
-    const nextIndex = shuffledTracks.shift();
-    playTrack(nextIndex);
   }
 }
 
@@ -119,10 +132,9 @@ function playPreviousTrack() {
     return;
   }
 
-  if (history.length > 1) {
-    history.pop();
-    const prevIndex = history[history.length - 1];
-    playTrack(prevIndex, true);
+  if (historyPointer > 0) {
+    historyPointer--;
+    playTrack(history[historyPointer], true);
   } else {
     audioPlayer.currentTime = 0;
     audioPlayer.play();
@@ -233,11 +245,7 @@ function updateTrackList(keepCurrent = false) {
 
   // Start track als nog niet geladen
   if (!audioPlayer.src && tracks.length) {
-    if (playInOrder) {
-      currentTrack = 0;
-    } else {
-      currentTrack = Math.floor(Math.random() * tracks.length);
-    }
+    currentTrack = playInOrder ? 0 : Math.floor(Math.random() * tracks.length);
     playTrack(currentTrack);
   }
 }

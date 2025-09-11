@@ -37,7 +37,7 @@
     },
     {
       "game": "Mario Kart: Super Circuit",
-      "artwork": "assets/CD2-artwork/MKSC.png",
+      "artwork": "assets/CD2-artwork/MKSC.jpg",
       "tracks": [
         {"trackNumber": 24, "title": "Peach, Mario, Luigi Circuit", "url": "audio/CD2/24 - Peach,Mario,Luigi Circuit (Mario Kart- Super Circuit) - Kenichi Nishimaki, Masanobu Matsunaga & Minako Hamano.m4a", "composer": "Kenichi Nishimaki, Masanobu Matsunaga & Minako Hamano"},
         {"trackNumber": 25, "title": "Shy Guy Beach", "url": "audio/CD2/25 - Shy Guy Beach (Mario Kart- Super Circuit) - Kenichi Nishimaki, Masanobu Matsunaga & Minako Hamano.m4a", "composer": "Kenichi Nishimaki, Masanobu Matsunaga & Minako Hamano"},

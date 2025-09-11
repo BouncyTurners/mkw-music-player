@@ -199,6 +199,30 @@ audioPlayer.addEventListener('timeupdate', () => {
   timeDisplay.textContent = `${formatTime(current)} / ${formatTime(total)}`;
 });
 
+// Voeg dit toe na je bestaande playBtn event listener
+const playIcon = playBtn.querySelector('i');
+
+function updatePlayButtonIcon() {
+  if (audioPlayer.paused) {
+    playIcon.classList.remove('fa-pause');
+    playIcon.classList.add('fa-play');
+  } else {
+    playIcon.classList.remove('fa-play');
+    playIcon.classList.add('fa-pause');
+  }
+}
+
+// Sync direct bij klik
+playBtn.addEventListener('click', updatePlayButtonIcon);
+
+// Sync ook als audio via code start of stopt
+audioPlayer.addEventListener('play', updatePlayButtonIcon);
+audioPlayer.addEventListener('pause', updatePlayButtonIcon);
+
+// Optioneel: bij het laden van een track, als die meteen speelt
+audioPlayer.addEventListener('loadedmetadata', updatePlayButtonIcon);
+
+
 if (progressContainer) {
   progressContainer.addEventListener('click', (e) => {
     const rect = progressContainer.getBoundingClientRect();

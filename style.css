@@ -243,7 +243,7 @@ article.musicplayer {
     top: 50%;
     right: -35px;
     transform: translateY(-50%);
-    background-color: #555;
+    background-color: #474747;
     color: white;
     border: none;
     border-radius: 50%;
@@ -394,9 +394,9 @@ article.musicplayer {
     padding: 0px 24px;
     border-radius: 8px;
     cursor: pointer;
-    min-width: 5px;
     box-sizing: border-box;
     min-height: 45px;
+    width: 80px;
 }
 
 .musicplayer-wrapper {
@@ -417,8 +417,8 @@ article.musicplayer {
     border-radius: 15px;
     font-family: MKWorld;
     color: rgb(151, 151, 151);
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE 10+ */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
     height: auto;
     margin: 0 auto;
     align-items: center;
@@ -487,8 +487,14 @@ article.musicplayer {
     color: white;
 }
 
+i {
+    font-size: 20px;
+}
+
 
 /* ---------- MEDIA QUERIES ---------- */
+/* Mobiel: onder elkaar */
+/* ========== MOBIEL: max-width 700px ========== */
 @media screen and (max-width: 700px) {
     #skipBtnMobile {
         position: relative;
@@ -617,7 +623,161 @@ article.musicplayer {
     }
 
     .cd-btn {
-    font-size: 15px;
-    height: 40px;
+        font-size: 15px;
+        height: 40px;
+    }
+}
+
+/* ========== TABLET / iPad: 701px - 1024px ========== */
+@media screen and (min-width: 701px) and (max-width: 1024px) {
+    .musicplayer-wrapper {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 20px;
+        justify-content: center;
+    }
+
+    article.musicplayer {
+        flex-direction: column;
+        max-width: 350px;
+        flex-shrink: 0;
+        height: 580px;
+    }
+
+    .tracklist-container {
+        width: 100%;
+        max-width: 300px;
+        order: 0;
+    }
+}
+
+/* ========== DESKTOP: 1025px - 1400px ========== */
+@media screen and (min-width: 1025px) and (max-width: 1400px) {
+    .dropdown {
+        width: 385px;
+    }
+
+    .dropdown-content {
+        gap: 6px;
+    }
+
+    .switch {
+        font-size: 14px;
+    }
+
+    article.musicplayer {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        width: 90%;
+        max-width: 300px;
+        height: auto;
+        flex-shrink: 0;
+    }
+
+    .artwork-wrapper {
+        width: 250px;
+        height: 250px;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .artwork-wrapper img#artwork {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .volume-control-horizontal {
+        margin-top: 25px;
+    }
+
+    .audio-player {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+        align-items: center;
+    }
+
+    .audio-player .progress-container {
+        width: 100%;
+        max-width: 350px;
+        box-sizing: border-box;
+    }
+
+    .musicplayer img#artwork {
+        width: 250px;
+        height: 250px;
+        flex-shrink: 0;
+    }
+
+    .metadata-box {
+        width: 100%;
+        max-width: 300px;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    #metadata {
+        align-items: center;
+        text-align: center;
+    }
+
+    #metadata h1 {
+        font-size: 25px;
+        word-break: break-word;
+    }
+
+    #metadata h3 {
+        font-size: 1rem;
+        line-height: 1.2rem;
+        word-break: break-word;
+        text-align: center;
+        margin: 5px 0;
+    }
+
+    .controls button {
+        font-size: 16px;
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        min-width: 10px;
+        min-height: 45px;
+    }
+
+    .dropdown-toggle {
+        position: absolute;
+        top: 50%;
+        right: 0px;
+        transform: translateY(-50%);
+        background-color: #3e3e3e;
+    }
+
+    .progress-wrapper,
+    .progress-container {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+    }
+
+    .musicplayer-wrapper {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 20px;
+        justify-content: center;
+    }
+
+    .tracklist-container {
+        width: 90%;
+        max-width: 300px;
+    }
+
+    .cd-btn {
+        font-size: 15px;
+        height: 40px;
     }
 }

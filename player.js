@@ -35,6 +35,7 @@ function shuffleArray(array) {
 }
 
 function formatTime(seconds) {
+  if (isNaN(seconds) || seconds < 0) seconds = 0;
   const m = Math.floor(seconds / 60);
   const s = Math.floor(seconds % 60);
   return `${m}:${s < 10 ? '0' : ''}${s}`;
@@ -210,6 +211,86 @@ if (progressContainer) {
     }
   });
 }
+
+if (progressContainer) {
+  let isDragging = false;
+  let dragTime = 0;
+
+  const seek = (x) => {
+    const rect = progressContainer.getBoundingClientRect();
+    let clickX = x - rect.left;
+    clickX = Math.max(0, Math.min(clickX, rect.width));
+    return (clickX / rect.width) * audioPlayer.duration;
+  };
+
+  const updateProgressBar = (time) => {
+    const percent = (time / audioPlayer.duration) * 100 || 0;
+    progressBar.style.width = percent + '%';
+    timeDisplay.textContent = `${formatTime(time)} / ${formatTime(audioPlayer.duration)}`;
+  };
+
+  // DESKTOP
+  progressContainer.addEventListener('mousedown', (e) => {
+    if (!audioPlayer.duration) return;
+    isDragging = true;
+    dragTime = seek(e.clientX);
+    updateProgressBar(dragTime);
+  });
+  window.addEventListener('mousemove', (e) => {
+    if (isDragging) {
+      dragTime = seek(e.clientX);
+      updateProgressBar(dragTime);
+    }
+  });
+  window.addEventListener('mouseup', () => {
+    if (isDragging) {
+      audioPlayer.currentTime = dragTime;
+      isDragging = false;
+    }
+  });
+
+  // TOUCH (MOBIEL)
+  progressContainer.addEventListener('touchstart', (e) => {
+    if (!audioPlayer.duration) return;
+    isDragging = true;
+    dragTime = seek(e.touches[0].clientX);
+    updateProgressBar(dragTime);
+    e.preventDefault(); // voorkomt scrollen
+  }, { passive: false });
+
+  window.addEventListener('touchmove', (e) => {
+    if (isDragging) {
+      dragTime = seek(e.touches[0].clientX);
+      updateProgressBar(dragTime);
+      e.preventDefault();
+    }
+  }, { passive: false });
+
+  window.addEventListener('touchend', () => {
+    if (isDragging) {
+      audioPlayer.currentTime = dragTime;
+      isDragging = false;
+    }
+  });
+
+  // CLICK (zowel mobiel als desktop)
+  progressContainer.addEventListener('click', (e) => {
+    const x = e.clientX || e.touches?.[0]?.clientX;
+    if (x != null) {
+      audioPlayer.currentTime = seek(x);
+    }
+  });
+
+  audioPlayer.addEventListener('timeupdate', () => {
+    if (!isDragging) {
+      updateProgressBar(audioPlayer.currentTime);
+    } else {
+      updateProgressBar(dragTime);
+    }
+  });
+}
+
+
 
 if (volumeSlider) {
   audioPlayer.volume = volumeSlider.value / 100;

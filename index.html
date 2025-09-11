@@ -17,81 +17,89 @@
 <img src="assets/MKWR.png" width="350px" alt="Logo" title="Logo made by ©Crappy Productions">  
 
 <br><br>
-<article class="musicplayer">
 
-  <div class="artwork-wrapper">
-    <img id="artwork" src="assets/player-img/cover.png" width="250" height="250">
-  </div>
+<div class="musicplayer-wrapper">
 
-  <div class="metadata-box">
-      <div id="metadata">
-          <h1><span id="title">-</span></h1>
-          <h3 id="game" class="hidden">-</h3>
-          <div class="audio-player">
-            <audio id="audioPlayer"></audio>
-            <span id="timeDisplay">0:00 / 0:00</span>
-        
-            <div class="progress-wrapper">
-                <div class="progress-container">
-                    <div class="progress-bar" id="progressBar"></div>
+    <div class="tracklist-container" id="tracklist">
+        <h2>Track List</h2>
+    </div>
+
+    <article class="musicplayer">
+
+        <div class="artwork-wrapper">
+            <img id="artwork" src="assets/player-img/cover.png" width="250" height="250">
+        </div>
+
+        <div class="metadata-box">
+            <div id="metadata">
+                <h1><span id="title">-</span></h1>
+                <h3 id="game" class="hidden">-</h3>
+                <div class="audio-player">
+                    <audio id="audioPlayer"></audio>
+                    <span id="timeDisplay">0:00 / 0:00</span>
+
+                    <div class="progress-wrapper">
+                        <div class="progress-container">
+                            <div class="progress-bar" id="progressBar"></div>
+                        </div>
+                    </div>
+
+                    <div class="controls">
+                        <button id="prevBtn">&#9664;</button>
+                        <button id="playBtn">Pause/play</button>
+                        <button id="nextBtn">&#9654;</button>
+                    </div>
+                </div>
+                <br>
+                <div class="volume-control-horizontal">
+                    <label for="volumeSlider">Volume</label>
+                    <input type="range" id="volumeSlider" min="0" max="100" value="100">
                 </div>
             </div>
-        
-            <div class="controls">
-                <button id="prevBtn">&#9664;</button>
-                <button id="playBtn">Pause/play</button>
-                <button id="nextBtn">&#9654;</button>
+        </div>
+
+        <!-- Settings dropdown -->
+        <button class="dropdown-toggle" onclick="toggleDropdown()">&#9654;</button>
+
+        <div class="dropdown">
+            <div class="dropdown-content" id="dropdownContent">
+                <label class="switch">
+                    <input type="checkbox" id="excludeCD1">
+                    <span class="slider"></span>
+                    Exclude CD1 - Grand Prix / Battle Tracks
+                </label>
+
+                <label class="switch">
+                    <input type="checkbox" id="excludeCD2">
+                    <span class="slider"></span>
+                    Exclude CD2 - Mario Kart Series Free Roam
+                </label>
+
+                <label class="switch">
+                    <input type="checkbox" id="excludeCD3">
+                    <span class="slider"></span>
+                    Exclude CD3 - Super Mario Series Free Roam
+                </label>
+
+                <label class="switch">
+                    <input type="checkbox" id="excludeCD4">
+                    <span class="slider"></span>
+                    Exclude CD4 - Miscellaneous Songs
+                </label>
+
+                <label class="switch">
+                    <input type="checkbox" id="playInOrder">
+                    <span class="slider"></span>
+                    Play tracks in order
+                </label>
             </div>
         </div>
-        <br>
-          <div class="volume-control-horizontal">
-              <label for="volumeSlider">Volume</label>
-              <input type="range" id="volumeSlider" min="0" max="100" value="100">
-          </div>
-      </div>
-  </div>
 
-  <!-- Settings dropdown -->
-  <button class="dropdown-toggle" onclick="toggleDropdown()">&#9654;</button>
-
-  <div class="dropdown">
-    <div class="dropdown-content" id="dropdownContent">
-      <label class="switch">
-        <input type="checkbox" id="excludeCD1">
-        <span class="slider"></span>
-        Exclude CD1 - Grand Prix / Battle Tracks
-      </label>
-  
-      <label class="switch">
-        <input type="checkbox" id="excludeCD2">
-        <span class="slider"></span>
-        Exclude CD2 - Mario Kart Series Free Roam
-      </label>
-  
-      <label class="switch">
-        <input type="checkbox" id="excludeCD3">
-        <span class="slider"></span>
-        Exclude CD3 - Super Mario Series Free Roam
-      </label>
-  
-      <label class="switch">
-        <input type="checkbox" id="excludeCD4">
-        <span class="slider"></span>
-        Exclude CD4 - Miscellaneous Songs
-      </label>
-  
-      <label class="switch">
-        <input type="checkbox" id="playInOrder">
-        <span class="slider"></span>
-        Play tracks in order
-      </label>
-    </div>
-  </div>
-
-</article>
+    </article>
+</div>
 
 <footer>
-  <h4>Music by ©Nintendo</h4>
+    <h4>Music by ©Nintendo</h4>
 </footer>
 
 <script src="player.js"></script>

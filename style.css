@@ -399,6 +399,95 @@ article.musicplayer {
     min-height: 45px;
 }
 
+.musicplayer-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 100px;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+/* ---------- TRACKLIST CONTAINER ---------- */
+.tracklist-container {
+    width: 500px;
+    max-height: 500px;
+    overflow-y: auto;
+    background: #1f1f1f;
+    padding: 15px;
+    border-radius: 15px;
+    font-family: MKWorld;
+    color: rgb(151, 151, 151);
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+    height: auto;
+    margin: 0 auto;
+    align-items: center;
+}
+
+.tracklist-container h2 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.cd-category {
+    margin: 0 0 10px 0;
+}
+.cd-category:last-child {
+    margin-bottom: 0;
+}
+
+.cd-btn {
+    width: 100%;
+    text-align: left;
+    background: #333;
+    color: white;
+    border: none;
+    padding: 8px 10px;
+    cursor: pointer;
+    border-radius: 8px;
+    margin-bottom: 5px;
+    font-family: MKWorld;
+    transition: background 0.2s;
+    font-size: 18px;
+}
+
+.cd-btn:hover {
+    background: #444;
+}
+
+.cd-tracks {
+  list-style: none;
+  padding-left: 10px;
+  margin: 0;
+  max-height: 0;
+  overflow: hidden;
+  padding-top: 0;
+  padding-bottom: 0;
+  transition: max-height 0.4s ease, padding 0.3s ease;
+}
+
+.cd-tracks.open {
+  max-height: 5000px;
+}
+
+.cd-tracks li {
+    padding: 5px 8px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background 0.2s;
+    text-align: left;
+}
+
+.cd-tracks li:hover {
+    background: #555555;
+}
+
+.cd-tracks li.active {
+    background: #006aff;
+    color: white;
+}
+
+
 /* ---------- MEDIA QUERIES ---------- */
 @media screen and (max-width: 700px) {
     #skipBtnMobile {
@@ -513,5 +602,21 @@ article.musicplayer {
         max-width: 100%;
         min-width: 0;
         box-sizing: border-box;
+    }
+
+    .musicplayer-wrapper {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .tracklist-container {
+        width: 90%;
+        max-width: 300px;
+        order: 2;
+    }
+
+    .cd-btn {
+    font-size: 15px;
     }
 }

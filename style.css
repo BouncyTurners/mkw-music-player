@@ -468,7 +468,7 @@ article.musicplayer {
 }
 
 .cd-tracks.open {
-  max-height: 5000px;
+  max-height: 10000px;
 }
 
 .cd-tracks li {

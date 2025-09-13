@@ -1,536 +1,378 @@
-// ---------- ELEMENTS ----------
+// ---------- ELEMENTEN ----------
 const audioPlayer = document.getElementById('audioPlayer');
 const titleEl = document.getElementById('title');
 const gameEl = document.getElementById('game');
 const artworkEl = document.getElementById('artwork');
-
 const playBtn = document.getElementById('playBtn');
 const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
 const progressBar = document.getElementById('progressBar');
 const timeDisplay = document.getElementById('timeDisplay');
 const volumeSlider = document.getElementById('volumeSlider');
-const progressContainer = document.querySelector('.progress-container');
-
 const tracklistContainer = document.getElementById('tracklist');
 
-// ---------- TRACK DATA ----------
 let cd1Tracks = [], cd2Tracks = [], cd3Tracks = [], cd4Tracks = [];
-let tracks = [];                // huidige samengestelde lijst (na filters/sort)
-let shuffledTracks = [];        // indexlijst voor shuffle-mode
-let currentTrack = 0;           // index in `tracks` van huidig geladen nummer
-let playInOrder = false;
-let pendingUpdate = false;      // gebruikt voor excludeCD checkboxes (defer until next track)
+let tracks = [], currentTrack = 0;
+let playInOrder = false, pendingUpdate = false;
+let excludedTracks = new Set(), history = [], historyPointer = -1;
 
-// ---------- HISTORY SYSTEM ----------
-let history = [];
-let historyPointer = -1; // positie in de geschiedenis bij prev/next
+// ---------- SHUFFLE POOL ----------
+let shufflePool = []; // Tracks nog niet gespeeld in de huidige shuffle-ronde
 
 // ---------- HELPERS ----------
-function shuffleArray(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-}
-
-function formatTime(seconds) {
-  if (isNaN(seconds) || seconds < 0) seconds = 0;
-  const m = Math.floor(seconds / 60);
-  const s = Math.floor(seconds % 60);
-  return `${m}:${s < 10 ? '0' : ''}${s}`;
-}
-
-function updateActiveTrack() {
-  if (!tracklistContainer) return;
-  const allTrackItems = tracklistContainer.querySelectorAll('li');
-  allTrackItems.forEach(li => li.classList.remove('active'));
-
-  const track = tracks[currentTrack];
-  if (!track) return;
-
-  const currentLi = Array.from(allTrackItems).find(li => {
-    const parentCD = li.closest('.cd-category').querySelector('.cd-btn').textContent;
-    if (parentCD === 'CD1 - Grand Prix / Battle Tracks' || parentCD === 'CD4 - Miscellaneous Songs') {
-      return li.textContent === `${track.trackNumber} - ${track.title}`;
-    } else {
-      return li.textContent === `${track.trackNumber} - ${track.title} [${track.game || ''}]`;
+const shuffleArray = arr => {
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
     }
-  });
+};
 
-  if (currentLi) currentLi.classList.add('active');
-}
+const formatTime = seconds => {
+    if (isNaN(seconds) || seconds < 0) seconds = 0;
+    const m = Math.floor(seconds / 60), s = Math.floor(seconds % 60);
+    return `${m}:${s < 10 ? '0' : ''}${s}`;
+};
+
+// ---------- UPDATE ACTIVE TRACK ----------
+const updateActiveTrack = () => {
+    if (!tracklistContainer) return;
+    tracklistContainer.querySelectorAll('li').forEach(li => li.classList.remove('active'));
+    const track = tracks[currentTrack];
+    if (!track) return;
+    const li = Array.from(tracklistContainer.querySelectorAll('li')).find(li => li.dataset.url === track.url);
+    if (li) li.classList.add('active');
+};
 
 // ---------- PLAY TRACK ----------
 function playTrack(index, fromHistory = false) {
-  if (!tracks.length || index == null || index < 0 || index >= tracks.length) return;
+    if (!tracks.length || index == null || index < 0 || index >= tracks.length) return;
+    currentTrack = index;
+    const track = tracks[index];
+    audioPlayer.src = encodeURI(track.url);
+    audioPlayer.currentTime = 0;
+    audioPlayer.load();
+    audioPlayer.play().catch(() => {});
 
-  currentTrack = index;
-  const track = tracks[index];
-
-  // Laad en start het nummer (dit reset currentTime en laadt de source)
-  audioPlayer.src = encodeURI(track.url);
-  audioPlayer.currentTime = 0;
-  audioPlayer.load();
-  audioPlayer.play().catch(e => console.debug('audio.play() error:', e));
-
-  // History
-  if (!fromHistory) {
-    if (historyPointer < history.length - 1) history = history.slice(0, historyPointer + 1);
-    history.push(index);
-    historyPointer = history.length - 1;
-
-    // verwijder uit shuffledTracks zodat we 'm niet meteen opnieuw krijgen
-    if (!playInOrder) {
-      shuffledTracks = shuffledTracks.filter(i => i !== index);
+    // History
+    if (!fromHistory) {
+        if (historyPointer < history.length - 1) history = history.slice(0, historyPointer + 1);
+        history.push(index);
+        historyPointer = history.length - 1;
+        if (!playInOrder) shufflePool = shufflePool.filter(i => i !== index);
     }
-  }
 
-  // UI update
-  titleEl.textContent = track.title || '-';
-  artworkEl.src = track.artwork || 'assets/player-img/cover.png';
-  artworkEl.style.objectPosition = 'center center';
-  gameEl.textContent = track.game || '';
-  gameEl.style.visibility = track.game ? 'visible' : 'hidden';
-  gameEl.classList.toggle('hidden', !track.game);
-  progressBar.style.width = '0%';
+    // UI update
+    titleEl.textContent = track.title || '-';
+    artworkEl.src = track.artwork || 'assets/player-img/cover.png';
+    artworkEl.style.objectPosition = 'center center';
+    gameEl.textContent = track.game || '';
+    gameEl.style.visibility = track.game ? 'visible' : 'hidden';
+    gameEl.classList.toggle('hidden', !track.game);
+    progressBar.style.width = '0%';
 
-  audioPlayer.addEventListener("loadedmetadata", () => {
-    if (!isNaN(audioPlayer.duration)) {
-      timeDisplay.textContent = `0:00 / ${formatTime(audioPlayer.duration)}`;
+    audioPlayer.addEventListener("loadedmetadata", () => {
+        if (!isNaN(audioPlayer.duration)) timeDisplay.textContent = `0:00 / ${formatTime(audioPlayer.duration)}`;
+    }, { once: true });
+
+    // Media Session
+    if ('mediaSession' in navigator) {
+        navigator.mediaSession.metadata = new MediaMetadata({
+            title: track.title || 'Unknown Track',
+            artist: track.game || 'Mario Kart World',
+            album: "Mario Kart World Radio",
+            artwork: [{ src: track.artwork || 'assets/player-img/cover.png', sizes: '512x512', type: 'image/png' }]
+        });
+        navigator.mediaSession.setActionHandler('play', () => audioPlayer.play());
+        navigator.mediaSession.setActionHandler('pause', () => audioPlayer.pause());
+        navigator.mediaSession.setActionHandler('previoustrack', playPreviousTrack);
+        navigator.mediaSession.setActionHandler('nexttrack', playNextTrack);
     }
-  }, { once: true });
 
-  // Media session
-  if ('mediaSession' in navigator) {
-    navigator.mediaSession.metadata = new MediaMetadata({
-      title: track.title || 'Unknown Track',
-      artist: track.game || 'Mario Kart World',
-      album: "Mario Kart World Radio",
-      artwork: [
-        { src: track.artwork || 'assets/player-img/cover.png', sizes: '512x512', type: 'image/png' }
-      ]
-    });
-    navigator.mediaSession.setActionHandler('play', () => audioPlayer.play());
-    navigator.mediaSession.setActionHandler('pause', () => audioPlayer.pause());
-    navigator.mediaSession.setActionHandler('previoustrack', playPreviousTrack);
-    navigator.mediaSession.setActionHandler('nexttrack', playNextTrack);
-  }
-
-  updateActiveTrack();
+    updateActiveTrack();
 }
 
-// ---------- NEXT TRACK ----------
+// ---------- SHUFFLE HELP ----------
+function getNextShuffleTrack() {
+    if (!shufflePool.length) {
+        shufflePool = tracks
+            .map((t,i)=>i)
+            .filter(i => !excludedTracks.has(tracks[i].url));
+        shuffleArray(shufflePool);
+    }
+    return shufflePool.shift();
+}
+
+// ---------- NEXT / PREVIOUS TRACK ----------
 function playNextTrack() {
-  if (!tracks.length) return;
+    if (!tracks.length) return;
+    if (pendingUpdate) { updateTrackList(true); pendingUpdate = false; }
 
-  // Als er een pending update is (vb. excludeCD is veranderd), verwerk 'm nu voordat we next bepalen.
-  if (pendingUpdate) {
-    // keepCurrent = true zodat huidig nummer niet opnieuw gestart wordt
-    updateTrackList(true);
-    pendingUpdate = false;
-  }
-
-  // History forward
-  if (historyPointer < history.length - 1) {
-    historyPointer++;
-    playTrack(history[historyPointer], true);
-    return;
-  }
-
-  // Bepaal volgende afhankelijk van modus
-  if (playInOrder) {
-    const nextIndex = (currentTrack + 1) % tracks.length;
-    playTrack(nextIndex);
-  } else {
-    // Shuffle-mode: zorg dat shuffledTracks klaar is
-    if (!shuffledTracks.length) {
-      shuffledTracks = [...tracks.keys()].filter(i => i !== currentTrack);
-      shuffleArray(shuffledTracks);
+    if (historyPointer < history.length - 1) {
+        historyPointer++;
+        playTrack(history[historyPointer], true);
+        return;
     }
-    const nextIndex = shuffledTracks.shift();
-    // fallback: als undefined, val terug op next in order
-    if (nextIndex == null) {
-      const nextIndexOrder = (currentTrack + 1) % tracks.length;
-      playTrack(nextIndexOrder);
+
+    if (playInOrder) {
+        let nextIndex = currentTrack + 1;
+        while (excludedTracks.has(tracks[nextIndex]?.url)) nextIndex++;
+        if (nextIndex >= tracks.length) nextIndex = 0;
+        playTrack(nextIndex);
     } else {
-      playTrack(nextIndex);
+        const nextIndex = getNextShuffleTrack();
+        playTrack(nextIndex);
     }
-  }
 }
 
-function skipTrack() {
-  playNextTrack();
-}
-
-// ---------- PREVIOUS TRACK ----------
 function playPreviousTrack() {
-  if (!tracks.length) return;
-
-  if (audioPlayer.currentTime > 3) {
-    audioPlayer.currentTime = 0;
-    audioPlayer.play();
-    return;
-  }
-
-  if (historyPointer > 0) {
-    historyPointer--;
-    playTrack(history[historyPointer], true);
-  } else {
-    audioPlayer.currentTime = 0;
-    audioPlayer.play();
-  }
+    if (!tracks.length) return;
+    if (audioPlayer.currentTime > 3) { audioPlayer.currentTime = 0; audioPlayer.play(); return; }
+    if (historyPointer > 0) { historyPointer--; playTrack(history[historyPointer], true); }
+    else { audioPlayer.currentTime = 0; audioPlayer.play(); }
 }
 
 // ---------- EVENT LISTENERS ----------
 audioPlayer.addEventListener('ended', playNextTrack);
-nextBtn.addEventListener('click', skipTrack);
+nextBtn.addEventListener('click', playNextTrack);
 prevBtn.addEventListener('click', playPreviousTrack);
-playBtn.addEventListener('click', () => {
-  if (audioPlayer.paused) audioPlayer.play();
-  else audioPlayer.pause();
-});
 
-audioPlayer.addEventListener('timeupdate', () => {
-  const percent = (audioPlayer.currentTime / audioPlayer.duration) * 100 || 0;
-  progressBar.style.width = percent + '%';
-  const current = isNaN(audioPlayer.currentTime) ? 0 : audioPlayer.currentTime;
-  const total = isNaN(audioPlayer.duration) ? 0 : audioPlayer.duration;
-  timeDisplay.textContent = `${formatTime(current)} / ${formatTime(total)}`;
-});
-
-// Voeg dit toe na je bestaande playBtn event listener
 const playIcon = playBtn.querySelector('i');
-
-function updatePlayButtonIcon() {
-  if (audioPlayer.paused) {
-    playIcon.classList.remove('fa-pause');
-    playIcon.classList.add('fa-play');
-  } else {
-    playIcon.classList.remove('fa-play');
-    playIcon.classList.add('fa-pause');
-  }
-}
-
-// Sync direct bij klik
-playBtn.addEventListener('click', updatePlayButtonIcon);
-
-// Sync ook als audio via code start of stopt
+const updatePlayButtonIcon = () => {
+    playIcon.classList.toggle('fa-play', audioPlayer.paused);
+    playIcon.classList.toggle('fa-pause', !audioPlayer.paused);
+};
+playBtn.addEventListener('click', () => { audioPlayer.paused ? audioPlayer.play() : audioPlayer.pause(); updatePlayButtonIcon(); });
 audioPlayer.addEventListener('play', updatePlayButtonIcon);
 audioPlayer.addEventListener('pause', updatePlayButtonIcon);
-
-// Optioneel: bij het laden van een track, als die meteen speelt
 audioPlayer.addEventListener('loadedmetadata', updatePlayButtonIcon);
 
-
-if (progressContainer) {
-  progressContainer.addEventListener('click', (e) => {
-    const rect = progressContainer.getBoundingClientRect();
-    const clickX = e.clientX - rect.left;
-    const percent = clickX / rect.width;
-    const newTime = percent * audioPlayer.duration;
-    if (!isNaN(newTime)) {
-      if (percent >= 0.99) playNextTrack();
-      else audioPlayer.currentTime = newTime;
-    }
-  });
-}
-
-if (progressContainer) {
-  let isDragging = false;
-  let dragTime = 0;
-
-  const seek = (x) => {
-    const rect = progressContainer.getBoundingClientRect();
-    let clickX = x - rect.left;
-    clickX = Math.max(0, Math.min(clickX, rect.width));
-    return (clickX / rect.width) * audioPlayer.duration;
-  };
-
-  const updateProgressBar = (time) => {
-    const percent = (time / audioPlayer.duration) * 100 || 0;
+audioPlayer.addEventListener('timeupdate', () => {
+    const percent = (audioPlayer.currentTime / audioPlayer.duration) * 100 || 0;
     progressBar.style.width = percent + '%';
-    timeDisplay.textContent = `${formatTime(time)} / ${formatTime(audioPlayer.duration)}`;
-  };
-
-  // DESKTOP
-  progressContainer.addEventListener('mousedown', (e) => {
-    if (!audioPlayer.duration) return;
-    isDragging = true;
-    dragTime = seek(e.clientX);
-    updateProgressBar(dragTime);
-  });
-  window.addEventListener('mousemove', (e) => {
-    if (isDragging) {
-      dragTime = seek(e.clientX);
-      updateProgressBar(dragTime);
-    }
-  });
-  window.addEventListener('mouseup', () => {
-    if (isDragging) {
-      audioPlayer.currentTime = dragTime;
-      isDragging = false;
-    }
-  });
-
-  // TOUCH (MOBIEL)
-  progressContainer.addEventListener('touchstart', (e) => {
-    if (!audioPlayer.duration) return;
-    isDragging = true;
-    dragTime = seek(e.touches[0].clientX);
-    updateProgressBar(dragTime);
-    e.preventDefault(); // voorkomt scrollen
-  }, { passive: false });
-
-  window.addEventListener('touchmove', (e) => {
-    if (isDragging) {
-      dragTime = seek(e.touches[0].clientX);
-      updateProgressBar(dragTime);
-      e.preventDefault();
-    }
-  }, { passive: false });
-
-  window.addEventListener('touchend', () => {
-    if (isDragging) {
-      audioPlayer.currentTime = dragTime;
-      isDragging = false;
-    }
-  });
-
-  // CLICK (zowel mobiel als desktop)
-  progressContainer.addEventListener('click', (e) => {
-    const x = e.clientX || e.touches?.[0]?.clientX;
-    if (x != null) {
-      audioPlayer.currentTime = seek(x);
-    }
-  });
-
-  audioPlayer.addEventListener('timeupdate', () => {
-    if (!isDragging) {
-      updateProgressBar(audioPlayer.currentTime);
-    } else {
-      updateProgressBar(dragTime);
-    }
-  });
-}
-
-
+    const current = isNaN(audioPlayer.currentTime) ? 0 : audioPlayer.currentTime;
+    const total = isNaN(audioPlayer.duration) ? 0 : audioPlayer.duration;
+    timeDisplay.textContent = `${formatTime(current)} / ${formatTime(total)}`;
+});
 
 if (volumeSlider) {
-  audioPlayer.volume = volumeSlider.value / 100;
-  volumeSlider.addEventListener('input', () => {
     audioPlayer.volume = volumeSlider.value / 100;
-  });
+    volumeSlider.addEventListener('input', () => audioPlayer.volume = volumeSlider.value / 100);
 }
 
 // ---------- UPDATE TRACK LIST ----------
-// THIS function is important: als keepCurrent = true, veranderen we de tracks-lijst
-// maar we herstarten of herladen het huidige nummer niet; we mappen het oude track object
-// naar zijn nieuwe index in de vernieuwde `tracks` array.
 function updateTrackList(keepCurrent = false) {
-  // Lees huidige checkboxstate (playInOrder/ exclude)
-  const excludeCD1 = document.getElementById('excludeCD1').checked;
-  const excludeCD2 = document.getElementById('excludeCD2').checked;
-  const excludeCD3 = document.getElementById('excludeCD3').checked;
-  const excludeCD4 = document.getElementById('excludeCD4').checked;
-  playInOrder = document.getElementById('playInOrder').checked;
+    const excludeCD1 = document.getElementById('excludeCD1')?.checked;
+    const excludeCD2 = document.getElementById('excludeCD2')?.checked;
+    const excludeCD3 = document.getElementById('excludeCD3')?.checked;
+    const excludeCD4 = document.getElementById('excludeCD4')?.checked;
+    playInOrder = document.getElementById('playInOrder')?.checked;
 
-  // Bewaar referentie naar huidig track-object (als die geladen is)
-  const currentTrackObj = tracks[currentTrack];
+    const currentTrackObj = tracks[currentTrack];
+    const newTracks = [];
 
-  // Bouw nieuwe tracks-lijst volgens playInOrder en excludes
-  const newTracks = [];
-  if (!excludeCD1) newTracks.push(...(playInOrder ? cd1Tracks.slice().sort((a,b)=> (a.trackNumber||0)-(b.trackNumber||0)) : cd1Tracks.slice()));
-  if (!excludeCD2) newTracks.push(...(playInOrder ? cd2Tracks.slice().sort((a,b)=> (a.trackNumber||0)-(b.trackNumber||0)) : cd2Tracks.slice()));
-  if (!excludeCD3) newTracks.push(...(playInOrder ? cd3Tracks.slice().sort((a,b)=> (a.trackNumber||0)-(b.trackNumber||0)) : cd3Tracks.slice()));
-  if (!excludeCD4) newTracks.push(...(playInOrder ? cd4Tracks.slice().sort((a,b)=> (a.trackNumber||0)-(b.trackNumber||0)) : cd4Tracks.slice()));
+    if (!excludeCD1) newTracks.push(...cd1Tracks.filter(t => !excludedTracks.has(t.url)));
+    if (!excludeCD2) newTracks.push(...cd2Tracks.filter(t => !excludedTracks.has(t.url)));
+    if (!excludeCD3) newTracks.push(...cd3Tracks.filter(t => !excludedTracks.has(t.url)));
+    if (!excludeCD4) newTracks.push(...cd4Tracks.filter(t => !excludedTracks.has(t.url)));
 
-  // Vervang de globale tracks-reference
-  tracks = newTracks;
+    tracks = newTracks;
 
-  // Als we keepCurrent willen, probeer de oude track te vinden in de nieuwe lijst
-  if (keepCurrent && currentTrackObj) {
-    const newIndex = tracks.findIndex(t => t.url === currentTrackObj.url);
-    if (newIndex !== -1) {
-      // We verplaatsen currentTrack naar de juiste index, MAAR we laden NIET opnieuw de audio-source.
-      currentTrack = newIndex;
+    if (keepCurrent && currentTrackObj) {
+        const newIndex = tracks.findIndex(t => t.url === currentTrackObj.url);
+        currentTrack = newIndex !== -1 ? newIndex : 0;
+        if (!audioPlayer.src && tracks.length) playTrack(currentTrack);
     } else {
-      // Huidig nummer bestaat niet meer in nieuwe lijst (bijv. uitgefilterd) -> wijs fallback toe
-      currentTrack = tracks.length ? 0 : 0;
-      // Als er geen audio geladen is (audioPlayer.src leeg) en we hebben tracks, laad eerste track
-      if (!audioPlayer.src && tracks.length) {
-        playTrack(currentTrack);
-      }
+        if (!audioPlayer.src && tracks.length) playTrack(playInOrder ? 0 : Math.floor(Math.random() * tracks.length));
+        else if (currentTrack >= tracks.length) currentTrack = tracks.length ? tracks.length - 1 : 0;
     }
-  } else {
-    // Geen keepCurrent: als er nog geen audio geladen is, start een passend nummer
-    if (!audioPlayer.src && tracks.length) {
-      currentTrack = playInOrder ? 0 : Math.floor(Math.random() * tracks.length);
-      playTrack(currentTrack);
-    } else {
-      // Zorg dat currentTrack nog binnen bounds valt
-      if (currentTrack >= tracks.length) currentTrack = tracks.length ? tracks.length - 1 : 0;
-    }
-  }
 
-  // Rebuild shuffledTracks indien we in shuffle-modus zitten
-  if (!playInOrder) {
-    // Maak indexlijst zonder currentTrack
-    shuffledTracks = [...tracks.keys()].filter(i => i !== currentTrack);
-    shuffleArray(shuffledTracks);
+    shufflePool = !playInOrder
+        ? tracks.map((t,i)=>i).filter(i => i !== currentTrack && !excludedTracks.has(tracks[i].url))
+        : [];
 
-    // Als keepCurrent, we kunnen currentTrack vooraan zetten zodat next() nooit direct een ander nummer pakt als je het zo wilt.
-    // Maar we WONEN normaal dat current blijft spelen en next() de volgende uit shuffledTracks pakt.
-    // Hier hoeven we niets extra te doen: shuffledTracks bevat geen currentTrack, dus volgende is een random ander nummer.
-  } else {
-    // In order mode: clear shuffledTracks
-    shuffledTracks = [];
-  }
+    shuffleArray(shufflePool);
 
-  renderTracklist();
-  updateActiveTrack();
-}
-
-// ---------- CHECKBOX EVENTS ----------
-// Voor excludeCDs willen we dit pas bij de volgende trackwisseling toepassen (zoals vroeger): pendingUpdate = true
-['excludeCD1','excludeCD2','excludeCD3','excludeCD4'].forEach(id => {
-  const el = document.getElementById(id);
-  if(el) el.addEventListener('change', () => {
-    pendingUpdate = true;
-  });
-});
-
-// Voor playInOrder willen we DIRECT het effect: de huidige track moet blijven spelen (niet opnieuw starten)
-// en de *volgende* track moet meteen volgens order komen. Daarom callen we updateTrackList(true).
-const playInOrderEl = document.getElementById('playInOrder');
-if (playInOrderEl) {
-  playInOrderEl.addEventListener('change', () => {
-    // playInOrder wordt in updateTrackList gelezen, maar we kunnen hem alvast bijwerken
-    playInOrder = playInOrderEl.checked;
-    // keep current (dus geen herstart), maar bouw de nieuwe tracks en shuffledTracks zodanig dat next() de juiste volgt
-    updateTrackList(true);
-  });
+    renderTracklist();
+    updateActiveTrack();
 }
 
 // ---------- LOAD TRACKS ----------
 Promise.all([
-  fetch('./tracksCD1.json').then(res => res.json()),
-  fetch('./tracksCD2.json').then(res => res.json()),
-  fetch('./tracksCD3.json').then(res => res.json()),
-  fetch('./tracksCD4.json').then(res => res.json())
-])
-.then(([cd1Data, cd2Data, cd3Data, cd4Data]) => {
-  cd1Tracks = Array.isArray(cd1Data) ? cd1Data.slice() : [];
-  cd2Tracks = cd2Data.flatMap(game => game.tracks.map(track => ({...track, game: game.game, artwork: game.artwork})));
-  cd3Tracks = cd3Data.games.flatMap(game => game.tracks.map(track => ({...track, game: game.game, artwork: game.artwork})));
-  cd4Tracks = Array.isArray(cd4Data) ? cd4Data.slice() : [];
+    fetch('./tracksCD1.json').then(res => res.json()),
+    fetch('./tracksCD2.json').then(res => res.json()),
+    fetch('./tracksCD3.json').then(res => res.json()),
+    fetch('./tracksCD4.json').then(res => res.json())
+]).then(([cd1Data, cd2Data, cd3Data, cd4Data]) => {
+    const normalizeTracks = (tracks, nested = false) => {
+        if (!Array.isArray(tracks)) return [];
+        if (nested) {
+            return tracks.flatMap(game => game.tracks.map(track => ({
+                ...track,
+                trackNumber: Number(track.trackNumber) || 0,
+                game: game.game,
+                artwork: game.artwork
+            })));
+        }
+        return tracks.map(track => ({ ...track, trackNumber: Number(track.trackNumber) || 0 }));
+    };
 
-  console.log('Loaded CD1:', cd1Tracks.length, 'CD2:', cd2Tracks.length, 'CD3:', cd3Tracks.length, 'CD4:', cd4Tracks.length);
+    cd1Tracks = normalizeTracks(cd1Data);
+    cd2Tracks = normalizeTracks(cd2Data, true);
+    cd3Tracks = normalizeTracks(cd3Data.games, true);
+    cd4Tracks = normalizeTracks(cd4Data);
 
-  updateTrackList(); // init
-})
-.catch(err => console.error('Error loading tracks:', err));
+    // Sorteer op trackNumber
+    cd1Tracks.sort((a,b)=>a.trackNumber-b.trackNumber);
+    cd2Tracks.sort((a,b)=>a.trackNumber-b.trackNumber);
+    cd3Tracks.sort((a,b)=>a.trackNumber-b.trackNumber);
+    cd4Tracks.sort((a,b)=>a.trackNumber-b.trackNumber);
 
+    updateTrackList();
+}).catch(err => console.error('Error loading tracks:', err));
+
+// ---------- RENDER TRACKLIST ----------
 function renderTracklist() {
-  if (!tracklistContainer) return;
+    if (!tracklistContainer) return;
 
-  // 1️⃣ Onthoud welke CD's open waren
-  const openCDs = Array.from(tracklistContainer.querySelectorAll('.cd-tracks.open'))
-                        .map(ul => ul.closest('.cd-category').querySelector('.cd-btn').textContent);
+    // Onthoud welke CD-lijsten open waren
+    const openCDs = Array.from(tracklistContainer.querySelectorAll('.cd-tracks.open'))
+        .map(ul => ul.closest('.cd-category').querySelector('.cd-btn').textContent);
 
-  tracklistContainer.innerHTML = '';
+    // Leeg de container
+    tracklistContainer.innerHTML = '';
 
-  const cds = [
-    { name: 'CD1 - Grand Prix / Battle Tracks', tracks: cd1Tracks },
-    { name: 'CD2 - Mario Kart Series Free Roam', tracks: cd2Tracks },
-    { name: 'CD3 - Super Mario Series Free Roam', tracks: cd3Tracks },
-    { name: 'CD4 - Miscellaneous Songs', tracks: cd4Tracks }
-  ];
+    const cds = [
+        { name: 'CD1 - Grand Prix / Battle Tracks', tracks: cd1Tracks },
+        { name: 'CD2 - Mario Kart Series Free Roam', tracks: cd2Tracks },
+        { name: 'CD3 - Super Mario Series Free Roam', tracks: cd3Tracks },
+        { name: 'CD4 - Miscellaneous Songs', tracks: cd4Tracks }
+    ];
 
-  cds.forEach((cd) => {
-    const sortedTracks = cd.tracks.slice().sort((a, b) => (a.trackNumber || 0) - (b.trackNumber || 0));
+    cds.forEach(cd => {
+        // Maak CD-category container
+        const cdDiv = document.createElement('div');
+        cdDiv.classList.add('cd-category');
 
-    const cdDiv = document.createElement('div');
-    cdDiv.classList.add('cd-category');
+        // Maak CD-knop
+        const cdBtn = document.createElement('button');
+        cdBtn.classList.add('cd-btn');
+        cdBtn.textContent = cd.name;
+        cdDiv.appendChild(cdBtn);
 
-    const cdBtn = document.createElement('button');
-    cdBtn.classList.add('cd-btn');
-    cdBtn.textContent = cd.name;
+        // Maak UL voor tracks
+        const cdTracksUl = document.createElement('ul');
+        cdTracksUl.classList.add('cd-tracks');
+        if (openCDs.includes(cd.name)) cdTracksUl.classList.add('open');
+        cdDiv.appendChild(cdTracksUl);
 
-    const cdTracksUl = document.createElement('ul');
-    cdTracksUl.classList.add('cd-tracks');
+        // Voeg tracks toe
+        const sortedTracks = cd.tracks.slice().sort((a,b) => a.trackNumber-b.trackNumber);
+        sortedTracks.forEach(track => {
+            const li = document.createElement('li');
+            li.dataset.url = track.url;
 
-    // 2️⃣ Zet open-state terug als het CD open was
-    if (openCDs.includes(cd.name)) {
-      cdTracksUl.classList.add('open');
-    }
+            const trackText = document.createElement('span');
+            trackText.classList.add('track-text');
+            trackText.textContent = `${String(track.trackNumber).padStart(2,'0')} - ${track.title}${cd.name.includes('Free Roam') ? ` [${track.game||''}]` : ''}`;
 
-    cdBtn.addEventListener('click', () => {
-      cdTracksUl.classList.toggle('open');
+            const excludeBtn = document.createElement('span');
+            excludeBtn.classList.add('exclude-btn');
+            excludeBtn.textContent = excludedTracks.has(track.url) ? '+' : '-';
+            li.classList.toggle('excluded', excludedTracks.has(track.url));
+
+            li.appendChild(trackText);
+            li.appendChild(excludeBtn);
+            cdTracksUl.appendChild(li);
+        });
+
+        // Klik-handler voor CD-knop
+        cdBtn.addEventListener('click', () => {
+            const isOpen = cdTracksUl.classList.contains('open');
+
+            // Sluit andere CD-lijsten
+            document.querySelectorAll('.cd-tracks').forEach(ul => {
+                if (ul !== cdTracksUl) ul.classList.remove('open');
+            });
+
+            // Open/Sluit deze lijst
+            cdTracksUl.classList.toggle('open');
+
+            // Flash animatie
+            cdBtn.classList.add('flash');
+            setTimeout(() => cdBtn.classList.remove('flash'), 200);
+
+            // Update highlight
+            document.querySelectorAll('.cd-btn').forEach(otherBtn => {
+                otherBtn.classList.remove('highlight');
+            });
+            if (!isOpen) cdBtn.classList.add('highlight');
+        });
+
+        tracklistContainer.appendChild(cdDiv);
     });
 
-    sortedTracks.forEach((track) => {
-      const li = document.createElement('li');
-      if (cd.name === 'CD1 - Grand Prix / Battle Tracks' || cd.name === 'CD4 - Miscellaneous Songs') {
-        li.textContent = `${track.trackNumber} - ${track.title}`;
-      } else {
-        li.textContent = `${track.trackNumber} - ${track.title} [${track.game || ''}]`;
-      }
-
-      li.addEventListener('click', () => {
-        const globalIndex = tracks.findIndex(t => t.url === track.url);
-        if (globalIndex !== -1) playTrack(globalIndex);
-      });
-      cdTracksUl.appendChild(li);
-    });
-
-    cdDiv.appendChild(cdBtn);
-    cdDiv.appendChild(cdTracksUl);
-    tracklistContainer.appendChild(cdDiv);
-  });
-
-  updateActiveTrack();
+    // Update active track
+    updateActiveTrack();
 }
 
 
-// ---------- OVERRIDE updateTrackList (was in jouw versie) ----------
-const originalUpdateTrackList = updateTrackList;
-updateTrackList = function(keepCurrent = false) {
-  originalUpdateTrackList(keepCurrent);
-  // renderTracklist & updateActiveTrack already in originalUpdateTrackList
-};
+// ---------- TRACKLIST CLICK ----------
+tracklistContainer.addEventListener('click', e => {
+    const li = e.target.closest('li'); if (!li) return;
+    const url = li.dataset.url;
+    if (e.target.classList.contains('exclude-btn')) {
+        excludedTracks.has(url) ? excludedTracks.delete(url) : excludedTracks.add(url);
+        if (tracks[currentTrack]?.url === url) playNextTrack();
+        updateTrackList(true);
+        return;
+    }
+    const index = tracks.findIndex(t=>t.url===url); if(index!==-1) playTrack(index);
+});
+
+// ---------- CHECKBOXES ----------
+['excludeCD1','excludeCD2','excludeCD3','excludeCD4'].forEach(id=>document.getElementById(id)?.addEventListener('change',()=>pendingUpdate=true));
+document.getElementById('playInOrder')?.addEventListener('change',()=>updateTrackList(true));
 
 // ---------- DROPDOWN ----------
-const dropdown = document.querySelector(".dropdown");
-const toggle = document.querySelector(".dropdown-toggle");
+const dropdown = document.querySelector(".dropdown"), toggle = document.querySelector(".dropdown-toggle");
+function toggleDropdown(event){event?.stopPropagation();if(!dropdown)return;if(dropdown.style.display==="flex"){dropdown.style.display="none";toggle.classList.remove("open");}else{dropdown.style.display="flex";toggle.classList.add("open");const rect=document.querySelector(".musicplayer").getBoundingClientRect();let left=rect.right+10;if(left+dropdown.offsetWidth>window.innerWidth)left=window.innerWidth-dropdown.offsetWidth-10;dropdown.style.left=left+"px";dropdown.style.top=rect.top+rect.height/2+"px";dropdown.style.transform="translateY(-50%)";}}
+window.toggleDropdown=toggleDropdown;
+document.addEventListener("click",e=>{if(!dropdown||!toggle)return;if(!dropdown.contains(e.target)&&!toggle.contains(e.target)){dropdown.style.display="none";toggle.classList.remove("open");}});
 
-function toggleDropdown(event) {
-  if (event) event.stopPropagation();
-  if (!dropdown) return;
-
-  if (dropdown.style.display === "flex") {
-    dropdown.style.display = "none";
-    toggle.classList.remove("open");
-  } else {
-    dropdown.style.display = "flex";
-    toggle.classList.add("open");
-    const player = document.querySelector(".musicplayer");
-    const rect = player.getBoundingClientRect();
-    let leftPos = rect.right + 10;
-    if (leftPos + dropdown.offsetWidth > window.innerWidth) {
-      leftPos = window.innerWidth - dropdown.offsetWidth - 10;
-    }
-    dropdown.style.left = leftPos + "px";
-    dropdown.style.top = rect.top + rect.height / 2 + "px";
-    dropdown.style.transform = "translateY(-50%)";
-  }
+// ---------- PROGRESS BAR & SCRUB ----------
+const progressContainer = document.querySelector('.progress-container');
+if(progressContainer){
+    let isDragging=false, dragTime=0;
+    const seek=x=>{const rect=progressContainer.getBoundingClientRect();let clickX=x-rect.left;clickX=Math.max(0,Math.min(clickX,rect.width));return (clickX/rect.width)*audioPlayer.duration;};
+    const updateProgressBarUI=time=>{const percent=(time/audioPlayer.duration)*100||0;progressBar.style.width=percent+'%';timeDisplay.textContent=`${formatTime(time)} / ${formatTime(audioPlayer.duration)}`;};
+    progressContainer.addEventListener('mousedown',e=>{if(!audioPlayer.duration)return;isDragging=true;dragTime=seek(e.clientX);updateProgressBarUI(dragTime);});
+    window.addEventListener('mousemove',e=>{if(isDragging){dragTime=seek(e.clientX);updateProgressBarUI(dragTime);}});
+    window.addEventListener('mouseup',()=>{if(isDragging){audioPlayer.currentTime=dragTime;isDragging=false;}});
+    progressContainer.addEventListener('touchstart',e=>{if(!audioPlayer.duration)return;isDragging=true;dragTime=seek(e.touches[0].clientX);updateProgressBarUI(dragTime);e.preventDefault();},{passive:false});
+    window.addEventListener('touchmove',e=>{if(isDragging){dragTime=seek(e.touches[0].clientX);updateProgressBarUI(dragTime);e.preventDefault();}},{passive:false});
+    window.addEventListener('touchend',()=>{if(isDragging){audioPlayer.currentTime=dragTime;isDragging=false;}});
+    progressContainer.addEventListener('click',e=>{const x=e.clientX||e.touches?.[0]?.clientX;if(x!=null&&audioPlayer.duration){audioPlayer.currentTime=seek(x);}});
+    audioPlayer.addEventListener('timeupdate',()=>updateProgressBarUI(isDragging?dragTime:audioPlayer.currentTime));
 }
-window.toggleDropdown = toggleDropdown;
 
-document.addEventListener("click", (event) => {
-  if (!dropdown || !toggle) return;
-  if (!dropdown.contains(event.target) && !toggle.contains(event.target)) {
-    dropdown.style.display = "none";
-    toggle.classList.remove("open");
-  }
+const controlButtons = document.querySelectorAll('.controls button');
+
+controlButtons.forEach(button => {
+    // Tap animatie
+    button.addEventListener('touchstart', () => {
+        button.style.transform = 'scale(1.05)';
+        button.style.transition = 'transform 0.1s ease-in-out, background-color 0.1s ease-in-out';
+    });
+
+    button.addEventListener('touchend', () => {
+        button.style.transform = 'scale(1)';
+        // Forceer dat hover/focus state verdwijnt
+        button.blur();
+    });
+
+    // Optioneel: verwijder hover class als die ooit sticky blijft
+    button.addEventListener('touchcancel', () => {
+        button.style.transform = 'scale(1)';
+        button.blur();
+    });
 });

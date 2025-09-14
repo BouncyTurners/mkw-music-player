@@ -10,7 +10,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: url(assets/BG2.jpg) no-repeat center center;
+    background: url(assets/BG.png) no-repeat center center;
     background-size: cover;
     background-color: black;
     box-sizing: border-box;
@@ -565,11 +565,11 @@ i {
     }
 
     .controls button {
-    transition: transform 0.1s ease-in-out, background-color 0.1s ease-in-out;
-    background-color: #444; /* voorkom dat het lichter wordt */
+        transition: transform 0.1s ease-in-out, background-color 0.1s ease-in-out;
+        background-color: #444; /* voorkom dat het lichter wordt */
     }
     .cd-btn {
-    transition: transform 0.1s ease-in-out, background-color 0.1s ease-in-out;
+        transition: transform 0.1s ease-in-out, background-color 0.1s ease-in-out;
     }
 
     .controls button:hover {
@@ -577,20 +577,20 @@ i {
     }
 
     .cd-btn.flash {
-    animation: flashColor 0.2s forwards;
+        animation: flashColor 0.2s forwards;
     }
 
     @keyframes flashColor {
-    0%, 50% { background-color: #444; }
-    100% { background-color: #333; }
+        0%, 50% { background-color: #444; }
+        100% { background-color: #333; }
     }
 
     .cd-btn.highlight {
-    background-color: #555;
+        background-color: #555;
     }
 
     .cd-btn:hover {
-    background-color: #333;
+        background-color: #333;
     }
 
     .cd-tracks li {

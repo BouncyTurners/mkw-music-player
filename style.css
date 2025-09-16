@@ -45,6 +45,24 @@ h4, h5 {
     margin-top: -1px;
 }
 
+#nextBtn i {
+  margin-left: 0px;
+  transition: margin-left 0.15s ease;
+}
+
+#nextBtn:hover i {
+  margin-left: 10px;
+}
+
+#prevBtn i {
+  margin-right: 0px;
+  transition: margin-right 0.15s ease;
+}
+
+#prevBtn:hover i {
+  margin-right: 10px;
+}
+
 audio {
     opacity: 0;
 }
@@ -563,6 +581,13 @@ i {
 @media screen and (max-width: 700px) {
     #skipBtnMobile {
         position: relative;
+    }
+
+    #nextBtn:hover i {
+        margin-left: 0px;
+    }
+    #prevBtn:hover i {
+        margin-right: 0px;
     }
 
     .controls button {

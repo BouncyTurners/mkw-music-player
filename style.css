@@ -625,6 +625,11 @@ i {
 
     .dropdown {
         width: 385px;
+        scale: 0.85;
+    }
+
+    .slider {
+        scale: 1.15;
     }
 
     .dropdown-content {

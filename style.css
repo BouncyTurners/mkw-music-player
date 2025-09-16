@@ -480,14 +480,16 @@ article.musicplayer {
 }
 
 .cd-tracks {
-  list-style: none;
-  padding-left: 10px;
-  margin: 0;
-  max-height: 0;
-  overflow: hidden;
-  padding-top: 0;
-  padding-bottom: 0;
-  transition: max-height 0.4s ease, padding 0.3s ease;
+    list-style: none;
+    padding-left: 10px;       /* verwijder extra padding links */
+    margin: 0 auto;        /* center de container zelf horizontaal */
+    flex-direction: column; /* verticale lijst behouden */
+    align-items: center;    /* center de li-items horizontaal */
+    max-height: 0;
+    overflow: hidden;
+    padding-top: 0;
+    padding-bottom: 0;
+    transition: max-height 0.4s ease, padding 0.3s ease;
 }
 
 .cd-tracks.open {
@@ -510,11 +512,21 @@ article.musicplayer {
 
 .cd-tracks li:hover {
     background: #555555;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
 }
 
 .cd-tracks li.active {
     background: #006aff;
     color: white;
+}
+
+.cd-tracks li.active .track-text {
+    animation: pulseScaleVar 0.3s ease forwards;
+}
+
+@keyframes pulseScaleVar {
+    0%,100% { --scale: 1; }
+    50% { --scale: 1.03; }
 }
 
 i {
@@ -528,6 +540,12 @@ i {
     max-width: 100%;
     flex-grow: 1;
     margin-right: 26px;
+    --scale: 1;
+    transition: transform 0.2s ease-in;
+}
+
+.cd-tracks li:hover .track-text {
+    transform: translateX(5px) scale(var(--scale));
 }
 
 .cd-tracks li.excluded {
@@ -552,6 +570,7 @@ i {
     cursor: pointer;
     font-size: 14px;
     font-family: MKWorld;
+    transition: background 0.2s ease; /* geen transform */
 }
 
 /* knop hover bij actieve track */
@@ -583,6 +602,15 @@ i {
         position: relative;
     }
 
+    .cd-tracks li:hover .track-text {
+        transform: translateX(0px) scale(var(--scale));
+    }
+
+    @keyframes pulseScaleVar {
+        0%,100% { --scale: 1; }
+        50% { --scale: 1; }
+}
+
     #nextBtn:hover i {
         margin-left: 0px;
     }
@@ -612,7 +640,7 @@ i {
     }
 
     .cd-btn.highlight {
-        background-color: #555;
+        background-color: #333;
     }
 
     .cd-btn:hover {

@@ -341,19 +341,73 @@ document.addEventListener("click",e=>{if(!dropdown||!toggle)return;if(!dropdown.
 
 // ---------- PROGRESS BAR & SCRUB ----------
 const progressContainer = document.querySelector('.progress-container');
-if(progressContainer){
-    let isDragging=false, dragTime=0;
-    const seek=x=>{const rect=progressContainer.getBoundingClientRect();let clickX=x-rect.left;clickX=Math.max(0,Math.min(clickX,rect.width));return (clickX/rect.width)*audioPlayer.duration;};
-    const updateProgressBarUI=time=>{const percent=(time/audioPlayer.duration)*100||0;progressBar.style.width=percent+'%';timeDisplay.textContent=`${formatTime(time)} / ${formatTime(audioPlayer.duration)}`;};
-    progressContainer.addEventListener('mousedown',e=>{if(!audioPlayer.duration)return;isDragging=true;dragTime=seek(e.clientX);updateProgressBarUI(dragTime);});
-    window.addEventListener('mousemove',e=>{if(isDragging){dragTime=seek(e.clientX);updateProgressBarUI(dragTime);}});
-    window.addEventListener('mouseup',()=>{if(isDragging){audioPlayer.currentTime=dragTime;isDragging=false;}});
-    progressContainer.addEventListener('touchstart',e=>{if(!audioPlayer.duration)return;isDragging=true;dragTime=seek(e.touches[0].clientX);updateProgressBarUI(dragTime);e.preventDefault();},{passive:false});
-    window.addEventListener('touchmove',e=>{if(isDragging){dragTime=seek(e.touches[0].clientX);updateProgressBarUI(dragTime);e.preventDefault();}},{passive:false});
-    window.addEventListener('touchend',()=>{if(isDragging){audioPlayer.currentTime=dragTime;isDragging=false;}});
-    progressContainer.addEventListener('click',e=>{const x=e.clientX||e.touches?.[0]?.clientX;if(x!=null&&audioPlayer.duration){audioPlayer.currentTime=seek(x);}});
-    audioPlayer.addEventListener('timeupdate',()=>updateProgressBarUI(isDragging?dragTime:audioPlayer.currentTime));
+if (progressContainer) {
+    let isDragging = false, dragTime = 0;
+    const seek = x => {
+        const rect = progressContainer.getBoundingClientRect();
+        let clickX = x - rect.left;
+        clickX = Math.max(0, Math.min(clickX, rect.width));
+        return (clickX / rect.width) * audioPlayer.duration;
+    };
+
+    const updateProgressBarUI = time => {
+        const percent = (time / audioPlayer.duration) * 100 || 0;
+        progressBar.style.width = percent + '%';
+    };
+
+    // Scrub / drag events
+    const dragStart = e => {
+        if (!audioPlayer.duration) return;
+        isDragging = true;
+        dragTime = seek(e.clientX || e.touches[0].clientX);
+        updateProgressBarUI(dragTime);
+        e.preventDefault?.();
+    };
+    const dragMove = e => {
+        if (isDragging) {
+            dragTime = seek(e.clientX || e.touches[0].clientX);
+            updateProgressBarUI(dragTime);
+            e.preventDefault?.();
+        }
+    };
+    const dragEnd = () => {
+        if (isDragging) {
+            audioPlayer.currentTime = dragTime;
+            isDragging = false;
+        }
+    };
+
+    progressContainer.addEventListener('mousedown', dragStart);
+    progressContainer.addEventListener('touchstart', dragStart, { passive: false });
+    window.addEventListener('mousemove', dragMove);
+    window.addEventListener('touchmove', dragMove, { passive: false });
+    window.addEventListener('mouseup', dragEnd);
+    window.addEventListener('touchend', dragEnd);
+
+    progressContainer.addEventListener('click', e => {
+        if (!audioPlayer.duration) return;
+        const x = e.clientX || e.touches?.[0]?.clientX;
+        if (x != null) audioPlayer.currentTime = seek(x);
+    });
+
+    // ---------- Update progress bar & time ----------
+    let lastSecond = -1;
+    const updateUI = () => {
+        const currentTime = isDragging ? dragTime : audioPlayer.currentTime;
+        updateProgressBarUI(currentTime);
+
+        const currentSec = Math.floor(currentTime);
+        if (currentSec !== lastSecond) {
+            lastSecond = currentSec;
+            const totalSec = Math.floor(audioPlayer.duration || 0);
+            timeDisplay.textContent = `${formatTime(currentSec)} / ${formatTime(totalSec)}`;
+        }
+
+        requestAnimationFrame(updateUI); // zorgt voor vloeiende updates
+    };
+    requestAnimationFrame(updateUI);
 }
+
 
 const controlButtons = document.querySelectorAll('.controls button');
 

@@ -211,6 +211,13 @@
         ]
       },
       {
+        "game": "New Super Mario Bros. U",
+        "artwork": "assets/CD3-artwork/NSMBU.jpg",
+        "tracks": [
+          {"trackNumber": 92, "title": "Ground Theme", "url": "audio/CD3/92 - Ground Theme (New Super Mario Bros. U) - Shiho Fujii.m4a", "composer": "Shiho Fujii"}
+        ]
+      },
+      {
         "game": "Super Mario 3D World",
         "artwork": "assets/CD3-artwork/SM3DW.jpg",
         "tracks": [

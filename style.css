@@ -18,6 +18,67 @@ body {
     text-align: center;
 }
 
+/* iOS PWA spacing for notch/Dynamic Island */
+@supports (padding-top: env(safe-area-inset-top)) {
+    body {
+        padding-top: max(20px, env(safe-area-inset-top));
+        padding-left: max(20px, env(safe-area-inset-left));
+        padding-right: max(20px, env(safe-area-inset-right));
+        padding-bottom: max(20px, env(safe-area-inset-bottom));
+    }
+}
+
+/* Additional spacing for iOS PWA when in standalone mode */
+@media (display-mode: standalone) {
+    body {
+        padding-top: max(40px, calc(env(safe-area-inset-top) + 20px));
+    }
+}
+
+/* iOS background expansion */
+@media screen and (max-width: 768px) {
+    /* Detect iOS devices */
+    @supports (-webkit-touch-callout: none) {
+        body {
+            /* Avoid iOS fixed background bugs */
+            background-attachment: scroll;
+            background-position: center center;
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+        
+        /* Use stable viewport height on iOS 16+ */
+        @supports (height: 100svh) {
+            body { min-height: 100svh; }
+        }
+        
+        /* Portrait mode */
+        @media (orientation: portrait) {
+            body { 
+                background-position: center center; 
+                background-size: cover; 
+            }
+        }
+        
+        /* Landscape mode - expand to edges */
+        @media (orientation: landscape) {
+            body {
+                background-position: center center;
+                background-size: cover;
+                padding-left: max(0px, env(safe-area-inset-left));
+                padding-right: max(0px, env(safe-area-inset-right));
+                margin-left: 0;
+                margin-right: 0;
+            }
+            
+            .musicplayer-wrapper {
+                padding-left: max(20px, calc(env(safe-area-inset-left) + 10px));
+                padding-right: max(20px, calc(env(safe-area-inset-right) + 10px));
+            }
+        }
+    }
+}
+
 /* ---------- FONT ---------- */
 @font-face {
     font-family: MKWorld;
@@ -145,8 +206,8 @@ footer {
     left: 0;
     width: 100%;
     text-align: left;
-    padding: 10px;
-    margin-bottom: -20px;
+    padding: 6px;
+    margin-bottom: -15px;
     color: white;
     opacity: 20%;
     font-family: MKWorld;
@@ -232,6 +293,16 @@ article.musicplayer {
     align-items: center;
     gap: 10px;
     margin-top: 10px;
+}
+
+/* iOS Safari specific adjustments when volume slider is hidden */
+body.ios-safari .metadata-box {
+    margin-bottom: 15px; /* Adjust spacing when volume slider is hidden */
+    height: 245px; /* Make metadata box shorter when volume slider is hidden */
+}
+
+body.ios-safari .audio-player {
+    gap: 15px; /* Increase gap between elements when volume slider is hidden */
 }
 
 .volume-control-horizontal input[type="range"] {
@@ -604,6 +675,41 @@ i {
         margin-top: 40px;
         margin-bottom: 0;
         text-align: center;
+        padding: 4px; /* Decrease spacing on mobile too */
+    }
+    
+    /* Mobile scroll fade effect at top */
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 40px;
+        background: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);
+        z-index: 1000;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    /* Enhanced fade for iOS safe area */
+    @supports (padding-top: env(safe-area-inset-top)) {
+        body::before {
+            height: calc(env(safe-area-inset-top) + 40px);
+            background: linear-gradient(
+                to bottom,
+                rgba(0,0,0,0.85) 0%,
+                rgba(0,0,0,0.6) calc(env(safe-area-inset-top) + 10px),
+                rgba(0,0,0,0.3) calc(env(safe-area-inset-top) + 25px),
+                transparent 100%
+            );
+        }
+    }
+    
+    /* Show fade when scrolled */
+    body.scrolled::before {
+        opacity: 1;
     }
 
     #skipBtnMobile {

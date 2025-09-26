@@ -86,6 +86,20 @@ function playTrack(index, fromHistory = false) {
         navigator.mediaSession.setActionHandler('pause', () => audioPlayer.pause());
         navigator.mediaSession.setActionHandler('previoustrack', playPreviousTrack);
         navigator.mediaSession.setActionHandler('nexttrack', playNextTrack);
+        
+        // Add seek functionality for iOS scrubbing support
+        navigator.mediaSession.setActionHandler('seekto', (details) => {
+            if (audioPlayer.duration && details.seekTime >= 0 && details.seekTime <= audioPlayer.duration) {
+                audioPlayer.currentTime = details.seekTime;
+            }
+        });
+        
+        // Ensure position state is updated for iOS lock screen
+        navigator.mediaSession.setPositionState({
+            duration: audioPlayer.duration || 0,
+            playbackRate: audioPlayer.playbackRate,
+            position: audioPlayer.currentTime
+        });
     }
 
     updateActiveTrack();
@@ -152,11 +166,71 @@ audioPlayer.addEventListener('timeupdate', () => {
     const current = isNaN(audioPlayer.currentTime) ? 0 : audioPlayer.currentTime;
     const total = isNaN(audioPlayer.duration) ? 0 : audioPlayer.duration;
     timeDisplay.textContent = `${formatTime(current)} / ${formatTime(total)}`;
+    
+    // Update position state for iOS lock screen scrubbing
+    if ('mediaSession' in navigator && navigator.mediaSession.setPositionState) {
+        navigator.mediaSession.setPositionState({
+            duration: total,
+            playbackRate: audioPlayer.playbackRate,
+            position: current
+        });
+    }
 });
 
+// iOS detection function (including iPadOS with desktop UA)
+const isIOSSafari = () => {
+    const ua = navigator.userAgent;
+    const iOS = /iPad|iPhone|iPod/.test(ua);
+    const webkit = /WebKit/.test(ua);
+    const chrome = /CriOS|Chrome/.test(ua);
+    const firefox = /FxiOS/.test(ua);
+    
+    // Check for iPadOS presenting desktop UA
+    const isPadOSDesktop = navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1;
+    
+    // Return true for iOS Safari or iPadOS Safari (not Chrome or Firefox on iOS)
+    return (iOS || isPadOSDesktop) && webkit && !chrome && !firefox;
+};
+
+// Hide volume slider on iOS Safari (non-functional) but keep it on macOS Safari
 if (volumeSlider) {
-    audioPlayer.volume = volumeSlider.value / 100;
-    volumeSlider.addEventListener('input', () => audioPlayer.volume = volumeSlider.value / 100);
+    if (isIOSSafari()) {
+        // Hide volume slider on iOS Safari (both PWA and regular browser)
+        const volumeControl = document.querySelector('.volume-control-horizontal');
+        if (volumeControl) {
+            volumeControl.style.display = 'none';
+            // Add a class to adjust spacing for iOS
+            document.body.classList.add('ios-safari');
+        }
+    } else {
+        // Set up volume slider for other browsers (including macOS Safari)
+        audioPlayer.volume = volumeSlider.value / 100;
+        volumeSlider.addEventListener('input', () => audioPlayer.volume = volumeSlider.value / 100);
+    }
+}
+
+// Mobile scroll fade effect
+let scrollTimeout;
+const handleScroll = () => {
+    // Add scrolled class when user scrolls
+    if (window.scrollY > 20) {
+        document.body.classList.add('scrolled');
+    } else {
+        document.body.classList.remove('scrolled');
+    }
+    
+    // Clear timeout and set new one to remove fade after scroll stops
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+        if (window.scrollY <= 20) {
+            document.body.classList.remove('scrolled');
+        }
+    }, 1000);
+};
+
+// Only add scroll listener on mobile devices
+if (window.innerWidth <= 700) {
+    window.addEventListener('scroll', handleScroll, { passive: true });
 }
 
 // ---------- UPDATE TRACK LIST ----------
